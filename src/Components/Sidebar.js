@@ -367,6 +367,9 @@ else if(selected_value == 'page-Progress-Bar'){
                   }
                 </li>
                 <li className="nav-item">
+                  <a href="/section" className="nav-link"><i className="flaticon-open-book" /><span>Section</span></a>
+                </li>
+                <li className="nav-item">
                   <a href="/subject" className="nav-link"><i className="flaticon-open-book" /><span>Subject</span></a>
                 </li>
                 <li className="nav-item">

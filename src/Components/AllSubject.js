@@ -1,6 +1,31 @@
-import React from 'react';
+import React, {useState,useEffect,useMemo} from 'react';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { useSelector,useDispatch } from 'react-redux'
+import {
+  fetchAllSubjects
+} from '../Redux/AllSubjects/AllSubjectsActions'
 
 function AllSubject(){
+  const subjects = useSelector(state =>state.AllSubjects)
+  console.log("subjects",subjects);
+  const dispatch = useDispatch()
+    const [allSubjectsInfo,setSubjectsInfo] = useState([])
+    console.log("allSubjectsInfo",allSubjectsInfo);
+    const class_id = "1"
+    const medium_id = "1"
+
+    useEffect(() =>{
+      dispatch(fetchAllSubjects(class_id,medium_id))
+    },[dispatch])
+
+    useMemo(()=>{
+      if(subjects && subjects.all_subjects && subjects.all_subjects.result){
+        setSubjectsInfo(subjects.all_subjects.result)
+      }
+    },[subjects.all_subjects.result])
+
+
         return (
             <div className="col-8-xxxl col-12">
                     <div className="card height-auto">
@@ -47,22 +72,21 @@ function AllSubject(){
                                 <th>Subject Name</th>
                                 <th>Subject Type</th>
                                 <th>Class</th>
-                                <th>Date</th>
                                 <th />
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
+                            {allSubjectsInfo ? allSubjectsInfo.map((item,index) =>(
+                              <tr key={index}>
                                 <td>
                                   <div className="form-check">
                                     <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">#0021</label>
+                                    <label className="form-check-label">#{item.id}</label>
                                   </div>
                                 </td>
-                                <td>Accounting</td>
-                                <td>Mathematics</td>
-                                <td>4</td>
-                                <td>02/05/2001</td>
+                                <td>{item.SubjectName}</td>
+                                <td>theory</td>
+                                <td>1st</td>
                                 <td>
                                   <div className="dropdown">
                                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -76,174 +100,9 @@ function AllSubject(){
                                   </div>
                                 </td>
                               </tr>
-                              <tr>
-                                <td>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">#0022</label>
-                                  </div>
-                                </td>
-                                <td>Bangla</td>
-                                <td>Theory</td>
-                                <td>6</td>
-                                <td>02/05/2001</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                      <span className="flaticon-more-button-of-three-dots" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">#0023</label>
-                                  </div>
-                                </td>
-                                <td>English</td>
-                                <td>Theory</td>
-                                <td>7</td>
-                                <td>02/05/2001</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                      <span className="flaticon-more-button-of-three-dots" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">#0024</label>
-                                  </div>
-                                </td>
-                                <td>Arts</td>
-                                <td>Theory</td>
-                                <td>6</td>
-                                <td>02/05/2001</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                      <span className="flaticon-more-button-of-three-dots" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">#0025</label>
-                                  </div>
-                                </td>
-                                <td>Finanace</td>
-                                <td>Theory</td>
-                                <td>6</td>
-                                <td>02/05/2001</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                      <span className="flaticon-more-button-of-three-dots" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">#0026</label>
-                                  </div>
-                                </td>
-                                <td>Economics</td>
-                                <td>Theory</td>
-                                <td>6</td>
-                                <td>02/05/2001</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                      <span className="flaticon-more-button-of-three-dots" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">#0027</label>
-                                  </div>
-                                </td>
-                                <td>English</td>
-                                <td>Theory</td>
-                                <td>6</td>
-                                <td>02/05/2001</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                      <span className="flaticon-more-button-of-three-dots" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">#0028</label>
-                                  </div>
-                                </td>
-                                <td>Bangla</td>
-                                <td>Theory</td>
-                                <td>6</td>
-                                <td>02/05/2001</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                      <span className="flaticon-more-button-of-three-dots" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
+                            )): (
+                              <h6>No data available in table</h6>
+                             )}
                             </tbody>
                           </table>
                         </div>

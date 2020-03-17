@@ -39,7 +39,7 @@ export const fetchTeacherDetail = (teacher_id) =>{
     }
     fetch(url, request_option)
     .then(response => response.json())
-    .then(student_detail_res =>{
+    .then(teacher_detail_res =>{
       const teacher_detail_success = teacher_detail_res
       dispatch(fetchTeacherDetailSuccess(teacher_detail_success))
     })

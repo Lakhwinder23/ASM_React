@@ -39,6 +39,7 @@ import ProgressBar from './Components/ProgressBar';
 import Map from './Components/Map';
 import Account from './Components/Account';
 import AddClass from './Components/AddClass';
+import AllSections from './Components/AllSections';
 
 
 
@@ -86,6 +87,8 @@ function Root(){
                  <Route path="/account" component={Account} />
                  <Route path="/button" component={Button} />
                  <Route path="/add-class" component={AddClass} />
+                 <Route path="/section" component={AllSections} />
+
             </Switch>
         </Router>
         </Provider>

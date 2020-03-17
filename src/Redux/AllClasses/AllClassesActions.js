@@ -28,7 +28,7 @@ export const fetchAllClassesFaliure = (error) =>{
 export const fetchAllClasses = () =>{
     return(dispatch) => {
       dispatch(fetchAllClassesRequest())
-      const url =`${config.api_root}/get_all_teacher`;
+      const url =`${config.api_root}/get_all_class`;
       const request_option = {
       method: "GET",
       headers: {
@@ -39,7 +39,7 @@ export const fetchAllClasses = () =>{
     fetch(url, request_option)
     .then(response => response.json())
     .then(all_classes_res =>{
-      const all_teachers_success = all_classes_res
+      const all_classes_success = all_classes_res
       dispatch(fetchAllClassesSuccess(all_classes_success))
     })
     .catch(error => {

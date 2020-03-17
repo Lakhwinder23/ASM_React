@@ -27,11 +27,6 @@ function StudentDetail() {
           setStudentDetailInfo(studentDetail.student_detail.result)
     }
   },[studentDetail])
-  useMemo(()=>{
-    if(studentDetailInfo && studentDetailInfo.length > 0 ){
-          console.log("studentDetailInfo---------",studentDetailInfo[0].StudentName)
-    }
-  },[studentDetailInfo])
   const callbackFunction = (childData) => {
     setActivestate(childData)
 }

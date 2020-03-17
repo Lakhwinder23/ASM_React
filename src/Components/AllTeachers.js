@@ -113,7 +113,7 @@ function AllTeachers(){
                         </thead>
                         <tbody>
                         {allTeachersInfo ? allTeachersInfo.map((item,index) =>(
-                          <tr>
+                          <tr key={index}>
                             <td>
                               <div className="form-check">
                                 <input type="checkbox" className="form-check-input" />

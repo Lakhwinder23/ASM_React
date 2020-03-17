@@ -1,9 +1,32 @@
-import React, { useState } from 'react';
+import React, {useState,useEffect,useMemo} from 'react';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import { useSelector,useDispatch } from 'react-redux'
+import {
+  fetchTeacherDetail
+} from '../Redux/TeacherDetail/TeacherDetailActions'
+
 
 function TeacherDetails() {
+  const teacherDetail = useSelector(state =>state.TeacherDetail)
+  console.log("teacherDetail",teacherDetail);
+  const dispatch = useDispatch()
+  const teacher_id = "2";
+  const [teacherDetailInfo,setTeacherDetailInfo] = useState([])
+  console.log("teacherDetailInfo",teacherDetailInfo)
+
+  useEffect(() =>{
+    dispatch(fetchTeacherDetail(teacher_id))
+  },[dispatch])
+
+  useMemo(()=>{
+    if(teacherDetail && teacherDetail.teacher_detail && teacherDetail.teacher_detail.result ){
+          setTeacherDetailInfo(teacherDetail.teacher_detail.result)
+    }
+  },[teacherDetail])
   const [activestate,setActivestate] = useState('')
   const callbackFunction = (childData) => {
     setActivestate(childData)
@@ -46,84 +69,94 @@ function TeacherDetails() {
                         </div>
                       </div>
                     </div>
-                    <div className="single-info-details">
-                      <div className="item-img">
-                        <img src="img/figure/teacher.jpg" alt="teacher" />
-                      </div>
-                      <div className="item-content">
-                        <div className="header-inline item-header">
-                          <h3 className="text-dark-medium font-medium">Steven Johnson</h3>
-                          <div className="header-elements">
-                            <ul>
-                              <li><a href="#"><i className="far fa-edit" /></a></li>
-                              <li><a href="#"><i className="fas fa-print" /></a></li>
-                              <li><a href="#"><i className="fas fa-download" /></a></li>
-                            </ul>
+                    {teacherDetail && teacherDetail.teacher_detail_loading === false ? teacherDetailInfo && teacherDetailInfo.length > 0 ? (
+                      <div className="single-info-details">
+                        <div className="item-img">
+                          <img src="img/figure/teacher.jpg" alt="teacher" />
+                        </div>
+                        <div className="item-content">
+                          <div className="header-inline item-header">
+                            <h3 className="text-dark-medium font-medium">{teacherDetailInfo[0].TeacherName}</h3>
+                            <div className="header-elements">
+                              <ul>
+                                <li><a href="#"><i className="far fa-edit" /></a></li>
+                                <li><a href="#"><i className="fas fa-print" /></a></li>
+                                <li><a href="#"><i className="fas fa-download" /></a></li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div className="info-table table-responsive">
+                            <table className="table text-nowrap">
+                              <tbody>
+                                <tr>
+                                  <td>Name:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].TeacherName}</td>
+                                </tr>
+                                <tr>
+                                  <td>Gender:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].Gender}</td>
+                                </tr>
+                                <tr>
+                                  <td>Father Name:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].FatherName}</td>
+                                </tr>
+                                <tr>
+                                  <td>Mother Name:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].MotherName}</td>
+                                </tr>
+                                <tr>
+                                  <td>Religion:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].Religion}</td>
+                                </tr>
+                                <tr>
+                                  <td>Joining Date:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].JoiningDate}</td>
+                                </tr>
+                                <tr>
+                                  <td>E-mail:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].email}</td>
+                                </tr>
+                                <tr>
+                                  <td>Subject:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].ProfessionName}</td>
+                                </tr>
+                                <tr>
+                                  <td>Class:</td>
+                                  <td className="font-medium text-dark-medium">2</td>
+                                </tr>
+                                <tr>
+                                  <td>Section:</td>
+                                  <td className="font-medium text-dark-medium">Pink</td>
+                                </tr>
+                                <tr>
+                                  <td>ID No:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].ProfessionId}</td>
+                                </tr>
+                                <tr>
+                                  <td>Address:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].Address}</td>
+                                </tr>
+                                <tr>
+                                  <td>Phone:</td>
+                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].Mobile}</td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
-                        <p>Aliquam erat volutpat. Curabiene natis massa sedde lacu stiquen sodale
-                          word moun taiery.Aliquam erat volutpaturabiene natis massa sedde  sodale
-                          word moun taiery.</p>
-                        <div className="info-table table-responsive">
-                          <table className="table text-nowrap">
-                            <tbody>
-                              <tr>
-                                <td>Name:</td>
-                                <td className="font-medium text-dark-medium">Steven Johnson</td>
-                              </tr>
-                              <tr>
-                                <td>Gender:</td>
-                                <td className="font-medium text-dark-medium">Male</td>
-                              </tr>
-                              <tr>
-                                <td>Father Name:</td>
-                                <td className="font-medium text-dark-medium">Steve Jones</td>
-                              </tr>
-                              <tr>
-                                <td>Mother Name:</td>
-                                <td className="font-medium text-dark-medium">Naomi Rose</td>
-                              </tr>
-                              <tr>
-                                <td>Religion:</td>
-                                <td className="font-medium text-dark-medium">Islam</td>
-                              </tr>
-                              <tr>
-                                <td>Joining Date:</td>
-                                <td className="font-medium text-dark-medium">07.08.2016</td>
-                              </tr>
-                              <tr>
-                                <td>E-mail:</td>
-                                <td className="font-medium text-dark-medium">stevenjohnson@gmail.com</td>
-                              </tr>
-                              <tr>
-                                <td>Subject:</td>
-                                <td className="font-medium text-dark-medium">English</td>
-                              </tr>
-                              <tr>
-                                <td>Class:</td>
-                                <td className="font-medium text-dark-medium">2</td>
-                              </tr>
-                              <tr>
-                                <td>Section:</td>
-                                <td className="font-medium text-dark-medium">Pink</td>
-                              </tr>
-                              <tr>
-                                <td>ID No:</td>
-                                <td className="font-medium text-dark-medium">10005</td>
-                              </tr>
-                              <tr>
-                                <td>Address:</td>
-                                <td className="font-medium text-dark-medium">House #10, Road #6, Australia</td>
-                              </tr>
-                              <tr>
-                                <td>Phone:</td>
-                                <td className="font-medium text-dark-medium">+ 88 98568888418</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
                       </div>
-                    </div>
+                    ) : (
+      <h6>No Detail Available</h6>
+                    ): ( <div className="single-info-details">
+                       <Loader
+                       className = "student-detail-loader"
+                     type="MutatingDots"
+                     color="#fea801"
+                     height={100}
+                     width={100}
+
+        /> </div>)}
+
                   </div>
                 </div>
                 {/* Student Table Area End Here */}

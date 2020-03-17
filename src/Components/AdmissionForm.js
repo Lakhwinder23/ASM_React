@@ -5,6 +5,29 @@ import Footer from './Footer';
 
 function AdmissionForm() {
   const [activestate,setActivestate] = useState('')
+  const [inputValues,setInputValues] = useState({name:'',
+                                                email:'',
+                                                password:'',
+                                                c_password:'',
+                                                role:'3',
+                                                religion:'',
+                                                gender:'',
+                                                dateofBirth:'',
+                                                address:'',
+                                                professionId:'',
+                                                fatherName:'',
+                                                motherName:'',
+                                                fatherOccupation:'',
+                                                classId:'',
+                                                sectionId:'',
+                                                selfOccupation:'',
+                                                parentDetails:'',
+                                                parentDateofBirth:'',
+                                                parentMobile:'',
+                                                parentEmail:'',
+                                                parentExsits:'',
+                                                parentId:''
+                                                    })
   const callbackFunction = (childData) => {
     setActivestate(childData)
   }
@@ -24,7 +47,7 @@ function AdmissionForm() {
               <h3>Students</h3>
               <ul>
                 <li>
-                  <a href="index-2.html">Home</a>
+                  <a href="/">Home</a>
                 </li>
                 <li>Student Admit Form</li>
               </ul>
@@ -49,20 +72,35 @@ function AdmissionForm() {
                 <form className="new-added-form">
                   <div className="row">
                     <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>First Name *</label>
-                      <input type="text" placeholder className="form-control" />
+                      <label>Name *</label>
+                      <input type="text" placeholder className="form-control" required/>
                     </div>
                     <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Last Name *</label>
+                      <label>Email *</label>
+                      <input type="email" placeholder className="form-control" />
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Password *</label>
+                      <input type="password" placeholder className="form-control" />
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Confirm Password *</label>
+                      <input type="password" placeholder className="form-control" />
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Religion</label>
                       <input type="text" placeholder className="form-control" />
                     </div>
                     <div className="col-xl-3 col-lg-6 col-12 form-group">
                       <label>Gender *</label>
-                      <select className="select2">
+                      <select
+                      className="select2"
+                      value={inputValues.gender}
+                      >
                         <option value>Please Select Gender *</option>
-                        <option value={1}>Male</option>
-                        <option value={2}>Female</option>
-                        <option value={3}>Others</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Others">Others</option>
                       </select>
                     </div>
                     <div className="col-xl-3 col-lg-6 col-12 form-group">
@@ -71,8 +109,48 @@ function AdmissionForm() {
                       <i className="far fa-calendar-alt" />
                     </div>
                     <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Roll</label>
+                      <label>Adress</label>
+                      <textarea type="text" placeholder className="form-control" ></textarea>
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Mobile</label>
+                      <input type="number" placeholder className="form-control" />
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Father Name *</label>
                       <input type="text" placeholder className="form-control" />
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Mother Name *</label>
+                      <input type="number" placeholder className="form-control" />
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Father Occupation</label>
+                      <input type="text" placeholder className="form-control" />
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Class *</label>
+                      <select className="select2">
+                        <option value>Please Select Class *</option>
+                        <option value={1}>Play</option>
+                        <option value={2}>Nursery</option>
+                        <option value={3}>One</option>
+                        <option value={3}>Two</option>
+                        <option value={3}>Three</option>
+                        <option value={3}>Four</option>
+                        <option value={3}>Five</option>
+                      </select>
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Section *</label>
+                      <select className="select2">
+                        <option value>Please Select Section *</option>
+                        <option value={1}>Pink</option>
+                        <option value={2}>Blue</option>
+                        <option value={3}>Bird</option>
+                        <option value={3}>Rose</option>
+                        <option value={3}>Red</option>
+                      </select>
                     </div>
                     <div className="col-xl-3 col-lg-6 col-12 form-group">
                       <label>Blood Group *</label>
@@ -101,30 +179,8 @@ function AdmissionForm() {
                       <label>E-Mail</label>
                       <input type="email" placeholder className="form-control" />
                     </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Class *</label>
-                      <select className="select2">
-                        <option value>Please Select Class *</option>
-                        <option value={1}>Play</option>
-                        <option value={2}>Nursery</option>
-                        <option value={3}>One</option>
-                        <option value={3}>Two</option>
-                        <option value={3}>Three</option>
-                        <option value={3}>Four</option>
-                        <option value={3}>Five</option>
-                      </select>
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Section *</label>
-                      <select className="select2">
-                        <option value>Please Select Section *</option>
-                        <option value={1}>Pink</option>
-                        <option value={2}>Blue</option>
-                        <option value={3}>Bird</option>
-                        <option value={3}>Rose</option>
-                        <option value={3}>Red</option>
-                      </select>
-                    </div>
+
+
                     <div className="col-xl-3 col-lg-6 col-12 form-group">
                       <label>Admission ID</label>
                       <input type="text" placeholder className="form-control" />

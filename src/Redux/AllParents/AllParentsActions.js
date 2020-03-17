@@ -25,7 +25,7 @@ export const fetchAllParentsFaliure = (error) =>{
   }
 }
 
-export const fetchAllTeachers = () =>{
+export const fetchAllParents = () =>{
     return(dispatch) => {
       dispatch(fetchAllParentsRequest())
       const url =`${config.api_root}/get_all_parent`;

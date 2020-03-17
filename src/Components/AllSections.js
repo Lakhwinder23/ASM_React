@@ -6,33 +6,29 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux'
 import {
-  fetchAllClasses
-} from '../Redux/AllClasses/AllClassesActions'
+  fetchAllSections
+} from '../Redux/AllSections/AllSectionsActions'
 
-function AllClasses() {
-  const classes = useSelector(state =>state.AllClasses)
-  console.log("classes",classes);
+function AllSections() {
+  const sections = useSelector(state =>state.AllSections)
+  console.log("sections",sections);
   const dispatch = useDispatch()
-    const [classesResult,setClassesResult] = useState([])
-    const [allClassesInfo,setClassesInfo] = useState([])
-    console.log("allClassesInfo",allClassesInfo);
+    const [allSectionsInfo,setSectionsInfo] = useState([])
+    console.log("allSectionsInfo",allSectionsInfo);
   const [activestate,setActivestate] = useState('')
+  const class_id = "1"
+  const medium_id = "1"
 
   useEffect(() =>{
-    dispatch(fetchAllClasses())
+    dispatch(fetchAllSections(class_id,medium_id))
   },[dispatch])
 
   useMemo(()=>{
-    if(classes && classes.all_classes && classes.all_classes.result){
-      setClassesResult(classes.all_classes.result)
+    if(sections && sections.all_sections && sections.all_sections.result){
+      setSectionsInfo(sections.all_sections.result)
     }
-  },[classes.all_classes.result])
+  },[sections.all_sections.result])
 
-  useMemo(()=>{
-    if(classesResult && classesResult.data){
-          setClassesInfo(classesResult.data)
-    }
-  },[classesResult])
   const callbackFunction = (childData) => {
     setActivestate(childData)
   }
@@ -49,12 +45,12 @@ function AllClasses() {
           <div className="dashboard-content-one">
             {/* Breadcubs Area Start Here */}
             <div className="breadcrumbs-area">
-              <h3>Classes</h3>
+              <h3>Sections</h3>
               <ul>
                 <li>
                   <a href="/">Home</a>
                 </li>
-                <li>All Classes</li>
+                <li>All Sections</li>
               </ul>
             </div>
             {/* Breadcubs Area End Here */}
@@ -63,7 +59,7 @@ function AllClasses() {
               <div className="card-body">
                 <div className="heading-layout1">
                   <div className="item-title">
-                    <h3>All Class Schedules</h3>
+                    <h3>All Sections Schedules</h3>
                   </div>
                   <div className="dropdown">
                     <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -100,15 +96,14 @@ function AllClasses() {
                             <label className="form-check-label">ID</label>
                           </div>
                         </th>
+                        <th>Section Name</th>
                         <th>Class Name</th>
                         <th>Medium Name</th>
-                        <th>Total Section</th>
-                        <th>Maximum Student In Class</th>
                         <th />
                       </tr>
                     </thead>
                     <tbody>
-                    {allClassesInfo ? allClassesInfo.map((item,index) =>(
+                    {allSectionsInfo ? allSectionsInfo.map((item,index) =>(
                       <tr key={index}>
                         <td>
                           <div className="form-check">
@@ -116,10 +111,9 @@ function AllClasses() {
                             <label className="form-check-label">#{item.id}</label>
                           </div>
                         </td>
-                        <td>{item.ClassName}</td>
-                        <td>{item.MediumName}</td>
-                        <td>{item.TotalSection}</td>
-                        <td>{item.StudentLimitInClass}</td>
+                        <td>{item.SectionName}</td>
+                        <td>1st</td>
+                        <td>Hindi</td>
                         <td>
                           <div className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -150,4 +144,4 @@ function AllClasses() {
         );
     }
 
-export default AllClasses;
+export default AllSections;
