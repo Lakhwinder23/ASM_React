@@ -26,12 +26,17 @@ export const addStudentFaliure = (error) =>{
   }
 }
 
-export const addStudent = (student_info) =>{
+export const addStudentHandler = (student_info) =>{
     return(dispatch) => {
       dispatch(addStudentRequest(student_info))
       const url =`${config.api_root}/add_user`;
       const request_option = {
       method: "POST",
+      headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
       body: JSON.stringify({
         name : student_info.name,
         email :student_info.email,
@@ -44,7 +49,7 @@ export const addStudent = (student_info) =>{
         Address : student_info.address,
         Mobile :student_info.mobile,
         ProfessionId : student_info.professionId,
-        fatherName :student_info.fatherName,
+        FatherName :student_info.fatherName,
         MotherName :student_info.motherName,
         FatherOccupation :student_info.fatherOccupation,
         ClassId :student_info.classId,

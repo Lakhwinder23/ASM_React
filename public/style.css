@@ -4411,3 +4411,14 @@ tr.odd {
 .student-detail-loader {
     padding-left: 448px;
 }
+/* admission form style start */
+input.form-control.parent-info {
+    height: 15px !important;
+    margin-top: 8px !important;
+    margin-left: 17px;
+}
+
+label.parent-label {
+    margin-bottom: 0px !important;
+}
+/* admission form style end */
