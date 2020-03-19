@@ -8,7 +8,7 @@ import {config} from '../config'
 export const addSubjectRequest = (subject_info) =>{
   return{
     type : ADD_SUBJECT_REQUEST,
-    payload : class_info
+    payload : subject_info
   }
 }
 
@@ -32,10 +32,15 @@ export const addSubject = (subject_info) =>{
       const url =`${config.api_root}/add_subject`;
       const request_option = {
       method: "POST",
+      headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
       body: JSON.stringify({
-        SubjectName : subject_info.className,
-        SubjectMediumId : subject_info.totalSection,
-        ClassId : subject_info.studentLimitInClass
+        SubjectName : subject_info.subjectName,
+        SubjectMediumId : subject_info.subjectMediumId,
+        ClassId : subject_info.classId
       })
     }
     fetch(url, request_option)

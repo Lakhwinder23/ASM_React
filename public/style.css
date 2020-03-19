@@ -4421,4 +4421,19 @@ input.form-control.parent-info {
 label.parent-label {
     margin-bottom: 0px !important;
 }
+
+h6.addStudent-error {
+    color: red;
+    padding-top: 10px;
+}
+.success-greeting {
+    padding-top: 95px;
+    padding-bottom: 95px;
+    /* padding-left: 50px; */
+    text-align: center;
+}
+.Student-Loader {
+    padding-top: 95px;
+    padding-bottom: 95px;
+}
 /* admission form style end */

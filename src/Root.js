@@ -40,6 +40,8 @@ import Map from './Components/Map';
 import Account from './Components/Account';
 import AddClass from './Components/AddClass';
 import AllSections from './Components/AllSections';
+import AddProfession from './Components/AddProfession';
+import AddMedium from './Components/AddMedium';
 
 
 
@@ -88,6 +90,8 @@ function Root(){
                  <Route path="/button" component={Button} />
                  <Route path="/add-class" component={AddClass} />
                  <Route path="/section" component={AllSections} />
+                 <Route path="/add-profession" component={AddProfession} />
+                 <Route path="/add-medium" component={AddMedium} />
 
             </Switch>
         </Router>

@@ -1,31 +1,23 @@
 import React, {useState,useMemo,useEffect}  from 'react';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import {
-  FormControl,
-  FormGroup,
-  FormLabel
-} from "react-bootstrap";
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux';
-import { addClass } from '../Redux/AddClass/AddClassActions';
+import { addProfession } from '../Redux/AddProfession/AddProfessionActions';
 
 
-function AddClass() {
+function AddProfession() {
   // store data access start
-  const add_Class = useSelector(state =>state.AddClass)
+  const add_Profession = useSelector(state =>state.AddProfession)
   // store data access End
 
    const dispatch = useDispatch()  // for accessing the redux function
 
    // component all states define start
   const [activestate,setActivestate] = useState('')
-  const [inputValues,setInputValues] = useState({className:'',
-                                                totalSection:'',
-                                                studentLimitInClass:'',
-                                                classMediumId:''
+  const [inputValues,setInputValues] = useState({professionName:''
                                                     })
   const [error,setError] = useState(null)
   const [successStatus,setSuccessStatus] = useState(null)
@@ -34,30 +26,30 @@ function AddClass() {
 
    //hooks start
 
-  useMemo(()=>{
-    if(add_Class && add_Class.add_class && add_Class.add_class.error){
-      setError(add_Class.add_class.error)
-    }
-
-  },[add_Class.add_class])
 
   useMemo(()=>{
-    if(add_Class && add_Class.add_class && add_Class.add_class.success){
-      setSuccessStatus(add_Class.add_class.success)
+    if(add_Profession && add_Profession.add_profession && add_Profession.add_profession.error){
+      setError(add_Profession.add_profession.error)
     }
 
-  },[add_Class.add_class])
+  },[add_Profession.add_profession])
+
+  useMemo(()=>{
+    if(add_Profession && add_Profession.add_profession && add_Profession.add_profession.success){
+      setSuccessStatus(add_Profession.add_profession.success)
+    }
+
+  },[add_Profession.add_profession])
 
   //hooks end
 
   const callbackFunction = (childData) => {
     setActivestate(childData)
   }
-
-    const classHandler = (event) =>{
+    const professionHandler = (event) =>{
     event.preventDefault()
-    const class_info = inputValues;
-      dispatch(addClass(class_info))
+    const profession_info = inputValues;
+      dispatch(addProfession(profession_info))
   }
 
   const resetHandler = (event) =>{
@@ -77,22 +69,22 @@ function AddClass() {
           <div className="dashboard-content-one">
             {/* Breadcubs Area Start Here */}
             <div className="breadcrumbs-area">
-              <h3>Class</h3>
+              <h3>Profession</h3>
               <ul>
                 <li>
                   <a href="/">Home</a>
                 </li>
-                <li>Class Admit Form</li>
+                <li>Profession Admit Form</li>
               </ul>
             </div>
             {/* Breadcubs Area End Here */}
             {/* Admit Form Area Start Here */}
             <div className="card height-auto">
-              {add_Class && add_Class.add_class_loading === false ? successStatus === false || successStatus === null  ? (
+              {add_Profession && add_Profession.add_profession_loading === false ? successStatus === false || successStatus === null  ? (
                 <div className="card-body">
                   <div className="heading-layout1">
                     <div className="item-title">
-                      <h3>Add New Class</h3>
+                      <h3>Add New Profession</h3>
                     </div>
                     <div className="dropdown">
                       <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -103,43 +95,12 @@ function AddClass() {
                       </div>
                     </div>
                   </div>
-                  <form className="new-added-form" onSubmit={(e) =>classHandler(e)}>
+                  <form className="new-added-form" onSubmit={(e) =>professionHandler(e)}>
                     <div className="row">
                       <div className="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Class Name *</label>
-                        <input type="text" value={inputValues.className} onChange={(e) =>setInputValues({...inputValues,className:e.target.value})}  className="form-control" required/>
-                        {error != null && error.ClassName ? (<h6 className="addStudent-error">*{JSON.stringify(error.ClassName).replace(/[\[\]"]+/g,"")}</h6>):null}
-                      </div>
-                      <div className="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Total Section *</label>
-                        <input type="number" value={inputValues.totalSection} onChange={(e) =>setInputValues({...inputValues,totalSection:e.target.value})}  className="form-control" required/>
-                          {error != null && error.TotalSection ? (<h6 className="addStudent-error">*{JSON.stringify(error.TotalSection).replace(/[\[\]"]+/g,"")}</h6>):null}
-                      </div>
-                      <div className="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Maximum Students *</label>
-                        <input type="number" value={inputValues.studentLimitInClass} onChange={(e) =>setInputValues({...inputValues,studentLimitInClass:e.target.value})}  className="form-control" required/>
-                          {error != null && error.StudentLimitInClass ? (<h6 className="addStudent-error">*{JSON.stringify(error.StudentLimitInClass).replace(/[\[\]"]+/g,"")}</h6>):null}
-                      </div>
-                      <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <FormGroup>
-                          <FormLabel>Medium *</FormLabel>
-                          <FormControl
-                            required
-                            type="text"
-                            onChange={(e) =>setInputValues({...inputValues,classMediumId:e.target.value})}
-                            as="select"
-                          >
-                          <option value="">Please select class Medium *</option>
-                            <option value={"1"}>Hindi</option>
-                            <option value={"2"}>English</option>
-                            <option value={"3"}>Bangla</option>
-                            <option value={"4"}>Tamil</option>
-                            <option value={"5"}>Marathi</option>
-                            <option value={"6"}>Gujarti</option>
-                            <option value={"7"}>abcdefg</option>
-                          </FormControl>
-                          {error != null && error.ClassMediumId ? (<h6 className="addStudent-error">*{JSON.stringify(error.ClassMediumId).replace(/[\[\]"]+/g,"")}</h6>):null}
-                        </FormGroup>
+                        <label>Name *</label>
+                        <input type="text" value={inputValues.professionName} onChange={(e) =>setInputValues({...inputValues,professionName:e.target.value})}  className="form-control" required/>
+                        {error != null && error.ProfessionName ? (<h6 className="addStudent-error">*{JSON.stringify(error.ProfessionName).replace(/[\[\]"]+/g,"")}</h6>):null}
                       </div>
                       <div className="col-12 form-group mg-t-8">
                         <button type="submit" className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
@@ -151,7 +112,7 @@ function AddClass() {
               ) : (<div className="card-body">
                     <div className="success-greeting">
                     <h2>Thank You!</h2>
-                    <h2>Class Add Successfully!</h2>
+                    <h2>Profession Add Successfully!</h2>
                     </div>
                 </div>):(<div className="card-body">
                     <div className="Student-Loader">
@@ -176,4 +137,4 @@ function AddClass() {
         );
 }
 
-export default AddClass;
+export default AddProfession;

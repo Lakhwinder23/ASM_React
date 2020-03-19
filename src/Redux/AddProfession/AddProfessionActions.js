@@ -32,8 +32,13 @@ export const addProfession = (profession_info) =>{
       const url =`${config.api_root}/add_profession`;
       const request_option = {
       method: "POST",
+      headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
       body: JSON.stringify({
-        ProfessionName : profession_info
+        ProfessionName : profession_info.professionName
       })
     }
     fetch(url, request_option)

@@ -1,17 +1,91 @@
-import React,{useState} from 'react';
-import Footer from './Footer';
+import React, {useState,useMemo,useEffect}  from 'react';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import {
+  FormControl,
+  FormGroup,
+  FormLabel
+} from "react-bootstrap";
 import Header from './Header';
 import Sidebar from './Sidebar';
+import Footer from './Footer';
+import { useSelector,useDispatch } from 'react-redux';
+import { addStudentHandler } from '../Redux/AdmissionForm/AdmissionFormActions';
 
-function AddTeacher(){
+
+function AddTeacher() {
+  // store data access start
+  const add_Teacher = useSelector(state =>state.AdmissionForm)
+  // store data access End
+
+   const dispatch = useDispatch()  // for accessing the redux function
+
+   // component all states define start
   const [activestate,setActivestate] = useState('')
+  const [inputValues,setInputValues] = useState({name:'',
+                                                email:'',
+                                                password:'',
+                                                c_password:'',
+                                                role:'2',
+                                                religion:'',
+                                                gender:'',
+                                                dateofBirth:'',
+                                                address:'',
+                                                professionId:'',
+                                                fatherName:'',
+                                                motherName:'',
+                                                fatherOccupation:undefined,
+                                                classId:undefined,
+                                                sectionId:undefined,
+                                                selfOccupation:undefined,
+                                                parentDetails:undefined,
+                                                parentDateofBirth:undefined,
+                                                parentMobile:undefined,
+                                                parentEmail:undefined,
+                                                parentExsits:undefined,
+                                                parentId:undefined
+                                                    })
+  const [error,setError] = useState(null)
+  const [successStatus,setSuccessStatus] = useState(null)
+
+   // component all states define End
+
+   //hooks start
+
+  useMemo(()=>{
+    if(add_Teacher && add_Teacher.add_student && add_Teacher.add_student.error){
+      setError(add_Teacher.add_student.error)
+    }
+
+  },[add_Teacher.add_student])
+
+  useMemo(()=>{
+    if(add_Teacher && add_Teacher.add_student && add_Teacher.add_student.success){
+      setSuccessStatus(add_Teacher.add_student.success)
+    }
+
+  },[add_Teacher.add_student])
+
+  //hooks end
+
   const callbackFunction = (childData) => {
     setActivestate(childData)
-}
+  }
+
+    const teacherHandler = (event) =>{
+    event.preventDefault()
+    const student_info = inputValues;
+      dispatch(addStudentHandler(student_info))
+  }
+
+  const resetHandler = (event) =>{
+    event.preventDefault()
+    window.location.reload(false);
+  }
         return (
             <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
         {/* Header Menu Area Start Here */}
-        <Header parentCallback = {() =>callbackFunction()}/>
+       <Header parentCallback = {() =>callbackFunction()}/>
         {/* Header Menu Area End Here */}
         {/* Page Area Start Here */}
         <div className="dashboard-page-one">
@@ -21,135 +95,151 @@ function AddTeacher(){
           <div className="dashboard-content-one">
             {/* Breadcubs Area Start Here */}
             <div className="breadcrumbs-area">
-              <h3>Teacher</h3>
+              <h3>Teachers</h3>
               <ul>
                 <li>
-                  <a href="index-2.html">Home</a>
+                  <a href="/">Home</a>
                 </li>
-                <li>Add New Teacher</li>
+                <li>Teacher Admit Form</li>
               </ul>
             </div>
             {/* Breadcubs Area End Here */}
-            {/* Add New Teacher Area Start Here */}
+            {/* Admit Form Area Start Here */}
             <div className="card height-auto">
-              <div className="card-body">
-                <div className="heading-layout1">
-                  <div className="item-title">
-                    <h3>Add New Teacher</h3>
-                  </div>
-                  <div className="dropdown">
-                    <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
-                    <div className="dropdown-menu dropdown-menu-right">
-                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
+              {add_Teacher && add_Teacher.add_student_loading === false ? successStatus === false || successStatus === null  ? (
+                <div className="card-body">
+                  <div className="heading-layout1">
+                    <div className="item-title">
+                      <h3>Add New Teacher</h3>
+                    </div>
+                    <div className="dropdown">
+                      <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
+                      <div className="dropdown-menu dropdown-menu-right">
+                        <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
+                        <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
+                        <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
+                      </div>
                     </div>
                   </div>
+                  <form className="new-added-form" onSubmit={(e) =>teacherHandler(e)}>
+                    <div className="row">
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Name *</label>
+                        <input type="text" value={inputValues.name} onChange={(e) =>setInputValues({...inputValues,name:e.target.value})}  className="form-control" required/>
+                        {error != null && error.name ? (<h6 className="addStudent-error">*{JSON.stringify(error.name).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Email *</label>
+                        <input type="email" value={inputValues.email} onChange={(e) =>setInputValues({...inputValues,email:e.target.value})}  className="form-control" required/>
+                          {error != null && error.email ? (<h6 className="addStudent-error">*{JSON.stringify(error.email).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Password *</label>
+                        <input type="password" value={inputValues.password} onChange={(e) =>setInputValues({...inputValues,password:e.target.value})}  className="form-control" required/>
+                          {error != null && error.password ? (<h6 className="addStudent-error">*{JSON.stringify(error.password).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Confirm Password *</label>
+                        <input type="password" value={inputValues.c_password} onChange={(e) =>setInputValues({...inputValues,c_password:e.target.value})}  className="form-control" required/>
+                        {error != null && error.c_password ? (<h6 className="addStudent-error">*{JSON.stringify(error.c_password).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Father Name *</label>
+                        <input type="text" value={inputValues.fatherName} onChange={(e) =>setInputValues({...inputValues,fatherName:e.target.value})}  className="form-control" required/>
+                        {error != null && error.FatherName ? (<h6 className="addStudent-error">*{JSON.stringify(error.FatherName).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Mother Name *</label>
+                        <input type="text" value={inputValues.motherName} onChange={(e) =>setInputValues({...inputValues,motherName:e.target.value})}  className="form-control" required/>
+                        {error != null && error.MotherName ? (<h6 className="addStudent-error">*{JSON.stringify(error.MotherName).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Religion</label>
+                        <input type="text" value={inputValues.religion} onChange={(e) =>setInputValues({...inputValues,religion:e.target.value})}  className="form-control" required/>
+                        {error != null && error.Religion ? (<h6 className="addStudent-error">*{JSON.stringify(error.Religion).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <FormGroup>
+                          <FormLabel>Gender *</FormLabel>
+                          <FormControl
+                            required
+                            type="text"
+                            onChange={(e) =>setInputValues({...inputValues,gender:e.target.value})}
+                            as="select"
+                          >
+                          <option value="">Please Select Gender *</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Others">Others</option>
+                          </FormControl>
+                          {error != null && error.Gender ? (<h6 className="addStudent-error">*{JSON.stringify(error.Gender).replace(/[\[\]"]+/g,"")}</h6>):null}
+                        </FormGroup>
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Date Of Birth *</label>
+                        <input type="Date" value={inputValues.dateofBirth} onChange={(e) =>setInputValues({...inputValues,dateofBirth:e.target.value})}  className="form-control" data-position="bottom right" required/>
+                        {error != null && error.DateofBirth ? (<h6 className="addStudent-error">*{JSON.stringify(error.DateofBirth).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Adress</label>
+                        <textarea type="text" value={inputValues.address} onChange={(e) =>setInputValues({...inputValues,address:e.target.value})}  className="form-control" required></textarea>
+                        {error != null && error.Address ? (<h6 className="addStudent-error">*{JSON.stringify(error.Address).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Mobile</label>
+                        <input type="number" value={inputValues.mobile} onChange={(e) =>setInputValues({...inputValues,mobile:e.target.value})}  className="form-control" required/>
+                        {error != null && error.Mobile ? (<h6 className="addStudent-error">*{JSON.stringify(error.Mobile).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <FormGroup>
+                          <FormLabel>Profession *</FormLabel>
+                          <FormControl
+                            required
+                            type="text"
+                            onChange={(e) =>setInputValues({...inputValues,professionId:e.target.value})}
+                            as="select"
+                          >
+                          <option value="">Please select your Profession *</option>
+                            <option value={"1"}>English</option>
+                            <option value={"2"}>Hindi</option>
+                            <option value={"3"}>Math</option>
+                            <option value={"4"}>Evs</option>
+                            <option value={"5"}>Sanskrit</option>
+                          </FormControl>
+                          {error != null && error.ProfessionId ? (<h6 className="addStudent-error">*{JSON.stringify(error.ProfessionId).replace(/[\[\]"]+/g,"")}</h6>):null}
+                        </FormGroup>
+                      </div>
+                      <div className="col-lg-6 col-12 form-group mg-t-30">
+                        <label className="text-dark-medium">Upload Student Photo (150px X 150px)</label>
+                        <input type="file" className="form-control-file" />
+                      </div>
+                      <div className="col-12 form-group mg-t-8">
+                        <button type="submit" className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+                        <button type="reset" className="btn-fill-lg bg-blue-dark btn-hover-yellow" onClick={(e) =>resetHandler(e)}>Reset</button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
-                <form className="new-added-form">
-                  <div className="row">
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>First Name *</label>
-                      <input type="text" placeholder className="form-control" />
+              ) : (<div className="card-body">
+                    <div className="success-greeting">
+                    <h2>Thank You!</h2>
+                    <h2>Teacher Add Successfully!</h2>
                     </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Last Name *</label>
-                      <input type="text" placeholder className="form-control" />
+                </div>):(<div className="card-body">
+                    <div className="Student-Loader">
+                    <Loader
+                    className = "student-detail-loader"
+                  type="MutatingDots"
+                  color="#fea801"
+                  height={150}
+                  width={150}
+
+     />
                     </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Gender *</label>
-                      <select className="select2">
-                        <option value>Please Select Gender *</option>
-                        <option value={1}>Male</option>
-                        <option value={2}>Female</option>
-                        <option value={3}>Others</option>
-                      </select>
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Date Of Birth *</label>
-                      <input type="text" placeholder="dd/mm/yyyy" className="form-control air-datepicker" />
-                      <i className="far fa-calendar-alt" />
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>ID No</label>
-                      <input type="text" placeholder className="form-control" />
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Blood Group *</label>
-                      <select className="select2">
-                        <option value>Please Select Group *</option>
-                        <option value={1}>A+</option>
-                        <option value={2}>A-</option>
-                        <option value={3}>B+</option>
-                        <option value={3}>B-</option>
-                        <option value={3}>O+</option>
-                        <option value={3}>O-</option>
-                      </select>
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Religion *</label>
-                      <select className="select2">
-                        <option value>Please Select Religion *</option>
-                        <option value={1}>Islam</option>
-                        <option value={2}>Hindu</option>
-                        <option value={3}>Christian</option>
-                        <option value={3}>Buddish</option>
-                        <option value={3}>Others</option>
-                      </select>
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>E-Mail</label>
-                      <input type="email" placeholder className="form-control" />
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Class *</label>
-                      <select className="select2">
-                        <option value>Please Select Class *</option>
-                        <option value={1}>Play</option>
-                        <option value={2}>Nursery</option>
-                        <option value={3}>One</option>
-                        <option value={3}>Two</option>
-                        <option value={3}>Three</option>
-                        <option value={3}>Four</option>
-                        <option value={3}>Five</option>
-                      </select>
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Section *</label>
-                      <select className="select2">
-                        <option value>Please Select Section *</option>
-                        <option value={1}>Pink</option>
-                        <option value={2}>Blue</option>
-                        <option value={3}>Bird</option>
-                        <option value={3}>Rose</option>
-                        <option value={3}>Red</option>
-                      </select>
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Address</label>
-                      <input type="text" placeholder className="form-control" />
-                    </div>
-                    <div className="col-xl-3 col-lg-6 col-12 form-group">
-                      <label>Phone</label>
-                      <input type="text" placeholder className="form-control" />
-                    </div>
-                    <div className="col-lg-6 col-12 form-group">
-                      <label>Short BIO</label>
-                      <textarea className="textarea form-control" name="message" id="form-message" cols={10} rows={9} defaultValue={""} />
-                    </div>
-                    <div className="col-lg-6 col-12 form-group mg-t-30">
-                      <label className="text-dark-medium">Upload Student Photo (150px X 150px)</label>
-                      <input type="file" className="form-control-file" />
-                    </div>
-                    <div className="col-12 form-group mg-t-8">
-                      <button type="submit" className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-                      <button type="reset" className="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
+                  </div>)}
+
             </div>
-            {/* Add New Teacher Area End Here */}
+            {/* Admit Form Area End Here */}
             <Footer />
           </div>
         </div>

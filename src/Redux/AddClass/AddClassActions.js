@@ -32,6 +32,11 @@ export const addClass = (class_info) =>{
       const url =`${config.api_root}/add_class`;
       const request_option = {
       method: "POST",
+      headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
       body: JSON.stringify({
         ClassName : class_info.className,
         TotalSection : class_info.totalSection,

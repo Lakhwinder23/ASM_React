@@ -32,6 +32,11 @@ export const addMidium = (medium_info) =>{
       const url =`${config.api_root}/add_medium`;
       const request_option = {
       method: "POST",
+      headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
       body: JSON.stringify({
         MediumName : medium_info.mediumName
       })
