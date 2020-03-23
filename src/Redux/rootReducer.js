@@ -12,6 +12,16 @@ import AddSubjectReducers from './AddSubject/AddSubjectReducers'
 import AllSubjectsReducers from './AllSubjects/AllSubjectsReducers'
 import AllSectionsReducers from './AllSections/AllSectionsReducers'
 import AddProfessionReducers from './AddProfession/AddProfessionReducers'
+import AllMediumReducers from './AllMediums/AllMediumReducers'
+import AllProfessionReducers from './AllProfessions/AllProfessionReducers'
+import AllHostelReducers from './AllHostels/AllHostelReducers'
+import AllRoomReducers from './AllRooms/AllRoomReducers'
+import AllAttendenceReducers from './AllAttendence/AllAttendenceReducers'
+import AllNoticeReducers from './AllNotices/AllNoticeReducers'
+import AllAssignClassReducers from './AllAssignClasses/AllAssignClassReducers'
+import AddHostelReducers from './AddHostel/AddHostelReducers'
+import AddRoomReducers from './AddRoom/AddRoomReducers'
+import AddAttendenceReducers from './AddAttendence/AddAttendenceReducers'
 
 
 
@@ -28,7 +38,17 @@ const rootReducer = combineReducers({
       AddSubject:AddSubjectReducers,
       AllSubjects:AllSubjectsReducers,
       AllSections:AllSectionsReducers,
-      AddProfession:AddProfessionReducers
+      AddProfession:AddProfessionReducers,
+      AllMedium:AllMediumReducers,
+      AllProfession:AllProfessionReducers,
+      AllHostel:AllHostelReducers,
+      AllRoom:AllRoomReducers,
+      AllAttendence:AllAttendenceReducers,
+      AllNotice:AllNoticeReducers,
+      AllAssignClass:AllAssignClassReducers,
+      AddHostel:AddHostelReducers,
+      AddRoom:AddRoomReducers,
+      AddAttendence:AddAttendenceReducers
 })
 
 export default rootReducer
