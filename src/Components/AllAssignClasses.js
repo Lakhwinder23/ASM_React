@@ -6,32 +6,33 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { useSelector,useDispatch } from 'react-redux'
 import {
-  fetchAllParents
-} from '../Redux/AllParents/AllParentsActions'
+  fetchAllAssignClasses
+} from '../Redux/AllAssignClasses/AllAssignClassActions'
 
 function AllParents() {
-  const parents = useSelector(state =>state.AllParents)
-  console.log("parents",parents);
+  const assignClasses = useSelector(state =>state.AllAssignClass)
+  console.log("rooms",assignClasses);
   const dispatch = useDispatch()
-    const [parentResult,setParentResult] = useState([])
-    const [allParentsInfo,setParentsInfo] = useState([])
-    console.log("allParentsInfo",allParentsInfo);
+    const [assignClassResult,setAssignClassResult] = useState([])
+    console.log("assignClassResult",assignClassResult);
+    const [allAssignClassInfo,setAllAssignClassInfo] = useState([])
+    console.log("allAssignClassInfo",allAssignClassInfo);
     const [activestate,setActivestate] = useState('')
     useEffect(() =>{
-      dispatch(fetchAllParents())
+      dispatch(fetchAllAssignClasses())
     },[dispatch])
 
     useMemo(()=>{
-      if(parents && parents.all_parents && parents.all_parents.result){
-        setParentResult(parents.all_parents.result)
+      if(assignClasses && assignClasses.all_assign_classes && assignClasses.all_assign_classes.result){
+        setAssignClassResult(assignClasses.all_assign_classes.result)
       }
-    },[parents.all_parents.result])
+    },[assignClasses.all_assign_classes.result])
 
     useMemo(()=>{
-      if(parentResult && parentResult.data){
-            setParentsInfo(parentResult.data)
+      if(assignClassResult && assignClassResult.data){
+            setAllAssignClassInfo(assignClassResult.data)
       }
-    },[parentResult])
+    },[assignClassResult])
 
 
   const callbackFunction = (childData) => {
@@ -50,12 +51,12 @@ function AllParents() {
           <div className="dashboard-content-one">
             {/* Breadcubs Area Start Here */}
             <div className="breadcrumbs-area">
-              <h3>Parents</h3>
+              <h3>Assign Class</h3>
               <ul>
                 <li>
                   <a href="/">Home</a>
                 </li>
-                <li>All Parents</li>
+                <li>All Assign Classes</li>
               </ul>
             </div>
             {/* Breadcubs Area End Here */}
@@ -64,7 +65,7 @@ function AllParents() {
               <div className="card-body">
                 <div className="heading-layout1">
                   <div className="item-title">
-                    <h3>All Parents Data</h3>
+                    <h3>All Assign Classes Data</h3>
                   </div>
                   <div className="dropdown">
                     <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -101,19 +102,19 @@ function AllParents() {
                             <label className="form-check-label">ID</label>
                           </div>
                         </th>
-                        <th>Photo</th>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Religion</th>
-                        <th>Occupation</th>
-                        <th>Address</th>
-                        <th>Phone</th>
-                        <th>E-mail</th>
+                        <th>ClassName</th>
+                        <th>Total Section</th>
+                        <th>Maximum Students</th>
+                        <th>Medium Name</th>
+                        <th>Section Name</th>
+                        <th>Teacher Name</th>
+                        <th>Profession Name</th>
+                        <th>IsIncharge</th>
                         <th />
                       </tr>
                     </thead>
                     <tbody>
-                    {allParentsInfo ? allParentsInfo.map((item,index) =>(
+                    {allAssignClassInfo ? allAssignClassInfo.map((item,index) =>(
                       <tr key={index}>
                         <td>
                           <div className="form-check">
@@ -121,14 +122,14 @@ function AllParents() {
                             <label className="form-check-label">#{item.id}</label>
                           </div>
                         </td>
-                        <td className="text-center"><img src="img/figure/student2.png" alt="student" /></td>
-                        <td>{item.ParentName}</td>
-                        <td>{item.Gender}</td>
-                        <td>{item.Religion}</td>
-                        <td>{item.SelfOccupation}</td>
-                        <td>{item.Address}</td>
-                        <td>{item.Mobile}</td>
-                        <td>{item.email}</td>
+                        <td>{item.ClassName}</td>
+                        <td>{item.TotalSection}</td>
+                        <td>{item.StudentLimitInClass}</td>
+                        <td>{item.MediumName}</td>
+                        <td>{item.SectionName}</td>
+                        <td>{item.TeacherName}</td>
+                        <td>{item.ProfessionName}</td>
+                        <td>{item.IsIncharge}</td>
                         <td>
                           <div className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

@@ -11,11 +11,15 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux';
 import { addClass } from '../Redux/AddClass/AddClassActions';
+import {
+  fetchAllMediums
+} from '../Redux/AllMediums/AllMediumActions'
 
 
 function AddClass() {
   // store data access start
   const add_Class = useSelector(state =>state.AddClass)
+  const mediums = useSelector(state =>state.AllMedium)
   // store data access End
 
    const dispatch = useDispatch()  // for accessing the redux function
@@ -29,10 +33,20 @@ function AddClass() {
                                                     })
   const [error,setError] = useState(null)
   const [successStatus,setSuccessStatus] = useState(null)
-
+  const [allMediumsInfo,setAllMediumsInfo] = useState([])
    // component all states define End
 
    //hooks start
+
+   useEffect(() =>{
+     dispatch(fetchAllMediums())
+   },[dispatch])
+
+   useMemo(()=>{
+     if(mediums && mediums.all_mediums && mediums.all_mediums.result){
+       setAllMediumsInfo(mediums.all_mediums.result)
+     }
+   },[mediums.all_mediums.result])
 
   useMemo(()=>{
     if(add_Class && add_Class.add_class && add_Class.add_class.error){
@@ -130,13 +144,9 @@ function AddClass() {
                             as="select"
                           >
                           <option value="">Please select class Medium *</option>
-                            <option value={"1"}>Hindi</option>
-                            <option value={"2"}>English</option>
-                            <option value={"3"}>Bangla</option>
-                            <option value={"4"}>Tamil</option>
-                            <option value={"5"}>Marathi</option>
-                            <option value={"6"}>Gujarti</option>
-                            <option value={"7"}>abcdefg</option>
+                          {allMediumsInfo ? allMediumsInfo.map((mediumItem,index) =>(
+                            <option value={mediumItem.id}>{mediumItem.MediumName}</option>
+                          )):null}
                           </FormControl>
                           {error != null && error.ClassMediumId ? (<h6 className="addStudent-error">*{JSON.stringify(error.ClassMediumId).replace(/[\[\]"]+/g,"")}</h6>):null}
                         </FormGroup>

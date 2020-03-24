@@ -42,6 +42,9 @@ import AddClass from './Components/AddClass';
 import AllSections from './Components/AllSections';
 import AddProfession from './Components/AddProfession';
 import AddMedium from './Components/AddMedium';
+import AllProfessions from './Components/AllProfessions';
+import AllMediums from './Components/AllMediums';
+import AllAssignClasses from './Components/AllAssignClasses';
 
 
 
@@ -91,7 +94,11 @@ function Root(){
                  <Route path="/add-class" component={AddClass} />
                  <Route path="/section" component={AllSections} />
                  <Route path="/add-profession" component={AddProfession} />
+                 <Route path="/all-profession" component={AllProfessions} />
                  <Route path="/add-medium" component={AddMedium} />
+                 <Route path="/all-medium" component={AllMediums} />
+                 <Route path="/all-assign-class" component={AllAssignClasses} />
+
 
             </Switch>
         </Router>

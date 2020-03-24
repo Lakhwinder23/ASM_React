@@ -22,6 +22,10 @@ import AllAssignClassReducers from './AllAssignClasses/AllAssignClassReducers'
 import AddHostelReducers from './AddHostel/AddHostelReducers'
 import AddRoomReducers from './AddRoom/AddRoomReducers'
 import AddAttendenceReducers from './AddAttendence/AddAttendenceReducers'
+import AssignClassReducers from './AssignClass/AssignClassReducers'
+import AssignInchargeReducers from './AssignIncharge/AssignInchargeReducers'
+import AssignRoomReducers from './AssignRoom/AssignRoomReducers'
+import AddNoticeReducers from './AddNotice/AddNoticeReducers'
 
 
 
@@ -48,7 +52,12 @@ const rootReducer = combineReducers({
       AllAssignClass:AllAssignClassReducers,
       AddHostel:AddHostelReducers,
       AddRoom:AddRoomReducers,
-      AddAttendence:AddAttendenceReducers
+      AddAttendence:AddAttendenceReducers,
+      AssignClass:AssignClassReducers,
+      AssignIncharge:AssignInchargeReducers,
+      AssignRoom:AssignRoomReducers,
+      AddNotice:AddNoticeReducers
+
 })
 
 export default rootReducer

@@ -6,32 +6,26 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { useSelector,useDispatch } from 'react-redux'
 import {
-  fetchAllParents
-} from '../Redux/AllParents/AllParentsActions'
+  fetchAllProfessions
+} from '../Redux/AllProfessions/AllProfessionActions'
 
-function AllParents() {
-  const parents = useSelector(state =>state.AllParents)
-  console.log("parents",parents);
+function AllProfessions() {
+  const professions = useSelector(state =>state.AllProfession)
+  console.log("professions",professions);
   const dispatch = useDispatch()
-    const [parentResult,setParentResult] = useState([])
-    const [allParentsInfo,setParentsInfo] = useState([])
-    console.log("allParentsInfo",allParentsInfo);
+    const [allProfessionInfo,setProfessionInfo] = useState([])
+    console.log("allProfessionInfo",allProfessionInfo);
     const [activestate,setActivestate] = useState('')
     useEffect(() =>{
-      dispatch(fetchAllParents())
+      dispatch(fetchAllProfessions())
     },[dispatch])
 
     useMemo(()=>{
-      if(parents && parents.all_parents && parents.all_parents.result){
-        setParentResult(parents.all_parents.result)
+      if(professions && professions.all_professions && professions.all_professions.result){
+        setProfessionInfo(professions.all_professions.result)
       }
-    },[parents.all_parents.result])
+    },[professions.all_professions.result])
 
-    useMemo(()=>{
-      if(parentResult && parentResult.data){
-            setParentsInfo(parentResult.data)
-      }
-    },[parentResult])
 
 
   const callbackFunction = (childData) => {
@@ -50,12 +44,12 @@ function AllParents() {
           <div className="dashboard-content-one">
             {/* Breadcubs Area Start Here */}
             <div className="breadcrumbs-area">
-              <h3>Parents</h3>
+              <h3>Profession</h3>
               <ul>
                 <li>
                   <a href="/">Home</a>
                 </li>
-                <li>All Parents</li>
+                <li>All Professions</li>
               </ul>
             </div>
             {/* Breadcubs Area End Here */}
@@ -64,7 +58,7 @@ function AllParents() {
               <div className="card-body">
                 <div className="heading-layout1">
                   <div className="item-title">
-                    <h3>All Parents Data</h3>
+                    <h3>All Professions Data</h3>
                   </div>
                   <div className="dropdown">
                     <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -101,19 +95,12 @@ function AllParents() {
                             <label className="form-check-label">ID</label>
                           </div>
                         </th>
-                        <th>Photo</th>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Religion</th>
-                        <th>Occupation</th>
-                        <th>Address</th>
-                        <th>Phone</th>
-                        <th>E-mail</th>
+                        <th>Profession Name</th>
                         <th />
                       </tr>
                     </thead>
                     <tbody>
-                    {allParentsInfo ? allParentsInfo.map((item,index) =>(
+                    {allProfessionInfo ? allProfessionInfo.map((item,index) =>(
                       <tr key={index}>
                         <td>
                           <div className="form-check">
@@ -121,14 +108,7 @@ function AllParents() {
                             <label className="form-check-label">#{item.id}</label>
                           </div>
                         </td>
-                        <td className="text-center"><img src="img/figure/student2.png" alt="student" /></td>
-                        <td>{item.ParentName}</td>
-                        <td>{item.Gender}</td>
-                        <td>{item.Religion}</td>
-                        <td>{item.SelfOccupation}</td>
-                        <td>{item.Address}</td>
-                        <td>{item.Mobile}</td>
-                        <td>{item.email}</td>
+                        <td>{item.ProfessionName}</td>
                         <td>
                           <div className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -159,4 +139,4 @@ function AllParents() {
         );
 }
 
-export default AllParents;
+export default AllProfessions;

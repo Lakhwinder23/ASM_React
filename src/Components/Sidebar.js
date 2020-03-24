@@ -11,6 +11,7 @@ class Sidebar extends Component {
       displaylibrary : false,
       displayAccount : false,
       displayclass : false,
+      displaymedium:false,
       displayexam : false,
       displayuielements : false
     };
@@ -21,6 +22,8 @@ class Sidebar extends Component {
  this.hideDropdownexam = this.hideDropdownexam.bind(this);
  this.hideDropdownAccount = this.hideDropdownAccount.bind(this);
  this.hideDropdownclass = this.hideDropdownclass.bind(this);
+ this.hideDropdownmedium = this.hideDropdownmedium.bind(this);
+ this.hideDropdownprofession = this.hideDropdownprofession.bind(this);
  this.hideDropdownteachers = this.hideDropdownteachers.bind(this);
  this.hideDropdownlibrary = this.hideDropdownlibrary.bind(this);
  this.hideDropdownparents = this.hideDropdownparents.bind(this);
@@ -65,6 +68,16 @@ class Sidebar extends Component {
       document.addEventListener('click', this.hideDropdownclass);
       });
   }
+  else if(value1 == 'medium'){
+    return this.setState({ displaymedium: true }, () => {
+      document.addEventListener('click', this.hideDropdownmedium);
+      });
+  }
+  else if(value1 == 'profession'){
+    return this.setState({ displayprofession: true }, () => {
+      document.addEventListener('click', this.hideDropdownprofession);
+      });
+  }
   else if(value1 == 'exam'){
     return this.setState({ displayexam: true }, () => {
       document.addEventListener('click', this.hideDropdownexam);
@@ -89,6 +102,16 @@ class Sidebar extends Component {
   hideDropdownclass() {
     this.setState({ displayclass: false }, () => {
       document.removeEventListener('click', this.hideDropdownclass);
+    });
+  }
+  hideDropdownmedium() {
+    this.setState({ displaymedium: false }, () => {
+      document.removeEventListener('click', this.hideDropdownmedium);
+    });
+  }
+  hideDropdownprofession() {
+    this.setState({ displayprofession: false }, () => {
+      document.removeEventListener('click', this.hideDropdownprofession);
     });
   }
   hideDropdownAccount() {
@@ -187,6 +210,18 @@ else if(selected_value == 'page-all-classes'){
 }
 else if(selected_value == 'page-add-class'){
   window.location='/add-class';
+}
+else if(selected_value == 'page-all-mediums'){
+  window.location='/all-medium';
+}
+else if(selected_value == 'page-add-medium'){
+  window.location='/add-medium';
+}
+else if(selected_value == 'page-all-professions'){
+  window.location='/all-profession';
+}
+else if(selected_value == 'page-add-profession'){
+  window.location='/add-profession';
 }
 else if(selected_value == 'page-exam-schedule'){
   window.location='/exam-schedule';
@@ -359,6 +394,42 @@ else if(selected_value == 'page-Progress-Bar'){
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-class")}>
                       <a href="/add-class" className="nav-link"><i className="fas fa-angle-right" />Add New
                         Class</a>
+                    </li>
+                  </ul>
+                  ): (
+                    null
+                  )
+                  }
+                </li>
+                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"medium")}>
+                  <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Medium</span></a>
+                  { this.state.displaymedium == true ? (
+                  <ul className="nav sub-group-menu">
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-mediums")}>
+                      <a href="/all-medium" className="nav-link"><i className="fas fa-angle-right" />All
+                        Mediums</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-medium")}>
+                      <a href="/add-medium" className="nav-link"><i className="fas fa-angle-right" />Add New
+                        Medium</a>
+                    </li>
+                  </ul>
+                  ): (
+                    null
+                  )
+                  }
+                </li>
+                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"profession")}>
+                  <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Profession</span></a>
+                  { this.state.displayprofession == true ? (
+                  <ul className="nav sub-group-menu">
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-professions")}>
+                      <a href="/all-profession" className="nav-link"><i className="fas fa-angle-right" />All
+                        Professions</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-profession")}>
+                      <a href="/add-profession" className="nav-link"><i className="fas fa-angle-right" />Add New
+                      Profession</a>
                     </li>
                   </ul>
                   ): (
