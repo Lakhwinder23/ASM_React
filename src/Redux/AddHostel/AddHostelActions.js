@@ -5,30 +5,30 @@ import {
 } from './AddHostelConstants'
 import {config} from '../config'
 
-export const addHotelRequest = (hotel_info) =>{
+export const addHostelRequest = (hostel_info) =>{
   return{
     type : ADD_HOSTEL_REQUEST,
-    payload : hotel_info
+    payload : hostel_info
   }
 }
 
-export const addHotelSuccess = (add_hotel_success) =>{
+export const addHostelSuccess = (add_hostel_success) =>{
   return{
     type : ADD_HOSTEL_SUCCESS,
-    payload : add_hotel_success
+    payload : add_hostel_success
   }
 }
 
-export const addHotelFaliure = (error) =>{
+export const addHostelFaliure = (error) =>{
   return{
     type : ADD_HOSTEL_FALIURE,
     payload : error
   }
 }
 
-export const addHotel = (hotel_info) =>{
+export const addHostel = (hostel_info) =>{
     return(dispatch) => {
-      dispatch(addHotelRequest(hotel_info))
+      dispatch(addHostelRequest(hostel_info))
       const url =`${config.api_root}/add_hostel`;
       const request_option = {
       method: "POST",
@@ -38,18 +38,18 @@ export const addHotel = (hotel_info) =>{
               'Content-Type': 'application/json'
           },
       body: JSON.stringify({
-        HostelName : hotel_info.hostelName
+        HostelName : hostel_info.hostelName
       })
     }
     fetch(url, request_option)
     .then(response => response.json())
-    .then(add_hotel_res =>{
-      const add_hotel_success = add_hotel_res
-      dispatch(addHotelSuccess(add_hotel_success))
+    .then(add_hostel_res =>{
+      const add_hostel_success = add_hostel_res
+      dispatch(addHostelSuccess(add_hostel_success))
     })
     .catch(error => {
       const errorMsg = error
-      dispatch(addHotelFaliure(errorMsg))
+      dispatch(addHostelFaliure(errorMsg))
     })
     }
 }

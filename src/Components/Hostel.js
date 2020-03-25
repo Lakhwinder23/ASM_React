@@ -4,6 +4,7 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import AddRoom from './AddRoom';
 import AllRoom from './AllRoom';
+import AddHostel from './AddHostel';
 function Hostel() {
   const [activestate,setActivestate] = useState('')
   const callbackFunction = (childData) => {
@@ -25,7 +26,7 @@ function Hostel() {
               <h3>Hostel List</h3>
               <ul>
                 <li>
-                  <a href="index-2.html">Home</a>
+                  <a href="/">Home</a>
                 </li>
                 <li>Hostel</li>
               </ul>
@@ -35,6 +36,9 @@ function Hostel() {
               {/* Add Room Area Start Here */}
               <AddRoom />
               {/* Add Room Area End Here */}
+              {/* Add Hostel Area start Here */}
+              <AddHostel />
+              {/* Add Hostel Area end Here */}
               {/* All Room List Area Start Here */}
               <AllRoom />
               {/* All Room List Area End Here */}
