@@ -44,7 +44,13 @@ import AddProfession from './Components/AddProfession';
 import AddMedium from './Components/AddMedium';
 import AllProfessions from './Components/AllProfessions';
 import AllMediums from './Components/AllMediums';
+import AddRoom from './Components/AddRoom';
+import AddHostel from './Components/AddHostel';
+import AllRoom from './Components/AllRoom';
+import AllHostel from './Components/AllHostel';
 import AllAssignClasses from './Components/AllAssignClasses';
+import AssignClass from './Components/AssignClass';
+import AssignIncharge from './Components/AssignIncharge';
 
 
 
@@ -97,7 +103,13 @@ function Root(){
                  <Route path="/all-profession" component={AllProfessions} />
                  <Route path="/add-medium" component={AddMedium} />
                  <Route path="/all-medium" component={AllMediums} />
+                 <Route path="/add-room" component={AddRoom} />
+                 <Route path="/add-hostel" component={AddHostel} />
+                 <Route path="/all-room" component={AllRoom} />
+                 <Route path="/all-hostel" component={AllHostel} />
                  <Route path="/all-assign-class" component={AllAssignClasses} />
+                 <Route path="/assign-class" component={AssignClass} />
+                 <Route path="/assign-incharge" component={AssignIncharge} />
 
 
             </Switch>

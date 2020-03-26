@@ -38,9 +38,9 @@ export const assignRoom = (assign_room_info) =>{
               'Content-Type': 'application/json'
           },
       body: JSON.stringify({
-        HostelId : assign_room_info.classId,
-        RoomId : assign_room_info.sectionId,
-        StudentId : assign_room_info.isIncharge
+        HostelId : assign_room_info.hostelId,
+        RoomId : assign_room_info.roomId,
+        StudentId : assign_room_info.studentId
       })
     }
     fetch(url, request_option)

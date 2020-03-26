@@ -11,6 +11,7 @@ class Sidebar extends Component {
       displaylibrary : false,
       displayAccount : false,
       displayclass : false,
+      displayhostel : false,
       displaymedium:false,
       displayexam : false,
       displayuielements : false
@@ -22,6 +23,7 @@ class Sidebar extends Component {
  this.hideDropdownexam = this.hideDropdownexam.bind(this);
  this.hideDropdownAccount = this.hideDropdownAccount.bind(this);
  this.hideDropdownclass = this.hideDropdownclass.bind(this);
+ this.hideDropdownhostel = this.hideDropdownhostel.bind(this);
  this.hideDropdownmedium = this.hideDropdownmedium.bind(this);
  this.hideDropdownprofession = this.hideDropdownprofession.bind(this);
  this.hideDropdownteachers = this.hideDropdownteachers.bind(this);
@@ -73,6 +75,11 @@ class Sidebar extends Component {
       document.addEventListener('click', this.hideDropdownmedium);
       });
   }
+  else if(value1 == 'hostel'){
+    return this.setState({ displayhostel: true }, () => {
+      document.addEventListener('click', this.hideDropdownhostel);
+      });
+  }
   else if(value1 == 'profession'){
     return this.setState({ displayprofession: true }, () => {
       document.addEventListener('click', this.hideDropdownprofession);
@@ -102,6 +109,11 @@ class Sidebar extends Component {
   hideDropdownclass() {
     this.setState({ displayclass: false }, () => {
       document.removeEventListener('click', this.hideDropdownclass);
+    });
+  }
+  hideDropdownhostel() {
+    this.setState({ displayhostel: false }, () => {
+      document.removeEventListener('click', this.hideDropdownhostel);
     });
   }
   hideDropdownmedium() {
@@ -181,6 +193,10 @@ else if(selected_value == 'page-teacher-detail'){
 else if(selected_value == 'page-add-teacher'){
   window.location='/add-teacher';
 }
+else if(selected_value == 'page-assign-incharge'){
+  window.location='/assign-incharge';
+}
+
 else if(selected_value == 'page-teacher-payment'){
   window.location='/teacher-payment';
 }
@@ -211,11 +227,29 @@ else if(selected_value == 'page-all-classes'){
 else if(selected_value == 'page-add-class'){
   window.location='/add-class';
 }
+else if(selected_value == 'page-all-assign-classes'){
+  window.location='/all-assign-class';
+}
+else if(selected_value == 'page-assign-class'){
+  window.location='/assign-class';
+}
 else if(selected_value == 'page-all-mediums'){
   window.location='/all-medium';
 }
 else if(selected_value == 'page-add-medium'){
   window.location='/add-medium';
+}
+else if(selected_value == 'page-all-hostels'){
+  window.location='/all-hostel';
+}
+else if(selected_value == 'page-add-hostel'){
+  window.location='/add-hostel';
+}
+else if(selected_value == 'page-all-rooms'){
+  window.location='/all-room';
+}
+else if(selected_value == 'page-add-room'){
+  window.location='/add-room';
 }
 else if(selected_value == 'page-all-professions'){
   window.location='/all-profession';
@@ -314,6 +348,10 @@ else if(selected_value == 'page-Progress-Bar'){
                       <a href="/add-teacher" className="nav-link"><i className="fas fa-angle-right" />Add
                         Teacher</a>
                     </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-incharge")}>
+                      <a href="/assign-incharge" className="nav-link"><i className="fas fa-angle-right" />Assign
+                        Incharge To Teacher</a>
+                    </li>
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-teacher-payment")}>
                       <a href="/teacher-payment" className="nav-link"><i className="fas fa-angle-right" />Payment</a>
                     </li>
@@ -395,6 +433,14 @@ else if(selected_value == 'page-Progress-Bar'){
                       <a href="/add-class" className="nav-link"><i className="fas fa-angle-right" />Add New
                         Class</a>
                     </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-classes")}>
+                      <a href="/all-assign-class" className="nav-link"><i className="fas fa-angle-right" />All
+                      Assign Classes</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-class")}>
+                      <a href="/assign-class" className="nav-link"><i className="fas fa-angle-right" />Assign
+                        Class To Teacher</a>
+                    </li>
                   </ul>
                   ): (
                     null
@@ -471,8 +517,31 @@ else if(selected_value == 'page-Progress-Bar'){
                 <li className="nav-item">
                   <a href="/transport" className="nav-link"><i className="flaticon-bus-side-view" /><span>Transport</span></a>
                 </li>
-                <li className="nav-item">
-                  <a href="/hostal" className="nav-link"><i className="flaticon-bed" /><span>Hostel</span></a>
+                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"hostel")}>
+                  <a href="/all-hostels" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Hostel</span></a>
+                  { this.state.displayhostel == true ? (
+                  <ul className="nav sub-group-menu">
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-hostels")}>
+                      <a href="/all-hostel" className="nav-link"><i className="fas fa-angle-right" />All
+                        Hostels</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-hostel")}>
+                      <a href="/add-hostel" className="nav-link"><i className="fas fa-angle-right" />Add New
+                        Hostel</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-rooms")}>
+                      <a href="/all-room" className="nav-link"><i className="fas fa-angle-right" />All
+                        Rooms</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-room")}>
+                      <a href="/add-room" className="nav-link"><i className="fas fa-angle-right" />Add New
+                        Room</a>
+                    </li>
+                  </ul>
+                  ): (
+                    null
+                  )
+                  }
                 </li>
                 <li className="nav-item">
                   <a href="/notice-board" className="nav-link"><i className="flaticon-script" /><span>Notice</span></a>

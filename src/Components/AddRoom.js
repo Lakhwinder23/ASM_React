@@ -1,4 +1,7 @@
 import React, {useState,useMemo,useEffect}  from 'react';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import Footer from './Footer';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { useSelector,useDispatch } from 'react-redux';
@@ -21,6 +24,7 @@ function AddRoom(){
    const dispatch = useDispatch()  // for accessing the redux function
 
    // component all states define start
+     const [activestate,setActivestate] = useState('')
   const [inputValues,setInputValues] = useState({hostelId:'',
                                                   roomNumber:'',
                                                   roomType:'',
@@ -69,7 +73,9 @@ function AddRoom(){
   },[addroom.add_room])
 
   //hooks end
-
+  const callbackFunction = (childData) => {
+    setActivestate(childData)
+  }
     const roomHandler = (event) =>{
     event.preventDefault()
     const room_info = inputValues;
@@ -81,10 +87,31 @@ function AddRoom(){
     window.location.reload(false);
   }
         return (
-            <div className="col-4-xxxl col-12">
-                <div className="card height-auto">
-                {addroom && addroom.add_room_loading === false ? successStatus === false || successStatus === null  ? (
-                  <div className="card-body">
+          <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
+      {/* Header Menu Area Start Here */}
+     <Header parentCallback = {() =>callbackFunction()}/>
+      {/* Header Menu Area End Here */}
+      {/* Page Area Start Here */}
+      <div className="dashboard-page-one">
+        {/* Sidebar Area Start Here */}
+       <Sidebar />
+        {/* Sidebar Area End Here */}
+        <div className="dashboard-content-one">
+          {/* Breadcubs Area Start Here */}
+          <div className="breadcrumbs-area">
+            <h3>Hostel</h3>
+            <ul>
+              <li>
+                <a href="/">Home</a>
+              </li>
+              <li>Add Room Form</li>
+            </ul>
+          </div>
+          {/* Breadcubs Area End Here */}
+          {/* Admit Form Area Start Here */}
+          <div className="card height-auto">
+            {addroom && addroom.add_room_loading === false ? successStatus === false || successStatus === null  ? (
+              <div className="card-body">
                     <div className="heading-layout1">
                       <div className="item-title">
                         <h3>Add New Room</h3>
@@ -156,25 +183,31 @@ function AddRoom(){
                       </div>
                     </form>
                   </div>
-                ) : (<div className="card-body">
+            ) : (<div className="card-body">
                       <div className="success-greeting">
                       <h2>Thank You!</h2>
                       <h2>Room Add Successfully!</h2>
                       </div>
                   </div>):(<div className="card-body">
-                      <div className="Student-Loader">
-                      <Loader
-                      className = "student-detail-loader"
-                    type="MutatingDots"
-                    color="#fea801"
-                    height={150}
-                    width={150}
+                  <div className="Student-Loader">
+                  <Loader
+                  className = "student-detail-loader"
+                type="MutatingDots"
+                color="#fea801"
+                height={150}
+                width={150}
 
-       />
-                      </div>
-                    </div>)}
-                </div>
-              </div>
+   />
+                  </div>
+                </div>)}
+
+          </div>
+          {/* Admit Form Area End Here */}
+          <Footer />
+        </div>
+      </div>
+      {/* Page Area End Here */}
+    </div>
         );
 }
 

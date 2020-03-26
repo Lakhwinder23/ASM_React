@@ -2089,7 +2089,7 @@ li.nav-item {
   transition: all 0.3s ease-in-out;
 }
 .sidebar-menu-one .sidebar-menu-content .nav-sidebar-menu > .nav-item .sub-group-menu > .nav-item .nav-link i {
-  margin-right: 10px;
+  margin-right: 6px;
 }
 .sidebar-menu-one .sidebar-menu-content .nav-sidebar-menu > .nav-item .sub-group-menu > .nav-item .nav-link:hover {
   background-color: #042954;
@@ -4422,7 +4422,7 @@ label.parent-label {
     margin-bottom: 0px !important;
 }
 
-h6.addStudent-error {
+.addStudent-error {
     color: red;
     padding-top: 10px;
 }

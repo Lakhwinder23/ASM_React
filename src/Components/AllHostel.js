@@ -6,33 +6,33 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux'
 import {
-  fetchAllRooms
-} from '../Redux/AllRooms/AllRoomActions'
+  fetchAllHostels
+} from '../Redux/AllHostels/AllHostelActions'
 
-function AllRoom() {
-  const rooms = useSelector(state =>state.AllRoom)
-  console.log("rooms",rooms);
+function AllHostel() {
+  const allHostel = useSelector(state =>state.AllHostel)
+  console.log("allHostel",allHostel);
   const dispatch = useDispatch()
-    const [roomResult,setRoomResult] = useState([])
-    const [allRoomsInfo,setAllRoomsInfo] = useState([])
+  const [hostelResult,setHostelResult] = useState([])
+  const [allHostelInfo,setAllHostelInfo] = useState([])
       const [activestate,setActivestate] = useState('')
-    console.log("allRoomsInfo",allRoomsInfo);
+    console.log("allHostelInfo",allHostelInfo);
 
     useEffect(() =>{
-      dispatch(fetchAllRooms())
+      dispatch(fetchAllHostels())
     },[dispatch])
 
     useMemo(()=>{
-      if(rooms && rooms.all_rooms && rooms.all_rooms.result){
-        setRoomResult(rooms.all_rooms.result)
+      if(allHostel && allHostel.all_hostels && allHostel.all_hostels.result){
+        setHostelResult(allHostel.all_hostels.result)
       }
-    },[rooms.all_rooms.result])
+    },[allHostel.all_hostels.result])
 
     useMemo(()=>{
-      if(roomResult && roomResult.data){
-            setAllRoomsInfo(roomResult.data)
+      if(hostelResult && hostelResult.data){
+            setAllHostelInfo(hostelResult.data)
       }
-    },[roomResult])
+    },[hostelResult])
 
     const callbackFunction = (childData) => {
       setActivestate(childData)
@@ -98,31 +98,23 @@ function AllRoom() {
                              <th>
                                <div className="form-check">
                                  <input type="checkbox" className="form-check-input checkAll" />
-                                 <label className="form-check-label">Hostel Name</label>
+                                 <label className="form-check-label">ID</label>
                                </div>
                              </th>
-                             <th>Room No</th>
-                             <th>Room Type</th>
-                             <th>No Of Bed</th>
-                             <th>Cost Per Bed</th>
-                             <th>Maximum Student</th>
+                             <th>Hostal Name</th>
                              <th />
                            </tr>
                          </thead>
                          <tbody>
-                         {allRoomsInfo ? allRoomsInfo.map((item,index) =>(
+                         {allHostelInfo ? allHostelInfo.map((item,index) =>(
                            <tr key={index}>
                              <td>
                                <div className="form-check">
                                  <input type="checkbox" className="form-check-input" />
-                                 <label className="form-check-label">{item.HostelName}</label>
+                                 <label className="form-check-label">{item.id}</label>
                                </div>
                              </td>
-                             <td>{item.RoomNumber}</td>
-                             <td>{item.RoomType}</td>
-                             <td>{item.TotalBeds}</td>
-                             <td>{item.CostPerBeds}</td>
-                             <td>{item.StudentLimit}</td>
+                             <td>{item.HostelName}</td>
                              <td>
                                <div className="dropdown">
                                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -153,4 +145,4 @@ function AllRoom() {
         );
 }
 
-export default AllRoom;
+export default AllHostel;

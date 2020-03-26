@@ -54,6 +54,9 @@ function AdmissionForm() {
   const [alreadyParent,setAlreadyParent] = useState('parentNotExist')
   const [mediumId,setMediumId] = useState('')
   const [error,setError] = useState(null)
+  if(error != null){
+    console.log("error--",typeof error)
+  }
   const [successStatus,setSuccessStatus] = useState(null)
 
    // component all states define End
