@@ -51,6 +51,7 @@ import AllHostel from './Components/AllHostel';
 import AllAssignClasses from './Components/AllAssignClasses';
 import AssignClass from './Components/AssignClass';
 import AssignIncharge from './Components/AssignIncharge';
+import AssignRoom from './Components/AssignRoom';
 
 
 
@@ -110,6 +111,8 @@ function Root(){
                  <Route path="/all-assign-class" component={AllAssignClasses} />
                  <Route path="/assign-class" component={AssignClass} />
                  <Route path="/assign-incharge" component={AssignIncharge} />
+                 <Route path="/assign-room" component={AssignRoom} />
+                 
 
 
             </Switch>

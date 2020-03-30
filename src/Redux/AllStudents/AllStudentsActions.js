@@ -5,9 +5,10 @@ import {
 } from './AllStudentsConstants'
 import {config} from '../config'
 
-export const fetchAllStudentsRequest = () =>{
+export const fetchAllStudentsRequest = (student_info) =>{
   return{
-    type : FETCH_ALLSTUDENTS_REQUEST
+    type : FETCH_ALLSTUDENTS_REQUEST,
+    payload:student_info
   }
 }
 
@@ -25,16 +26,23 @@ export const fetchAllStudentsFaliure = (error) =>{
   }
 }
 
-export const fetchAllStudents = () =>{
+export const fetchAllStudents = (student_info) =>{
     return(dispatch) => {
-      dispatch(fetchAllStudentsRequest())
+      dispatch(fetchAllStudentsRequest(student_info))
+      const classid = student_info != undefined ? student_info.classId : undefined
+      const sectionid = student_info != undefined ? student_info.sectionId : undefined
       const url =`${config.api_root}/get_all_student`;
       const request_option = {
-      method: "GET",
+      method: "POST",
       headers: {
               'Accept': 'application/json',
-              'Authorization': 'Bearer '+ config.token
-          }
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+                  ClassId : classid,
+                  SectionId : sectionid,
+            })
     }
     fetch(url, request_option)
     .then(response => response.json())

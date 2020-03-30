@@ -251,6 +251,9 @@ else if(selected_value == 'page-all-rooms'){
 else if(selected_value == 'page-add-room'){
   window.location='/add-room';
 }
+else if(selected_value == 'page-assign-room'){
+  window.location='/assign-room';
+}
 else if(selected_value == 'page-all-professions'){
   window.location='/all-profession';
 }
@@ -536,6 +539,10 @@ else if(selected_value == 'page-Progress-Bar'){
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-room")}>
                       <a href="/add-room" className="nav-link"><i className="fas fa-angle-right" />Add New
                         Room</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-room")}>
+                      <a href="/assign-room" className="nav-link"><i className="fas fa-angle-right" />Assign
+                        Room To Student</a>
                     </li>
                   </ul>
                   ): (
