@@ -1,13 +1,13 @@
 import React from 'react';
 
-function StudentAttendence() {
+function StudentAttendenceFilter() {
         return (
             <div className="col-12">
                     <div className="card">
                       <div className="card-body">
                         <div className="heading-layout1">
                           <div className="item-title">
-                            <h3>Student Attendence</h3>
+                            <h3>Student Attendence Filter</h3>
                           </div>
                           <div className="dropdown">
                             <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -70,8 +70,7 @@ function StudentAttendence() {
                               </select>
                             </div>
                             <div className="col-12 form-group mg-t-8">
-                              <button type="submit" className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-                              <button type="reset" className="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
+                              <button type="submit" className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Filter</button>
                             </div>
                           </div>
                         </form>
@@ -81,4 +80,4 @@ function StudentAttendence() {
         );
 }
 
-export default StudentAttendence;
+export default StudentAttendenceFilter;

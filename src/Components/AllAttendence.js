@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import StudentAttendence from './StudentAttendence';
+import StudentAttendenceFilter from './StudentAttendenceFilter';
 import Footer from './Footer';
 
-function Attendence(){
+function AllAttendence(){
   const [activestate,setActivestate] = useState('')
   const callbackFunction = (childData) => {
     setActivestate(childData)
@@ -33,7 +33,7 @@ function Attendence(){
                 {/* Breadcubs Area End Here */}
                 <div className="row">
                   {/* Student Attendence Search Area Start Here */}
-                  <StudentAttendence />
+                  <StudentAttendenceFilter />
                   {/* Student Attendence Search Area End Here */}
                   {/* Student Attendence Area Start Here */}
                   <div className="col-12">
@@ -41,7 +41,7 @@ function Attendence(){
                       <div className="card-body">
                         <div className="heading-layout1">
                           <div className="item-title">
-                            <h3>Attendence Sheet Of Class One: Section A, April 2019</h3>
+                            <h3>Attendence Sheet of All Students</h3>
                           </div>
                           <div className="dropdown">
                             <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -719,4 +719,4 @@ function Attendence(){
         );
 }
 
-export default Attendence;
+export default AllAttendence;

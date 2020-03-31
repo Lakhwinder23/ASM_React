@@ -51,6 +51,7 @@ function AdmissionForm() {
                                                 parentExsits:'',
                                                 parentId:''
                                                     })
+  console.log("inputValues",inputValues);
   const [alreadyParent,setAlreadyParent] = useState('parentNotExist')
   const [mediumId,setMediumId] = useState('')
   const [error,setError] = useState(null)

@@ -25,7 +25,7 @@ import AddExpense from './Components/AddExpense';
 import AllClasses from './Components/AllClasses';
 import Subject from './Components/Subject';
 import ClassRoutine from './Components/ClassRoutine';
-import Attendence from './Components/Attendence';
+import AllAttendence from './Components/AllAttendence';
 import ExamSchedule from './Components/ExamSchedule';
 import ExamGrade from './Components/ExamGrade';
 import Transport from './Components/Transport';
@@ -52,6 +52,7 @@ import AllAssignClasses from './Components/AllAssignClasses';
 import AssignClass from './Components/AssignClass';
 import AssignIncharge from './Components/AssignIncharge';
 import AssignRoom from './Components/AssignRoom';
+import AddAttendence from './Components/AddAttendence';
 
 
 
@@ -85,7 +86,7 @@ function Root(){
                  <Route path="/all-classes" component={AllClasses} />
                  <Route path="/subject" component={Subject} />
                  <Route path="/class-routine" component={ClassRoutine} />
-                 <Route path="/attendence" component={Attendence} />
+                 <Route path="/all-attendence" component={AllAttendence} />
                  <Route path="/exam-schedule" component={ExamSchedule} />
                  <Route path="/exam-grade" component={ExamGrade} />
                  <Route path="/transport" component={Transport} />
@@ -112,7 +113,8 @@ function Root(){
                  <Route path="/assign-class" component={AssignClass} />
                  <Route path="/assign-incharge" component={AssignIncharge} />
                  <Route path="/assign-room" component={AssignRoom} />
-                 
+                 <Route path="/add-attendence" component={AddAttendence} />
+
 
 
             </Switch>

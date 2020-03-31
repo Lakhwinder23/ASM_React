@@ -29,7 +29,7 @@ export const addAttendenceFaliure = (error) =>{
 export const addAttendence = (attendence_info) =>{
     return(dispatch) => {
       dispatch(addAttendenceRequest(attendence_info))
-      const url =`${config.api_root}/add_room`;
+      const url =`${config.api_root}/add_attendance`;
       const request_option = {
       method: "POST",
       headers: {
