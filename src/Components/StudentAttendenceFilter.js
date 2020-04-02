@@ -1,6 +1,128 @@
-import React from 'react';
+import React, {useState,useMemo,useEffect}  from 'react';
+import { useSelector,useDispatch } from 'react-redux';
+import { fetchAllClasses } from '../Redux/AllClasses/AllClassesActions';
+import { fetchAllSections } from '../Redux/AllSections/AllSectionsActions';
+import { fetchAllStudents } from '../Redux/AllStudents/AllStudentsActions';
+import { fetchAllAllAttendence } from '../Redux/AllAttendence/AllAttendenceActions'
 
+import {
+  FormControl,
+  FormGroup,
+  FormLabel
+} from "react-bootstrap";
 function StudentAttendenceFilter() {
+  // store data access start
+  const classes = useSelector(state =>state.AllClasses)
+  const sections = useSelector(state =>state.AllSections)
+  const students = useSelector(state =>state.AllStudents)
+  const all_attendence_data = useSelector(state =>state.AllAttendence)
+  // store data access End
+
+   const dispatch = useDispatch()  // for accessing the redux function
+
+   // component all states define start
+  const [inputValues,setInputValues] = useState({ role:"1",
+                                                  classId:'',
+                                                  sectionid:'',
+                                                  studentId:'',
+                                                  month:'',
+                                                  date:''
+                                                    })
+console.log("inputValues",inputValues);
+  const [classesResult,setClassesResult] = useState([])
+  const [allClassesInfo,setClassesInfo] = useState([])
+  const [allSectionsInfo,setSectionsInfo] = useState([])
+  const [mediumId,setMediumId] = useState('')
+  console.log("mediumId",mediumId);
+  console.log("allSectionsInfo",allSectionsInfo);
+  console.log("allClassesInfo",allClassesInfo);
+  const [studentResult,setStudentResult] = useState([])
+  console.log("studentResult",studentResult);
+  const [allStudentsInfo,setAllStudentsInfo] = useState([])
+  const [error,setError] = useState(null)
+   // component all states define End
+
+   //hooks start
+   useEffect(() =>{
+     dispatch(fetchAllClasses())
+     const today =new Date()
+     const month = (today.getMonth()+1);
+
+     setInputValues({...inputValues,month:month})
+   },[dispatch])
+
+
+   useMemo(()=>{
+     if(classes && classes.all_classes && classes.all_classes.result){
+       setClassesResult(classes.all_classes.result)
+     }
+   },[classes.all_classes.result])
+
+   useMemo(()=>{
+     if(classesResult && classesResult.data){
+           setClassesInfo(classesResult.data)
+     }
+   },[classesResult])
+
+   useMemo(() =>{
+     if(mediumId !='' && inputValues.classId !=''){
+         dispatch(fetchAllSections(inputValues.classId,mediumId))
+     }
+   },[mediumId,inputValues.classId])
+
+   useMemo(()=>{
+     if(sections && sections.all_sections && sections.all_sections.result){
+       setSectionsInfo(sections.all_sections.result)
+     }
+   },[sections.all_sections.result])
+
+   useMemo(() =>{
+     if(inputValues.classId !='' && inputValues.sectionId !=''){
+         dispatch(fetchAllStudents(inputValues))
+     }
+   },[inputValues.classId,inputValues.sectionId])
+
+   useMemo(()=>{
+     if(students && students.all_students && students.all_students.result){
+       setStudentResult(students.all_students.result)
+     }
+   },[students.all_students.result])
+
+   useMemo(()=>{
+     if(studentResult && studentResult.data){
+           setAllStudentsInfo(studentResult.data)
+     }
+   },[studentResult])
+
+   useMemo(()=>{
+     if(all_attendence_data && all_attendence_data.all_attendence && all_attendence_data.all_attendence.error){
+       setError(all_attendence_data.all_attendence.error)
+     }
+
+   },[all_attendence_data.all_attendence])
+
+  const classHandler = (event) =>{
+
+    const classInfo = event.target.value
+    console.log("classInfo",event.target.value)
+    if(classInfo !=""){
+      setInputValues({...inputValues,classId:classInfo})
+      allClassesInfo.filter(classid =>classid.id ==
+         classInfo).map((item,index) =>{
+        setMediumId(item.ClassMediumId)
+      })
+
+    }
+    else{
+      setInputValues({...inputValues,classId:classInfo})
+    }
+
+  }
+    const allAttendenceHandler = (event) =>{
+    event.preventDefault()
+    const all_attendence_info = inputValues;
+      dispatch(fetchAllAllAttendence(all_attendence_info))
+  }
         return (
             <div className="col-12">
                     <div className="card">
@@ -18,33 +140,66 @@ function StudentAttendenceFilter() {
                             </div>
                           </div>
                         </div>
-                        <form className="new-added-form">
+                        <form className="new-added-form" onSubmit={(e) =>allAttendenceHandler(e)}>
                           <div className="row">
                             <div className="col-xl-3 col-lg-6 col-12 form-group">
-                              <label>Select Class</label>
-                              <select className="select2">
-                                <option value>Select Class</option>
-                                <option value={1}>Nursery</option>
-                                <option value={2}>Play</option>
-                                <option value={3}>One</option>
-                                <option value={4}>Two</option>
-                                <option value={5}>Three</option>
-                              </select>
+                            <FormGroup>
+                                <FormLabel>Class *</FormLabel>
+                                <FormControl
+                                  type="text"
+                                  onChange={(e) =>classHandler(e)}
+                                  as="select"
+                                >
+                                <option value="">Please Select Class *</option>
+                                {allClassesInfo ? allClassesInfo.map((item,index) =>(
+                                  <option value={item.id} key={index}>{item.ClassName} {item.MediumName}Medium</option>
+                                )):null}
+                                </FormControl>
+                                {error != null && error.ClassId ? (<h6 className="addStudent-error">*{JSON.stringify(error.ClassId).replace(/[\[\]"]+/g,"")}</h6>):null}
+                              </FormGroup>
                             </div>
-                            <div className="col-xl-3 col-lg-6 col-12 form-group">
-                              <label>Select Section</label>
-                              <select className="select2">
-                                <option value={0}>Select Section</option>
-                                <option value={1}>A</option>
-                                <option value={2}>B</option>
-                                <option value={3}>C</option>
-                                <option value={4}>D</option>
-                              </select>
-                            </div>
+                            {mediumId !='' && inputValues.classId !='' ? (
+                              <div className="col-xl-3 col-lg-6 col-12 form-group">
+                                <FormGroup>
+                                    <FormLabel>Section *</FormLabel>
+                                    <FormControl
+                                      type="text"
+                                      onChange={(e) =>setInputValues({...inputValues,sectionId:e.target.value})}
+                                      as="select"
+                                    >
+                                    <option value="">Please Select Section *</option>
+                                    {allSectionsInfo ? allSectionsInfo.map((item,index) =>(
+                                      <option value={item.id} key={index}>{item.SectionName}</option>
+                                    ) ): null}
+                                    </FormControl>
+                                    {error != null && error.SectionId ? (<h6 className="addStudent-error">*{JSON.stringify(error.SectionId).replace(/[\[\]"]+/g,"")}</h6>):null}
+                                  </FormGroup>
+                              </div>
+                            ) : null}
+                            {inputValues.classId !='' && inputValues.sectionId !='' ? (
+                              <div className="col-xl-3 col-lg-6 col-12 form-group">
+                                <FormGroup>
+                                    <FormLabel>Students *</FormLabel>
+                                    <FormControl
+                                      type="text"
+                                      onChange={(e) =>setInputValues({...inputValues,studentId:e.target.value})}
+                                      as="select"
+                                    >
+                                    <option value="">Please Select Student *</option>
+                                    {allStudentsInfo ? allStudentsInfo.map((item,index) =>(
+                                      <option value={item.id} key={index}>{item.StudentName}</option>
+                                    ) ): null}
+                                    </FormControl>
+                                    {error != null && error.StudentId ? (<h6 className="addStudent-error">*{JSON.stringify(error.StudentId).replace(/[\[\]"]+/g,"")}</h6>):null}
+                                  </FormGroup>
+                              </div>
+                            ) : null}
                             <div className="col-xl-3 col-lg-6 col-12 form-group">
                               <label>Select Month</label>
-                              <select className="select2">
-                                <option value={0}>Select Month</option>
+                              <select className="select2"
+                                value={inputValues.month}
+                                onChange={(e) =>setInputValues({...inputValues,month:e.target.value})}
+                              >
                                 <option value={1}>January</option>
                                 <option value={2}>February</option>
                                 <option value={3}>March</option>
@@ -60,14 +215,9 @@ function StudentAttendenceFilter() {
                               </select>
                             </div>
                             <div className="col-xl-3 col-lg-6 col-12 form-group">
-                              <label>Select Session</label>
-                              <select className="select2">
-                                <option value={0}>Select Session</option>
-                                <option value={1}>2016-2017</option>
-                                <option value={2}>2017-20108</option>
-                                <option value={3}>2018-2019</option>
-                                <option value={4}>2020-2021</option>
-                              </select>
+                              <label>Date </label>
+                              <input type="Date" value={inputValues.date} onChange={(e) =>setInputValues({...inputValues,date:e.target.value})}  className="form-control" data-position="bottom right" />
+                              {error != null && error.Date ? (<h6 className="addStudent-error">*{JSON.stringify(error.Date).replace(/[\[\]"]+/g,"")}</h6>):null}
                             </div>
                             <div className="col-12 form-group mg-t-8">
                               <button type="submit" className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Filter</button>
