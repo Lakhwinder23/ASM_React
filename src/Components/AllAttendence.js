@@ -1,11 +1,53 @@
-import React, {useState} from 'react';
+import React, {useState,useMemo,useEffect}  from 'react';
+import { useSelector,useDispatch } from 'react-redux';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import StudentAttendenceFilter from './StudentAttendenceFilter';
 import Footer from './Footer';
+import { fetchAllStudents } from '../Redux/AllStudents/AllStudentsActions';
 
 function AllAttendence(){
+  const students = useSelector(state =>state.AllStudents)
+
+  const dispatch = useDispatch()  // for accessing the redux function
   const [activestate,setActivestate] = useState('')
+  const [studentAttendenceFilterInput,setStudentAttendenceFilterInput] = useState({classid:'',
+                                                                                  sectionid:'',
+                                                                                    studentId:'',
+                                                                                    month:'',
+                                                                                    date:''
+                                                                                    })
+
+console.log("studentAttendenceFilterInput",studentAttendenceFilterInput)
+const [studentResult,setStudentResult] = useState([])
+console.log("studentResult--",studentResult);
+const [allStudentsInfo,setAllStudentsInfo] = useState([])
+
+useMemo(() =>{
+    dispatch(fetchAllStudents(studentAttendenceFilterInput))
+},[studentAttendenceFilterInput])
+useMemo(()=>{
+  if(students && students.all_students && students.all_students.result){
+    setStudentResult(students.all_students.result)
+  }
+},[students.all_students.result])
+
+useMemo(()=>{
+  if(studentResult && studentResult.data){
+        setAllStudentsInfo(studentResult.data)
+  }
+},[studentResult])
+  const callbackFunctionInput = (childInputData) =>{
+    console.log("childInputData",childInputData);
+    setStudentAttendenceFilterInput({
+      classId:childInputData.classId,
+      sectionId:childInputData.sectionId,
+        studentId:childInputData.studentId,
+        month:childInputData.month,
+        date:childInputData.date
+
+    })
+  }
   const callbackFunction = (childData) => {
     setActivestate(childData)
   }
@@ -33,7 +75,7 @@ function AllAttendence(){
                 {/* Breadcubs Area End Here */}
                 <div className="row">
                   {/* Student Attendence Search Area Start Here */}
-                  <StudentAttendenceFilter />
+                  <StudentAttendenceFilter parentCallbackInput = {callbackFunctionInput} />
                   {/* Student Attendence Search Area End Here */}
                   {/* Student Attendence Area Start Here */}
                   <div className="col-12">

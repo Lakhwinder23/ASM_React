@@ -10,7 +10,7 @@ import {
   FormGroup,
   FormLabel
 } from "react-bootstrap";
-function StudentAttendenceFilter() {
+function StudentAttendenceFilter({parentCallbackInput}) {
   // store data access start
   const classes = useSelector(state =>state.AllClasses)
   const sections = useSelector(state =>state.AllSections)
@@ -23,7 +23,7 @@ function StudentAttendenceFilter() {
    // component all states define start
   const [inputValues,setInputValues] = useState({ role:"1",
                                                   classId:'',
-                                                  sectionid:'',
+                                                  sectionId:'',
                                                   studentId:'',
                                                   month:'',
                                                   date:''
@@ -40,6 +40,7 @@ console.log("inputValues",inputValues);
   console.log("studentResult",studentResult);
   const [allStudentsInfo,setAllStudentsInfo] = useState([])
   const [error,setError] = useState(null)
+  const [successStatus,setSuccessStatus] = useState(null)
    // component all states define End
 
    //hooks start
@@ -101,6 +102,20 @@ console.log("inputValues",inputValues);
 
    },[all_attendence_data.all_attendence])
 
+   useMemo(()=>{
+     if(all_attendence_data && all_attendence_data.all_attendence && all_attendence_data.all_attendence.success){
+       setSuccessStatus(all_attendence_data.all_attendence.success)
+     }
+
+   },[all_attendence_data.all_attendence])
+
+   // useMemo(()=>{
+   //   if(successStatus && successStatus === true){
+   //     this.sendData(inputValues)
+   //   }
+   //
+   // },[successStatus])
+
   const classHandler = (event) =>{
 
     const classInfo = event.target.value
@@ -118,10 +133,14 @@ console.log("inputValues",inputValues);
     }
 
   }
+  // const sendData = (data) =>{
+  //   this.props.parentCallbackInput(data)
+  // }
     const allAttendenceHandler = (event) =>{
     event.preventDefault()
     const all_attendence_info = inputValues;
       dispatch(fetchAllAllAttendence(all_attendence_info))
+        parentCallbackInput(inputValues)
   }
         return (
             <div className="col-12">

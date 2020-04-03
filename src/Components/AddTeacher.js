@@ -11,18 +11,22 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux';
 import { addStudentHandler } from '../Redux/AdmissionForm/AdmissionFormActions';
+import { fetchAllProfessions } from '../Redux/AllProfessions/AllProfessionActions'
 
 
 function AddTeacher() {
   // store data access start
   const add_Teacher = useSelector(state =>state.AdmissionForm)
+  const professions = useSelector(state =>state.AllProfession)
   // store data access End
 
    const dispatch = useDispatch()  // for accessing the redux function
 
    // component all states define start
   const [activestate,setActivestate] = useState('')
-  const [inputValues,setInputValues] = useState({name:'',
+  const [allProfessionInfo,setProfessionInfo] = useState([])
+  const [inputValues,setInputValues] = useState({fname:'',
+                                                lname:'',
                                                 email:'',
                                                 password:'',
                                                 c_password:'',
@@ -51,6 +55,15 @@ function AddTeacher() {
    // component all states define End
 
    //hooks start
+   useEffect(() =>{
+     dispatch(fetchAllProfessions())
+   },[dispatch])
+
+   useMemo(()=>{
+     if(professions && professions.all_professions && professions.all_professions.result){
+       setProfessionInfo(professions.all_professions.result)
+     }
+   },[professions.all_professions.result])
 
   useMemo(()=>{
     if(add_Teacher && add_Teacher.add_student && add_Teacher.add_student.error){
@@ -123,11 +136,16 @@ function AddTeacher() {
                   </div>
                   <form className="new-added-form" onSubmit={(e) =>teacherHandler(e)}>
                     <div className="row">
-                      <div className="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Name *</label>
-                        <input type="text" value={inputValues.name} onChange={(e) =>setInputValues({...inputValues,name:e.target.value})}  className="form-control" required/>
-                        {error != null && error.name ? (<h6 className="addStudent-error">*{JSON.stringify(error.name).replace(/[\[\]"]+/g,"")}</h6>):null}
-                      </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>First Name *</label>
+                      <input type="text" value={inputValues.fname} onChange={(e) =>setInputValues({...inputValues,fname:e.target.value})}  className="form-control" required/>
+                      {error != null && error.Firstname ? (<h6 className="addStudent-error">*{JSON.stringify(error.Firstname).replace(/[\[\]"]+/g,"")}</h6>):null}
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-12 form-group">
+                      <label>Last Name *</label>
+                      <input type="text" value={inputValues.lname} onChange={(e) =>setInputValues({...inputValues,lname:e.target.value})}  className="form-control" required/>
+                      {error != null && error.Lastname ? (<h6 className="addStudent-error">*{JSON.stringify(error.Lastname).replace(/[\[\]"]+/g,"")}</h6>):null}
+                    </div>
                       <div className="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Email *</label>
                         <input type="email" value={inputValues.email} onChange={(e) =>setInputValues({...inputValues,email:e.target.value})}  className="form-control" required/>
@@ -200,11 +218,11 @@ function AddTeacher() {
                             as="select"
                           >
                           <option value="">Please select your Profession *</option>
-                            <option value={"1"}>English</option>
-                            <option value={"2"}>Hindi</option>
-                            <option value={"3"}>Math</option>
-                            <option value={"4"}>Evs</option>
-                            <option value={"5"}>Sanskrit</option>
+                          {allProfessionInfo ? allProfessionInfo.map((item,index) =>(
+                            <option value={item.id}>{item.ProfessionName}</option>
+                          )):null}
+                            
+
                           </FormControl>
                           {error != null && error.ProfessionId ? (<h6 className="addStudent-error">*{JSON.stringify(error.ProfessionId).replace(/[\[\]"]+/g,"")}</h6>):null}
                         </FormGroup>

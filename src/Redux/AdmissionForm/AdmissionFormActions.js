@@ -38,7 +38,9 @@ export const addStudentHandler = (student_info) =>{
               'Content-Type': 'application/json'
           },
       body: JSON.stringify({
-        name : student_info.name,
+        Firstname : student_info.fname,
+        Lastname : student_info.lname,
+        name : student_info.fname+''+student_info.lname,
         email :student_info.email,
         password : student_info.password,
         c_password :student_info.c_password,

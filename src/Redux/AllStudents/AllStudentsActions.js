@@ -31,6 +31,7 @@ export const fetchAllStudents = (student_info) =>{
       dispatch(fetchAllStudentsRequest(student_info))
       const classid = student_info != undefined ? student_info.classId : undefined
       const sectionid = student_info != undefined ? student_info.sectionId : undefined
+      const studentid = student_info != undefined ? student_info.studentId : undefined
       const url =`${config.api_root}/get_all_student`;
       const request_option = {
       method: "POST",
@@ -42,6 +43,7 @@ export const fetchAllStudents = (student_info) =>{
           body: JSON.stringify({
                   ClassId : classid,
                   SectionId : sectionid,
+                  StudentId: studentid
             })
     }
     fetch(url, request_option)

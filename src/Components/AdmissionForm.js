@@ -28,7 +28,8 @@ function AdmissionForm() {
   const [allClassesInfo,setClassesInfo] = useState([])
   const [allSectionsInfo,setSectionsInfo] = useState([])
   const [activestate,setActivestate] = useState('')
-  const [inputValues,setInputValues] = useState({name:'',
+  const [inputValues,setInputValues] = useState({fname:'',
+                                                lname:'',
                                                 email:'',
                                                 password:'',
                                                 c_password:'',
@@ -189,9 +190,14 @@ function AdmissionForm() {
                   <form className="new-added-form" onSubmit={(e) =>studentHandler(e)}>
                     <div className="row">
                       <div className="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Name *</label>
-                        <input type="text" value={inputValues.name} onChange={(e) =>setInputValues({...inputValues,name:e.target.value})}  className="form-control" required/>
-                        {error != null && error.name ? (<h6 className="addStudent-error">*{JSON.stringify(error.name).replace(/[\[\]"]+/g,"")}</h6>):null}
+                        <label>First Name *</label>
+                        <input type="text" value={inputValues.fname} onChange={(e) =>setInputValues({...inputValues,fname:e.target.value})}  className="form-control" required/>
+                        {error != null && error.Firstname ? (<h6 className="addStudent-error">*{JSON.stringify(error.Firstname).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </div>
+                      <div className="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Last Name *</label>
+                        <input type="text" value={inputValues.lname} onChange={(e) =>setInputValues({...inputValues,lname:e.target.value})}  className="form-control" required/>
+                        {error != null && error.Lastname ? (<h6 className="addStudent-error">*{JSON.stringify(error.Lastname).replace(/[\[\]"]+/g,"")}</h6>):null}
                       </div>
                       <div className="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Email *</label>
