@@ -24,7 +24,7 @@ function Notice() {
               <h3>Notice Board</h3>
               <ul>
                 <li>
-                  <a href="index-2.html">Home</a>
+                  <a href="/">Home</a>
                 </li>
                 <li>Notice</li>
               </ul>

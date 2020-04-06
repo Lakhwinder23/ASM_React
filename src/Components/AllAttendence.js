@@ -5,13 +5,16 @@ import Sidebar from './Sidebar';
 import StudentAttendenceFilter from './StudentAttendenceFilter';
 import Footer from './Footer';
 import { fetchAllStudents } from '../Redux/AllStudents/AllStudentsActions';
+import { fetchAllAllAttendence } from '../Redux/AllAttendence/AllAttendenceActions'
 
 function AllAttendence(){
   const students = useSelector(state =>state.AllStudents)
+  const all_attendence_data = useSelector(state =>state.AllAttendence)
 
   const dispatch = useDispatch()  // for accessing the redux function
   const [activestate,setActivestate] = useState('')
-  const [studentAttendenceFilterInput,setStudentAttendenceFilterInput] = useState({classid:'',
+  const [studentAttendenceFilterInput,setStudentAttendenceFilterInput] = useState({role:'1',
+                                                                                  classid:'',
                                                                                   sectionid:'',
                                                                                     studentId:'',
                                                                                     month:'',
@@ -22,9 +25,13 @@ console.log("studentAttendenceFilterInput",studentAttendenceFilterInput)
 const [studentResult,setStudentResult] = useState([])
 console.log("studentResult--",studentResult);
 const [allStudentsInfo,setAllStudentsInfo] = useState([])
+const [attendenceResult,setAttendenceResult] = useState([])
+console.log("attendenceResult--",attendenceResult);
+
 
 useMemo(() =>{
     dispatch(fetchAllStudents(studentAttendenceFilterInput))
+    dispatch(fetchAllAllAttendence(studentAttendenceFilterInput))
 },[studentAttendenceFilterInput])
 useMemo(()=>{
   if(students && students.all_students && students.all_students.result){
@@ -37,9 +44,16 @@ useMemo(()=>{
         setAllStudentsInfo(studentResult.data)
   }
 },[studentResult])
+
+useMemo(()=>{
+  if(all_attendence_data && all_attendence_data.all_attendence && all_attendence_data.all_attendence.result){
+    setAttendenceResult(all_attendence_data.all_attendence.result)
+  }
+},[all_attendence_data.all_attendence.result])
   const callbackFunctionInput = (childInputData) =>{
     console.log("childInputData",childInputData);
     setStudentAttendenceFilterInput({
+      role:childInputData.role,
       classId:childInputData.classId,
       sectionId:childInputData.sectionId,
         studentId:childInputData.studentId,

@@ -14,7 +14,9 @@ class Sidebar extends Component {
       displayhostel : false,
       displaymedium:false,
       displayexam : false,
-      displayuielements : false
+      displayuielements : false,
+      displayattendence:false,
+      displayprofession:false
     };
 
  this.showDropdownMenu = this.showDropdownMenu.bind(this);
@@ -30,6 +32,7 @@ class Sidebar extends Component {
  this.hideDropdownlibrary = this.hideDropdownlibrary.bind(this);
  this.hideDropdownparents = this.hideDropdownparents.bind(this);
  this.hideDropdownstudent = this.hideDropdownstudent.bind(this);
+ this.hideDropdownattendence = this.hideDropdownattendence.bind(this);
   }
 
   showDropdownMenu(event,value1) {
@@ -90,6 +93,11 @@ class Sidebar extends Component {
       document.addEventListener('click', this.hideDropdownexam);
       });
   }
+  else if(value1 == 'attendence'){
+    return this.setState({ displayattendence: true }, () => {
+      document.addEventListener('click', this.hideDropdownattendence);
+      });
+  }
   else if(value1 == 'ui-elements'){
     return this.setState({ displayuielements: true }, () => {
       document.addEventListener('click', this.hideDropdownuielements);
@@ -124,6 +132,11 @@ class Sidebar extends Component {
   hideDropdownprofession() {
     this.setState({ displayprofession: false }, () => {
       document.removeEventListener('click', this.hideDropdownprofession);
+    });
+  }
+  hideDropdownattendence() {
+    this.setState({ displayattendence: false }, () => {
+      document.removeEventListener('click', this.hideDropdownattendence);
     });
   }
   hideDropdownAccount() {
@@ -259,6 +272,12 @@ else if(selected_value == 'page-all-professions'){
 }
 else if(selected_value == 'page-add-profession'){
   window.location='/add-profession';
+}
+else if(selected_value == 'page-all-attendence'){
+  window.location='/all-attendence';
+}
+else if(selected_value == 'page-add-attendence'){
+  window.location='/add-attendence';
 }
 else if(selected_value == 'page-exam-schedule'){
   window.location='/exam-schedule';
@@ -496,8 +515,23 @@ else if(selected_value == 'page-Progress-Bar'){
                   <a href="/class-routine" className="nav-link"><i className="flaticon-calendar" /><span>Class
                       Routine</span></a>
                 </li>
-                <li className="nav-item">
-                  <a href="/attendence" className="nav-link"><i className="flaticon-checklist" /><span>Attendence</span></a>
+                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"attendence")}>
+                  <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Attendence</span></a>
+                  { this.state.displayattendence == true ? (
+                  <ul className="nav sub-group-menu">
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-attendence")}>
+                      <a href="/all-medium" className="nav-link"><i className="fas fa-angle-right" />All
+                        Attendence</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-attendence")}>
+                      <a href="/add-medium" className="nav-link"><i className="fas fa-angle-right" />Add
+                        Attendence</a>
+                    </li>
+                  </ul>
+                  ): (
+                    null
+                  )
+                  }
                 </li>
                 <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"exam")}>
                   <a href="/exam-schedule" className="nav-link"><i className="flaticon-shopping-list" /><span >Exam</span></a>

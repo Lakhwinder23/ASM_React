@@ -26,6 +26,19 @@ import AssignClassReducers from './AssignClass/AssignClassReducers'
 import AssignInchargeReducers from './AssignIncharge/AssignInchargeReducers'
 import AssignRoomReducers from './AssignRoom/AssignRoomReducers'
 import AddNoticeReducers from './AddNotice/AddNoticeReducers'
+import AddExpenseReducers from './AddExpense/AddExpenseReducers'
+import AddExpenseTypeReducers from './AddExpenseType/AddExpenseTypeReducers'
+import AddFeesReducers from './AddFees/AddFeesReducers'
+import AddFeesColletionReducers from './AddFeesCollection/AddFeesCollectionReducers'
+import AddExamReducers from './AddExam/AddExamReducers'
+import AddExamResultReducers from './AddExamResult/AddExamResultReducers'
+import AddGradeReducers from './AddGrade/AddGradeReducers'
+import AddVehicleReducers from './AddVehicle/AddVehicleReducers'
+import AddBookReducers from './AddBook/AddBookReducers'
+import AddMessageReducers from './AddMessage/AddMessageReducers'
+import AcceptFeesReducers from './AcceptFees/AcceptFeesReducers'
+import AssignVehicleReducers from './AssignVehicle/AssignVehicleReducers'
+import AssignBookReducers from './AssignBook/AssignBookReducers'
 
 
 
@@ -56,8 +69,20 @@ const rootReducer = combineReducers({
       AssignClass:AssignClassReducers,
       AssignIncharge:AssignInchargeReducers,
       AssignRoom:AssignRoomReducers,
-      AddNotice:AddNoticeReducers
-
+      AddNotice:AddNoticeReducers,
+      AddExpense:AddExpenseReducers,
+      AddExpenseType:AddExpenseTypeReducers,
+      AddFees:AddFeesReducers,
+      AddFeesCollection:AddFeesColletionReducers,
+      AddExam:AddExamReducers,
+      AddExamResult:AddExamResultReducers,
+      AddGrade:AddGradeReducers,
+      AddVehicle:AddVehicleReducers,
+      AddBook:AddBookReducers,
+      AddMessag:AddMessageReducers,
+      AcceptFees:AcceptFeesReducers,
+      AssignVehicle:AssignVehicleReducers,
+      AssignBook:AssignBookReducers
 })
 
 export default rootReducer
