@@ -39,6 +39,16 @@ import AddMessageReducers from './AddMessage/AddMessageReducers'
 import AcceptFeesReducers from './AcceptFees/AcceptFeesReducers'
 import AssignVehicleReducers from './AssignVehicle/AssignVehicleReducers'
 import AssignBookReducers from './AssignBook/AssignBookReducers'
+import AllFeesReducers from './AllFees/AllFeesReducers'
+import AllFeesCollectionReducers from './AllFeesCollection/AllFeesCollectionReducers'
+import AllExamsReducers from './AllExams/AllExamsReducers'
+import AllExamsResultReducers from './AllExamsResult/AllExamsResultReducers'
+import AllExamsResultStudentReducers from './AllExamsResultStudent/AllExamsResultStudentReducers'
+import AllGradeReducers from './AllGrade/AllGradeReducers'
+import AllVehicleReducers from './AllVehicle/AllVehicleReducers'
+import AllBookReducers from './AllBook/AllBookReducers'
+import AllMessageReducers from './AllMessage/AllMessageReducers'
+import ReturnAssignBookReducers from './ReturnAssignBook/ReturnAssignBookReducers'
 
 
 
@@ -82,7 +92,17 @@ const rootReducer = combineReducers({
       AddMessag:AddMessageReducers,
       AcceptFees:AcceptFeesReducers,
       AssignVehicle:AssignVehicleReducers,
-      AssignBook:AssignBookReducers
+      AssignBook:AssignBookReducers,
+      AllFees:AllFeesReducers,
+      AllFeesCollection:AllFeesCollectionReducers,
+      AllExams:AllExamsReducers,
+      AllExamsResult:AllExamsResultReducers,
+      AllExamsResultStudent:AllExamsResultStudentReducers,
+      AllGrade:AllGradeReducers,
+      AllVehicle:AllVehicleReducers,
+      AllBook:AllBookReducers,
+      AllMessage:AllMessageReducers,
+      ReturnAssignBook:ReturnAssignBookReducers
 })
 
 export default rootReducer
