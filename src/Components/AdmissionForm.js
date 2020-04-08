@@ -242,7 +242,7 @@ function AdmissionForm() {
                         {error != null && error.DateofBirth ? (<h6 className="addStudent-error">*{JSON.stringify(error.DateofBirth).replace(/[\[\]"]+/g,"")}</h6>):null}
                       </div>
                       <div className="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Adress</label>
+                        <label>Address</label>
                         <textarea type="text" value={inputValues.address} onChange={(e) =>setInputValues({...inputValues,address:e.target.value})}  className="form-control" required></textarea>
                         {error != null && error.Address ? (<h6 className="addStudent-error">*{JSON.stringify(error.Address).replace(/[\[\]"]+/g,"")}</h6>):null}
                       </div>

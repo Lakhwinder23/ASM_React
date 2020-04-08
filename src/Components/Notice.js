@@ -1,9 +1,37 @@
-import React, { useState } from 'react';
+import React, {useState,useEffect,useMemo} from 'react';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import CreateNotice from './CreateNotice';
+import { useSelector,useDispatch } from 'react-redux'
+import {
+  fetchAllNotices
+} from '../Redux/AllNotices/AllNoticeActions'
+import * as moment from 'moment';
+
+
 function Notice() {
+
+  const notice_data = useSelector(state =>state.AllNotice)
+  console.log("notice_data",notice_data);
+  const dispatch = useDispatch()
+    const [noticeResult,setNoticeResult] = useState([])
+    console.log("noticeResult",noticeResult);
+    let previous_color = "bg-skyblue"
+    useEffect(() =>{
+      dispatch(fetchAllNotices())
+    },[dispatch])
+
+    useMemo(()=>{
+      if(notice_data && notice_data.all_notice && notice_data.all_notice.result){
+        setNoticeResult(notice_data.all_notice.result)
+      }
+    },[notice_data.all_notice.result])
+
+
+
   const [activestate,setActivestate] = useState('')
   const callbackFunction = (childData) => {
     setActivestate(childData)
@@ -65,69 +93,46 @@ function Notice() {
                       </div>
                     </form>
                     <div className="notice-board-wrap">
-                      <div className="notice-list">
-                        <div className="post-date bg-skyblue">16 June, 2019</div>
-                        <h6 className="notice-title"><a href="#">Great School Great School manag mene esom
-                            text of the printing Great School manag mene esom  text of the printing manag
-                            mene esom  text of the printing.</a></h6>
-                        <div className="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
-                      </div>
-                      <div className="notice-list">
-                        <div className="post-date bg-yellow">16 June, 2019</div>
-                        <h6 className="notice-title"><a href="#">Great School Great School manag mene esom
-                            text of the printing Great School manag mene esom  text of the printing manag
-                            mene esom  text of the printing.</a></h6>
-                        <div className="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
-                      </div>
-                      <div className="notice-list">
-                        <div className="post-date bg-pink">16 June, 2019</div>
-                        <h6 className="notice-title"><a href="#">Great School Great School manag mene esom
-                            text of the printing Great School manag mene esom  text of the printing manag
-                            mene esom  text of the printing.</a></h6>
-                        <div className="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
-                      </div>
-                      <div className="notice-list">
-                        <div className="post-date bg-skyblue">16 June, 2019</div>
-                        <h6 className="notice-title"><a href="#">Great School Great School manag mene esom
-                            text of the printing Great School manag mene esom  text of the printing manag
-                            mene esom  text of the printing.</a></h6>
-                        <div className="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
-                      </div>
-                      <div className="notice-list">
-                        <div className="post-date bg-yellow">16 June, 2019</div>
-                        <h6 className="notice-title"><a href="#">Great School Great School manag mene esom
-                            text of the printing Great School manag mene esom  text of the printing manag
-                            mene esom  text of the printing.</a></h6>
-                        <div className="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
-                      </div>
-                      <div className="notice-list">
-                        <div className="post-date bg-pink">16 June, 2019</div>
-                        <h6 className="notice-title"><a href="#">Great School Great School manag mene esom
-                            text of the printing Great School manag mene esom  text of the printing manag
-                            mene esom  text of the printing.</a></h6>
-                        <div className="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
-                      </div>
-                      <div className="notice-list">
-                        <div className="post-date bg-skyblue">16 June, 2019</div>
-                        <h6 className="notice-title"><a href="#">Great School Great School manag mene esom
-                            text of the printing Great School manag mene esom  text of the printing manag
-                            mene esom  text of the printing.</a></h6>
-                        <div className="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
-                      </div>
-                      <div className="notice-list">
-                        <div className="post-date bg-yellow">16 June, 2019</div>
-                        <h6 className="notice-title"><a href="#">Great School Great School manag mene esom
-                            text of the printing Great School manag mene esom  text of the printing manag
-                            mene esom  text of the printing.</a></h6>
-                        <div className="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
-                      </div>
-                      <div className="notice-list">
-                        <div className="post-date bg-pink">16 June, 2019</div>
-                        <h6 className="notice-title"><a href="#">Great School Great School manag mene esom
-                            text of the printing Great School manag mene esom  text of the printing manag
-                            mene esom  text of the printing.</a></h6>
-                        <div className="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
-                      </div>
+                    {notice_data.all_notice_loading === false ? noticeResult ? noticeResult.map((item,index) =>{
+                      const split_data = (item.created_at).split(" ")
+                      const date = split_data[0]
+                      const converted_date = moment(date).format('DD MMM, YYYY');
+                      const currentDate = moment()
+                      const given_date_time = moment(item.created_at)
+                      const time_left = moment(given_date_time.diff(currentDate))
+                      console.log("time_left",time_left.minutes())
+                      let next_color = ""
+                      if(previous_color == "bg-skyblue"){
+                        next_color = "bg-yellow"
+                        previous_color = next_color
+                      }
+                      else if(previous_color == "bg-yellow"){
+                        next_color = "bg-pink"
+                        previous_color = next_color
+                      }
+                      else if(previous_color == "bg-pink"){
+                        next_color = "bg-skyblue"
+                        previous_color = next_color
+                      }
+                      console.log("next_color",next_color)
+                      return (
+                        <div className="notice-list" key={index}>
+                          <div className={`post-date  ${next_color}`}>{converted_date}</div>
+                          <h6 className="notice-title"><a href="#">{item.Title}</a></h6>
+                          <div className="entry-meta">  Admin / <span>{time_left.minutes()} min ago</span></div>
+                        </div>
+                      )
+
+                    }):(<h6>No data available</h6>):(
+                      <Loader
+                      className = "student-detail-loader"
+                    type="MutatingDots"
+                    color="#fea801"
+                    height={100}
+                    width={100}
+
+       />
+                    )}
                     </div>
                   </div>
                 </div>

@@ -39,7 +39,12 @@ export const addNotice = (notice_info) =>{
           },
       body: JSON.stringify({
         Title : notice_info.title,
-        NoticeType : notice_info.noticeType
+        NoticeType : notice_info.noticeType,
+        TeacherId:notice_info.teacherId == undefined ? undefined : notice_info.teacherId,
+        ClassId:notice_info.classId == undefined ? undefined : notice_info.classId,
+        ParentId:notice_info.parentId == undefined ? undefined : notice_info.parentId,
+        SectionId:notice_info.sectionId == undefined ? undefined : notice_info.sectionId,
+        StudentId:notice_info.studentId == undefined ? undefined : notice_info.studentId,
       })
     }
     fetch(url, request_option)

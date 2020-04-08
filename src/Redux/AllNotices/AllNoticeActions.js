@@ -7,20 +7,20 @@ import {config} from '../config'
 
 export const fetchAllNoticeRequest = () =>{
   return{
-    type : FETCH_ALLATTENDENCE_REQUEST
+    type : FETCH_ALLNOTICE_REQUEST
   }
 }
 
 export const fetchAllNoticeSuccess = (all_notices_success) =>{
   return{
-    type : FETCH_ALLATTENDENCE_SUCCESS,
+    type : FETCH_ALLNOTICE_SUCCESS,
     payload : all_notices_success
   }
 }
 
 export const fetchAllNoticeFaliure = (error) =>{
   return{
-    type : FETCH_ALLATTENDENCE_FALIURE,
+    type : FETCH_ALLNOTICE_FALIURE,
     payload : error
   }
 }
