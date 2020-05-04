@@ -28,7 +28,7 @@ export const fetchAllGradeFaliure = (error) =>{
 export const fetchAllGrades = () =>{
     return(dispatch) => {
       dispatch(fetchAllGradeRequest())
-      const url =`${config.api_root}/get_all_notice`;
+      const url =`${config.api_root}/get_all_grade`;
       const request_option = {
       method: "GET",
       headers: {
@@ -40,7 +40,7 @@ export const fetchAllGrades = () =>{
     .then(response => response.json())
     .then(all_grades_res =>{
       const all_grades_success = all_grades_res
-      dispatch(fetchAllGradeSuccess(all_grades_success))
+      //dispatch(fetchAllGradeSuccess(all_grades_success))
     })
     .catch(error => {
       const errorMsg = error

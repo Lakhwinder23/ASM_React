@@ -40,10 +40,10 @@ export const addGrade = (grade_info) =>{
       body: JSON.stringify({
         GradeName : grade_info.gradeName,
         GradePoint : grade_info.gradePoint,
-        GradeFrom  : grade_info.gradeFrom ,
-        GradeUpto  : grade_info.gradeUpto,
+        GradeFrom  : grade_info.percentageFrom ,
+        GradeUpto  : grade_info.percentageUpto,
         Comment  : grade_info.comment
-      })  
+      })
     }
     fetch(url, request_option)
     .then(response => response.json())

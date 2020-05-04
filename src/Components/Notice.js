@@ -93,7 +93,7 @@ function Notice() {
                       </div>
                     </form>
                     <div className="notice-board-wrap">
-                    {notice_data.all_notice_loading === false ? noticeResult ? noticeResult.map((item,index) =>{
+                    {notice_data.all_notice_loading === false ? noticeResult ? noticeResult.reverse().map((item,index) =>{
                       const split_data = (item.created_at).split(" ")
                       const date = split_data[0]
                       const converted_date = moment(date).format('DD MMM, YYYY');

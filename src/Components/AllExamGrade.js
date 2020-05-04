@@ -1,6 +1,35 @@
-import React from 'react';
+import React, {useState,useEffect,useMemo} from 'react';
+import { useSelector,useDispatch } from 'react-redux'
+import {fetchAllGrades} from '../Redux/AllGrade/AllGradeActions'
+
 
 function AllExamGrade() {
+  // store data access start
+const allGrade = useSelector(state =>state.AllGrade)
+// store data access End
+  const dispatch = useDispatch()  // for accessing the redux function
+
+  // component all states define start
+  const [allGradeInfo,setGradeInfo] = useState([])
+  // component all states define End
+
+   //hooks start
+   // fetch allexams api hook start
+   useEffect(() =>{
+     dispatch(fetchAllGrades())
+   },[dispatch])
+// fetch allexams api hook End
+
+// add data of classes api into constant,hook start
+   useMemo(() =>{
+     if(allGrade && allGrade.all_grade && allGrade.all_grade.result && allGrade.all_grade.success === true){
+       setGradeInfo(allGrade.all_grade.result)
+     }
+   },[allGrade])
+// add data of classes api into constant,hook End
+
+
+   //hooks end
         return (
             <div className="col-8-xxxl col-12">
                     <div className="card height-auto">
@@ -49,17 +78,18 @@ function AllExamGrade() {
                               </tr>
                             </thead>
                             <tbody>
+                            {allGradeInfo && allGradeInfo.length > 0 ? allGradeInfo.map((item,index) =>(
                               <tr>
                                 <td>
                                   <div className="form-check">
                                     <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">A+</label>
+                                    <label className="form-check-label">{item.GradeName}</label>
                                   </div>
                                 </td>
-                                <td>3.50</td>
-                                <td>95.00</td>
-                                <td>100.00</td>
-                                <td>Good Result</td>
+                                <td>{item.GradePoint}</td>
+                                <td>{item.GradeFrom}</td>
+                                <td>{item.GradeUpto}</td>
+                                <td>{item.Comment}</td>
                                 <td>
                                   <div className="dropdown">
                                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -73,6 +103,10 @@ function AllExamGrade() {
                                   </div>
                                 </td>
                               </tr>
+                            )) :  (
+                              <h6>No data available in table</h6>
+                             )}
+
                               <tr>
                                 <td>
                                   <div className="form-check">

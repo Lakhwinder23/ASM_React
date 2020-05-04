@@ -28,7 +28,7 @@ export const addExamFaliure = (error) =>{
 
 export const addExam = (exam_info) =>{
     return(dispatch) => {
-      dispatch(addFeesRequest(exam_info))
+      dispatch(addExamRequest(exam_info))
       const url =`${config.api_root}/add_exam`;
       const request_option = {
       method: "POST",
@@ -52,11 +52,11 @@ export const addExam = (exam_info) =>{
     .then(response => response.json())
     .then(add_exam_res =>{
       const add_exam_success = add_exam_res
-      dispatch(addFeesSuccess(add_exam_success))
+      dispatch(addExamSuccess(add_exam_success))
     })
     .catch(error => {
       const errorMsg = error
-      dispatch(addFeesFaliure(errorMsg))
+      dispatch(addExamFaliure(errorMsg))
     })
-    }
+}
 }
