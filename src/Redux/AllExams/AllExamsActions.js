@@ -12,17 +12,17 @@ export const fetchAllExamsRequest = (exams_info) =>{
   }
 }
 
-export const fetchAllExamsSuccess = (all_exams_success) =>{
+export const fetchAllExamsSuccess = (all_exam_success) =>{
   return{
     type : FETCH_ALLEXAMS_SUCCESS,
-    payload:all_exams_success
+    payload : all_exam_success
   }
 }
 
 export const fetchAllExamsFaliure = (error) =>{
   return{
     type : FETCH_ALLEXAMS_FALIURE,
-    payload:error
+    payload : error
   }
 }
 
@@ -37,22 +37,20 @@ export const fetchAllExams = (exams_info) =>{
       const request_option = {
       method: "POST",
       headers: {
-              'Accept': 'application/json',
-              'Authorization': 'Bearer '+ config.token,
-              'Content-Type': 'application/json'
+              'Authorization': 'Bearer '+ config.token
           },
           body: JSON.stringify({
-                  ExamDate:examDate,
-                  ClassId : classid,
-                  SectionId : sectionid,
-                  SubjectId : subjectid
+            ExamDate:examDate,
+            ClassId : classid,
+            SectionId : sectionid,
+            SubjectId : subjectid
             })
     }
     fetch(url, request_option)
     .then(response => response.json())
-    .then(exams_res =>{
-      const all_exams_success = exams_res
-      // dispatch(fetchAllExamsSuccess(all_exams_success))
+    .then(exam_res =>{
+      const all_exam_success = exam_res
+      //dispatch(fetchAllExamsSuccess(all_exam_success))
     })
     .catch(error => {
       const errorMsg = error

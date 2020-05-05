@@ -285,6 +285,9 @@ else if(selected_value == 'page-exam-schedule'){
 else if(selected_value == 'page-exam-grade'){
   window.location='/exam-grade';
 }
+else if(selected_value == 'page-exam-result'){
+  window.location='/exam-result';
+}
 else if(selected_value == 'page-button'){
   window.location='/button';
 }
@@ -544,6 +547,10 @@ else if(selected_value == 'page-Progress-Bar'){
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-exam-grade")}>
                       <a href="/exam-grade" className="nav-link"><i className="fas fa-angle-right" />Exam
                         Grades</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-exam-result")}>
+                      <a href="/exam-grade" className="nav-link"><i className="fas fa-angle-right" />Exam
+                        Result</a>
                     </li>
                   </ul>
                    ): (

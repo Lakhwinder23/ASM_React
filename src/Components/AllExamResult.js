@@ -1,31 +1,31 @@
 import React, {useState,useEffect,useMemo} from 'react';
 import { useSelector,useDispatch } from 'react-redux'
-import {fetchAllGrades} from '../Redux/AllGrade/AllGradeActions'
+import {fetchAllExamsResult} from '../Redux/AllExamsResult/AllExamsResultActions'
 
 
-function AllExamGrade() {
+function AllExamResult() {
   // store data access start
-const allGrade = useSelector(state =>state.AllGrade)
+const allExamResult = useSelector(state =>state.AllExamsResult)
 // store data access End
   const dispatch = useDispatch()  // for accessing the redux function
 
   // component all states define start
-  const [allGradeInfo,setGradeInfo] = useState([])
+  const [allExamResultInfo,setExamResultInfo] = useState([])
   // component all states define End
 
    //hooks start
    // fetch allexams api hook start
    useEffect(() =>{
-     dispatch(fetchAllGrades())
+     dispatch(fetchAllExamsResult())
    },[dispatch])
 // fetch allexams api hook End
 
 // add data of classes api into constant,hook start
    useMemo(() =>{
-     if(allGrade && allGrade.all_grade && allGrade.all_grade.result && allGrade.all_grade.success === true){
-       setGradeInfo(allGrade.all_grade.result)
+     if(allExamResult && allExamResult.all_exams_result && allExamResult.all_exams_result.result && allExamResult.all_exams_result.success === true){
+       setExamResultInfo(allExamResult.all_exams_result.result)
      }
-   },[allGrade])
+   },[allExamResult])
 // add data of classes api into constant,hook End
 
 
@@ -36,7 +36,7 @@ const allGrade = useSelector(state =>state.AllGrade)
                       <div className="card-body">
                         <div className="heading-layout1">
                           <div className="item-title">
-                            <h3>Exam Grade Lists</h3>
+                            <h3>All Exam Result Lists</h3>
                           </div>
                           <div className="dropdown">
                             <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -67,18 +67,18 @@ const allGrade = useSelector(state =>state.AllGrade)
                                 <th>
                                   <div className="form-check">
                                     <input type="checkbox" className="form-check-input checkAll" />
-                                    <label className="form-check-label">Grade Name</label>
+                                    <label className="form-check-label">Class Name</label>
                                   </div>
                                 </th>
-                                <th>Grade Point</th>
-                                <th>Percent From</th>
-                                <th>Percent Upto</th>
-                                <th>Comment</th>
+                                <th>Section Name</th>
+                                <th>Exam Name</th>
+                                <th>Students Result</th>
+                                <th>Session</th>
                                 <th />
                               </tr>
                             </thead>
                             <tbody>
-                            {allGradeInfo && allGradeInfo.length > 0 ? allGradeInfo.map((item,index) =>(
+                            {allExamResultInfo && allExamResultInfo.length > 0 ? allExamResultInfo.map((item,index) =>(
                               <tr>
                                 <td>
                                   <div className="form-check">
@@ -115,4 +115,4 @@ const allGrade = useSelector(state =>state.AllGrade)
         );
 }
 
-export default AllExamGrade;
+export default AllExamResult;

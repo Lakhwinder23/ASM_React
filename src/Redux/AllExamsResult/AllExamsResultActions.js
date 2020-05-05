@@ -33,7 +33,7 @@ export const fetchAllExamsResult = (exams_result_info) =>{
       const sectionid = exams_result_info != undefined && exams_result_info.sectionId != undefined  ? exams_result_info.sectionId : undefined
       const examid = exams_result_info != undefined && exams_result_info.examId != undefined ? exams_result_info.examId : undefined
       const year = exams_result_info != undefined && exams_result_info.year != undefined ? exams_result_info.year : undefined
-      const url =`${config.api_root}/get_all_exam`;
+      const url =`${config.api_root}/get_all_exam_result`;
       const request_option = {
       method: "POST",
       headers: {
@@ -52,7 +52,7 @@ export const fetchAllExamsResult = (exams_result_info) =>{
     .then(response => response.json())
     .then(exams_result_res =>{
       const all_exams_result_success = exams_result_res
-      dispatch(fetchAllExamsResultSuccess(all_exams_result_success))
+      //dispatch(fetchAllExamsResultSuccess(all_exams_result_success))
     })
     .catch(error => {
       const errorMsg = error

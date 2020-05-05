@@ -17,26 +17,25 @@ const exams = useSelector(state =>state.AllExams)
    //hooks start
    // fetch allexams api hook start
    useEffect(() =>{
-     const exams_info = undefined
-     dispatch(fetchAllExams(exams_info))
+     dispatch(fetchAllExams())
    },[dispatch])
 // fetch allexams api hook End
 
-// add data of classes api into constant,hook start
+// add data of allexams api into constant,hook start
    useMemo(() =>{
      if(exams && exams.all_exams && exams.all_exams.result && exams.all_exams.success === true){
        setExamsResult(exams.all_exams.result)
      }
    },[exams])
-// add data of classes api into constant,hook End
+// add data of allexams api into constant,hook End
 
-// when classesResult change add data into classInfo,hook start
+// when examsResult change add data into classInfo,hook start
    useMemo(()=>{
      if(examsResult && examsResult.data){
            setExamsInfo(examsResult.data)
      }
    },[examsResult])
-// when classesResult change add data into classInfo,hook End
+// when examsResult change add data into classInfo,hook End
 
    //hooks end
         return (

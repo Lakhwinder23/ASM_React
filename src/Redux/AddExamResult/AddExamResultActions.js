@@ -26,7 +26,7 @@ export const addExamResultFaliure = (error) =>{
   }
 }
 
-export const addExam = (exam_result_info) =>{
+export const addExamResult = (exam_result_info) =>{
     return(dispatch) => {
       dispatch(addExamResultRequest(exam_result_info))
       const url =`${config.api_root}/add_exam_result`;

@@ -28,6 +28,7 @@ import ClassRoutine from './Components/ClassRoutine';
 import AllAttendence from './Components/AllAttendence';
 import ExamSchedule from './Components/ExamSchedule';
 import ExamGrade from './Components/ExamGrade';
+import ExamResult from './Components/ExamResult';
 import Transport from './Components/Transport';
 import Hostel from './Components/Hostel';
 import Notice from './Components/Notice';
@@ -89,6 +90,7 @@ function Root(){
                  <Route path="/all-attendence" component={AllAttendence} />
                  <Route path="/exam-schedule" component={ExamSchedule} />
                  <Route path="/exam-grade" component={ExamGrade} />
+                 <Route path="/exam-result" component={ExamResult} />
                  <Route path="/transport" component={Transport} />
                  <Route path="/hostal" component={Hostel} />
                  <Route path="/notice-board" component={Notice} />
