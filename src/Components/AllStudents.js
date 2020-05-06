@@ -120,8 +120,9 @@ function AllStudents(){
                             <th />
                           </tr>
                         </thead>
+                        {loader === false ? allStudentsInfo && allStudentsInfo.length > 0 ?(
                         <tbody>
-                        {loader === false ? allStudentsInfo  ?  allStudentsInfo.map((item,index) =>(
+                        {allStudentsInfo.map((item,index) =>(
 
                           <tr>
                             <td>
@@ -155,24 +156,22 @@ function AllStudents(){
                               </div>
                             </td>
                           </tr>
-
-                        )):(
-                          <h6>No data available in table</h6>
-                        ):(
-                          <tr>
-                            <td colspan="14">
-                            <Loader
-                            className = "student-detail-loader"
-                          type="MutatingDots"
-                          color="#fea801"
-                          height={100}
-                          width={100}
-
-             />
-                            </td>
-                          </tr>
-                        ) }
+                        ))}
                         </tbody>
+                      ):
+                      (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
+                    :(<tr>
+                      <td colspan="6">
+                    <Loader
+                    className = "student-detail-loader"
+                  type="MutatingDots"
+                  color="#fea801"
+                  height={100}
+                  width={100}
+
+                    />
+                    </td>
+                    </tr>)}
                       </table>
                     </div>
                   </div>

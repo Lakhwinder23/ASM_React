@@ -105,8 +105,9 @@ function AllHostel() {
                              <th />
                            </tr>
                          </thead>
+                         {allHostel.all_hostels_loading === false ? allHostelInfo && allHostelInfo.length > 0 ? (
                          <tbody>
-                         {allHostelInfo ? allHostelInfo.map((item,index) =>(
+                         {allHostelInfo.map((item,index) =>(
                            <tr key={index}>
                              <td>
                                <div className="form-check">
@@ -128,10 +129,22 @@ function AllHostel() {
                                </div>
                              </td>
                            </tr>
-                         )):(
-                           <h6>No data available in table</h6>
-                         )}
+                         ))}
                          </tbody>
+                       ):
+                       (<tr><td colspan="3"><h6 className="text-center">No data available in table</h6></td></tr>)
+                     :(<tr>
+                       <td colspan="3">
+                     <Loader
+                     className = "student-detail-loader"
+                   type="MutatingDots"
+                   color="#fea801"
+                   height={100}
+                   width={100}
+
+                     />
+                     </td>
+                     </tr>)}
                        </table>
                      </div>
                    </div>

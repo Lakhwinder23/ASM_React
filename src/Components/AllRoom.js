@@ -109,8 +109,9 @@ function AllRoom() {
                              <th />
                            </tr>
                          </thead>
+                         {rooms.all_rooms_loading === false ? allRoomsInfo && allRoomsInfo.length > 0 ? (
                          <tbody>
-                         {allRoomsInfo ? allRoomsInfo.map((item,index) =>(
+                         {allRoomsInfo.map((item,index) =>(
                            <tr key={index}>
                              <td>
                                <div className="form-check">
@@ -136,10 +137,22 @@ function AllRoom() {
                                </div>
                              </td>
                            </tr>
-                         )):(
-                           <h6>No data available in table</h6>
-                         )}
+                         ))}
                          </tbody>
+                       ):
+                       (<tr><td colspan="7"><h6 className="text-center">No data available in table</h6></td></tr>)
+                     :(<tr>
+                       <td colspan="7">
+                     <Loader
+                     className = "student-detail-loader"
+                   type="MutatingDots"
+                   color="#fea801"
+                   height={100}
+                   width={100}
+
+                     />
+                     </td>
+                     </tr>)}
                        </table>
                      </div>
                    </div>

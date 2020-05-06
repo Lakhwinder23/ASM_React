@@ -35,7 +35,7 @@ export const fetchAllExamsResultStudent = (exams_result_student_info) =>{
       const sectionid = exams_result_student_info != undefined && exams_result_student_info.sectionId != undefined  ? exams_result_student_info.sectionId : undefined
       const examid = exams_result_student_info != undefined && exams_result_student_info.examId != undefined ? exams_result_student_info.examId : undefined
       const year = exams_result_student_info != undefined && exams_result_student_info.year != undefined ? exams_result_student_info.year : undefined
-      const url =`${config.api_root}/get_all_exam`;
+      const url =`${config.api_root}/get_all_exam_result_student`;
       const request_option = {
       method: "POST",
       headers: {

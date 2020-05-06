@@ -40,7 +40,7 @@ export const fetchAllGrades = () =>{
     .then(response => response.json())
     .then(all_grades_res =>{
       const all_grades_success = all_grades_res
-      //dispatch(fetchAllGradeSuccess(all_grades_success))
+      dispatch(fetchAllGradeSuccess(all_grades_success))
     })
     .catch(error => {
       const errorMsg = error

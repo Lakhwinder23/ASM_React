@@ -1,4 +1,6 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { useSelector,useDispatch } from 'react-redux'
 import {fetchAllExams} from '../Redux/AllExams/AllExamsActions'
 
@@ -89,9 +91,10 @@ const exams = useSelector(state =>state.AllExams)
                             <th />
                           </tr>
                         </thead>
+                        {exams.all_exams_loading === false ? allExamsInfo && allExamsInfo.length == 0 ? (
                         <tbody>
-                        {allExamsInfo && allExamsInfo.length > 0 ? allExamsInfo.map((item,index) =>(
-                          <tr>
+                         {allExamsInfo.map((item,index) =>(
+                          <tr key={index}>
                             <td>
                               <div className="form-check">
                                 <input type="checkbox" className="form-check-input" />
@@ -116,10 +119,22 @@ const exams = useSelector(state =>state.AllExams)
                               </div>
                             </td>
                           </tr>
-                        )) :  (
-                          <h6>No data available in table</h6>
-                         )}
+                        ))}
                         </tbody>
+                      ):
+                      (<tr><td colspan="7"><h6 className="text-center">No Data Avaiable</h6></td></tr>)
+                    :(<tr>
+                      <td colspan="7">
+                    <Loader
+                    className = "student-detail-loader"
+                  type="MutatingDots"
+                  color="#fea801"
+                  height={100}
+                  width={100}
+
+                    />
+                    </td>
+                    </tr>)}
                       </table>
                     </div>
                   </div>

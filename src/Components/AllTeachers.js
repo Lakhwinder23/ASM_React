@@ -111,8 +111,9 @@ function AllTeachers(){
                             <th />
                           </tr>
                         </thead>
+                        {teachers.all_teachers_loading === false ? allTeachersInfo && allTeachersInfo.length > 0 ? (
                         <tbody>
-                        {allTeachersInfo ? allTeachersInfo.map((item,index) =>(
+                        {allTeachersInfo.map((item,index) =>(
                           <tr key={index}>
                             <td>
                               <div className="form-check">
@@ -142,10 +143,22 @@ function AllTeachers(){
                               </div>
                             </td>
                           </tr>
-                        ))  :(
-                          <h6>No data available in table</h6>
-                        ) }
+                        ))}
                         </tbody>
+                      ):
+                      (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
+                    :(<tr>
+                      <td colspan="6">
+                    <Loader
+                    className = "student-detail-loader"
+                  type="MutatingDots"
+                  color="#fea801"
+                  height={100}
+                  width={100}
+
+                    />
+                    </td>
+                    </tr>)}
                       </table>
                     </div>
                   </div>

@@ -1,22 +1,36 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { useSelector,useDispatch } from 'react-redux'
 import {fetchAllExamsResult} from '../Redux/AllExamsResult/AllExamsResultActions'
-
+import {fetchAllClasses} from '../Redux/AllClasses/AllClassesActions'
+import { fetchAllSections } from '../Redux/AllSections/AllSectionsActions';
+import {fetchAllExams} from '../Redux/AllExams/AllExamsActions'
 
 function AllExamResult() {
   // store data access start
 const allExamResult = useSelector(state =>state.AllExamsResult)
+const classes = useSelector(state =>state.AllClasses)
+const exams = useSelector(state =>state.AllExams)
 // store data access End
   const dispatch = useDispatch()  // for accessing the redux function
 
   // component all states define start
   const [allExamResultInfo,setExamResultInfo] = useState([])
+  const [classesResult,setClassesResult] = useState([])
+  const [allClassesInfo,setClassesInfo] = useState([])
+  const [allSectionsInfo,setSectionsInfo] = useState([])
+  const [examsResult,setExamsResult] = useState([])
+  const [allExamsInfo,setExamsInfo] = useState([])
   // component all states define End
 
    //hooks start
    // fetch allexams api hook start
    useEffect(() =>{
      dispatch(fetchAllExamsResult())
+     dispatch(fetchAllClasses())
+     dispatch(fetchAllSections())
+     dispatch(fetchAllExams())
    },[dispatch])
 // fetch allexams api hook End
 
@@ -27,6 +41,38 @@ const allExamResult = useSelector(state =>state.AllExamsResult)
      }
    },[allExamResult])
 // add data of classes api into constant,hook End
+
+// add data of classes api into constant,hook start
+ useMemo(() =>{
+   if(classes && classes.all_classes && classes.all_classes.result && classes.all_classes.success === true){
+     setClassesResult(classes.all_classes.result)
+   }
+ },[classes])
+// add data of classes api into constant,hook End
+
+// when classesResult change add data into classInfo,hook start
+ useMemo(()=>{
+   if(classesResult && classesResult.data){
+         setClassesInfo(classesResult.data)
+   }
+ },[classesResult])
+// when classesResult change add data into classInfo,hook End
+
+// add data of allexams api into constant,hook start
+   useMemo(() =>{
+     if(exams && exams.all_exams && exams.all_exams.result && exams.all_exams.success === true){
+       setExamsResult(exams.all_exams.result)
+     }
+   },[exams])
+// add data of allexams api into constant,hook End
+
+// when examsResult change add data into classInfo,hook start
+   useMemo(()=>{
+     if(examsResult && examsResult.data){
+           setExamsInfo(examsResult.data)
+     }
+   },[examsResult])
+// when examsResult change add data into classInfo,hook End
 
 
    //hooks end
@@ -77,19 +123,26 @@ const allExamResult = useSelector(state =>state.AllExamsResult)
                                 <th />
                               </tr>
                             </thead>
+                            {allExamResult.all_exams_result_loading === false ? allExamResultInfo && allExamResultInfo.length > 0 ?  (
                             <tbody>
-                            {allExamResultInfo && allExamResultInfo.length > 0 ? allExamResultInfo.map((item,index) =>(
+                            {allExamResultInfo.map((item,index) =>(
                               <tr>
                                 <td>
                                   <div className="form-check">
                                     <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">{item.GradeName}</label>
+                                    {allClassesInfo && allClassesInfo.length > 0 ? allClassesInfo.filter(filteritem =>filteritem.id === item.ClassId).
+                                      map((classitem,index) =>(
+                                        <label className="form-check-label">{classitem.ClassName}</label>
+                                      )):null}
                                   </div>
                                 </td>
                                 <td>{item.GradePoint}</td>
-                                <td>{item.GradeFrom}</td>
-                                <td>{item.GradeUpto}</td>
-                                <td>{item.Comment}</td>
+                                {allExamsInfo && allExamsInfo.length > 0 ? allExamsInfo.filter(filteritem =>filteritem.id === item.ExamId).
+                                  map((examitem,index) =>(
+                                <td>{examitem.ExamName}</td>
+                                )):null}
+                                <td>{item.StudentResult}</td>
+                                <td>{item.Season}</td>
                                 <td>
                                   <div className="dropdown">
                                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -103,10 +156,22 @@ const allExamResult = useSelector(state =>state.AllExamsResult)
                                   </div>
                                 </td>
                               </tr>
-                            )) :  (
-                              <h6>No data available in table</h6>
-                             )}
+                            ))}
                             </tbody>
+                          ):
+                          (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
+                        :(<tr>
+                          <td colspan="6">
+                        <Loader
+                        className = "student-detail-loader"
+                      type="MutatingDots"
+                      color="#fea801"
+                      height={100}
+                      width={100}
+
+                        />
+                        </td>
+                        </tr>)}
                           </table>
                         </div>
                       </div>

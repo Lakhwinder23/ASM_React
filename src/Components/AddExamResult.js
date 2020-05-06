@@ -108,7 +108,7 @@ const addExamResult_data = useSelector(state =>state.AddExamResult)
 // add data of addGrade api into constant,hook start
    useMemo(()=>{
      if(addExamResult_data && addExamResult_data.add_exam_result && addExamResult_data.add_exam_result.error){
-       setError(addExamResult_data.add_grade.error)
+       setError(addExamResult_data.add_exam_result.error)
      }
      else if(addExamResult_data && addExamResult_data.add_exam_result && addExamResult_data.add_exam_result.success){
         setSuccessStatus(addExamResult_data.add_exam_result.success)

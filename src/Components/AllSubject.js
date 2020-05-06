@@ -75,8 +75,9 @@ function AllSubject(){
                                 <th />
                               </tr>
                             </thead>
+                            {subjects.all_subjects_loading === false ? allSubjectsInfo && allSubjectsInfo.length > 0 ? (
                             <tbody>
-                            {allSubjectsInfo ? allSubjectsInfo.map((item,index) =>(
+                            {allSubjectsInfo.map((item,index) =>(
                               <tr key={index}>
                                 <td>
                                   <div className="form-check">
@@ -100,10 +101,22 @@ function AllSubject(){
                                   </div>
                                 </td>
                               </tr>
-                            )): (
-                              <h6>No data available in table</h6>
-                             )}
+                            ))}
                             </tbody>
+                          ):
+                          (<tr><td colspan="5"><h6 className="text-center">No data available in table</h6></td></tr>)
+                        :(<tr>
+                          <td colspan="5">
+                        <Loader
+                        className = "student-detail-loader"
+                      type="MutatingDots"
+                      color="#fea801"
+                      height={100}
+                      width={100}
+
+                        />
+                        </td>
+                        </tr>)}
                           </table>
                         </div>
                       </div>

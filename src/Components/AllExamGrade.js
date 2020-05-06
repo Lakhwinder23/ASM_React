@@ -1,4 +1,6 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { useSelector,useDispatch } from 'react-redux'
 import {fetchAllGrades} from '../Redux/AllGrade/AllGradeActions'
 
@@ -77,8 +79,9 @@ const allGrade = useSelector(state =>state.AllGrade)
                                 <th />
                               </tr>
                             </thead>
+                            {allGrade.all_grade_loading === false ? allGradeInfo && allGradeInfo.length > 0 ? (
                             <tbody>
-                            {allGradeInfo && allGradeInfo.length > 0 ? allGradeInfo.map((item,index) =>(
+                            {allGradeInfo.map((item,index) =>(
                               <tr>
                                 <td>
                                   <div className="form-check">
@@ -103,10 +106,22 @@ const allGrade = useSelector(state =>state.AllGrade)
                                   </div>
                                 </td>
                               </tr>
-                            )) :  (
-                              <h6>No data available in table</h6>
-                             )}
+                            ))}
                             </tbody>
+                          ):
+                          (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
+                        :(<tr>
+                          <td colspan="6">
+                        <Loader
+                        className = "student-detail-loader"
+                      type="MutatingDots"
+                      color="#fea801"
+                      height={100}
+                      width={100}
+
+                        />
+                        </td>
+                        </tr>)}
                           </table>
                         </div>
                       </div>

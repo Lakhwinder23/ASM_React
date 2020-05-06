@@ -52,7 +52,7 @@ export const fetchAllExamsResult = (exams_result_info) =>{
     .then(response => response.json())
     .then(exams_result_res =>{
       const all_exams_result_success = exams_result_res
-      //dispatch(fetchAllExamsResultSuccess(all_exams_result_success))
+      dispatch(fetchAllExamsResultSuccess(all_exams_result_success))
     })
     .catch(error => {
       const errorMsg = error

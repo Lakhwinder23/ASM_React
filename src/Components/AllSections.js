@@ -102,8 +102,9 @@ function AllSections() {
                         <th />
                       </tr>
                     </thead>
+                    {sections.all_sections_loading === false ? allSectionsInfo && allSectionsInfo.length > 0 ? (
                     <tbody>
-                    {allSectionsInfo ? allSectionsInfo.map((item,index) =>(
+                    {allSectionsInfo.map((item,index) =>(
                       <tr key={index}>
                         <td>
                           <div className="form-check">
@@ -127,10 +128,22 @@ function AllSections() {
                           </div>
                         </td>
                       </tr>
-                    )) : (
-                      <h6>No data available in table</h6>
-                    ) }
+                    ))}
                     </tbody>
+                  ):
+                  (<tr><td colspan="5"><h6 className="text-center">No data available in table</h6></td></tr>)
+                :(<tr>
+                  <td colspan="5">
+                <Loader
+                className = "student-detail-loader"
+              type="MutatingDots"
+              color="#fea801"
+              height={100}
+              width={100}
+
+                />
+                </td>
+                </tr>)}
                   </table>
                 </div>
               </div>
