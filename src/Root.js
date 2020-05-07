@@ -19,9 +19,13 @@ import ParentsDetail from './Components/ParentsDetail';
 import AddParents from './Components/AddParents';
 import AllBooks from './Components/AllBooks';
 import AddBook from './Components/AddBook';
+import AddFees from './Components/AddFees';
+import AllFees from './Components/AllFees';
+import AddFeesCollection from './Components/AddFeesCollection';
 import AllFeesCollection from './Components/AllFeesCollection';
 import AllExpense from './Components/AllExpense';
 import AddExpense from './Components/AddExpense';
+import AddExpenseType from './Components/AddExpenseType';
 import AllClasses from './Components/AllClasses';
 import Subject from './Components/Subject';
 import ClassRoutine from './Components/ClassRoutine';
@@ -83,9 +87,13 @@ function Root(){
                  <Route path="/add-parents" component={AddParents} />
                  <Route path="/all-books" component={AllBooks} />
                  <Route path="/add-book" component={AddBook} />
-                 <Route path="/all-fees" component={AllFeesCollection} />
+                 <Route path="/add-fees" component={AddFees} />
+                 <Route path="/all-fees" component={AllFees} />
+                 <Route path="/add-fees-collection" component={AddFeesCollection} />
+                 <Route path="/all-fees-collection" component={AllFeesCollection} />
                  <Route path="/all-expense" component={AllExpense} />
                  <Route path="/add-expense" component={AddExpense} />
+                 <Route path="/add-expense-type" component={AddExpenseType} />
                  <Route path="/all-classes" component={AllClasses} />
                  <Route path="/subject" component={Subject} />
                  <Route path="/class-routine" component={ClassRoutine} />

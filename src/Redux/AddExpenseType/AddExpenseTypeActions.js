@@ -28,7 +28,7 @@ export const addExpenseTypeFaliure = (error) =>{
 
 export const addExpenseType = (expenseType_info) =>{
     return(dispatch) => {
-      dispatch(addExpenseRequest(expenseType_info))
+      dispatch(addExpenseTypeRequest(expenseType_info))
       const url =`${config.api_root}/add_expense_type`;
       const request_option = {
       method: "POST",
@@ -38,18 +38,18 @@ export const addExpenseType = (expenseType_info) =>{
               'Content-Type': 'application/json'
           },
       body: JSON.stringify({
-        ExpenseType : expenseType.expenseType
+        ExpenseType : expenseType_info.expenseType
       })
     }
     fetch(url, request_option)
     .then(response => response.json())
     .then(add_expenseType_res =>{
       const add_expenseType_success = add_expenseType_res
-      dispatch(addExpenseSuccess(add_expenseType_success))
+      dispatch(addExpenseTypeSuccess(add_expenseType_success))
     })
     .catch(error => {
       const errorMsg = error
-      dispatch(addExpenseFaliure(errorMsg))
+      dispatch(addExpenseTypeFaliure(errorMsg))
     })
     }
 }

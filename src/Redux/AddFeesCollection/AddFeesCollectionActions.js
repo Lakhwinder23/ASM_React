@@ -28,7 +28,7 @@ export const addFeesCollectionFaliure = (error) =>{
 
 export const addFeesCollection = (fees_collection_info) =>{
     return(dispatch) => {
-      dispatch(addFeesRequest(fees_collection_info))
+      dispatch(addFeesCollectionRequest(fees_collection_info))
       const url =`${config.api_root}/add_fee_collection`;
       const request_option = {
       method: "POST",
@@ -45,11 +45,11 @@ export const addFeesCollection = (fees_collection_info) =>{
     .then(response => response.json())
     .then(add_fees_collection_res =>{
       const add_fees_collection_success = add_fees_collection_res
-      dispatch(addFeesSuccess(add_fees_collection_success))
+      dispatch(addFeesCollectionSuccess(add_fees_collection_success))
     })
     .catch(error => {
       const errorMsg = error
-      dispatch(addFeesFaliure(errorMsg))
+      dispatch(addFeesCollectionFaliure(errorMsg))
     })
     }
 }

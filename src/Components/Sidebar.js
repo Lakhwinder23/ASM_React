@@ -231,8 +231,24 @@ else if(selected_value == 'page-add-book'){
 else if(selected_value == 'page-all-fees'){
   window.location='/all-fees';
 }
+else if(selected_value == 'page-add-fees-collection'){
+  window.location='/add-fees-collection';
+}
+else if(selected_value == 'page-all-fees-collection'){
+  window.location='/all-fees-collection';
+}
+
 else if(selected_value == 'page-all-expense'){
   window.location='/all-expense';
+}
+else if(selected_value == 'page-add-expense'){
+  window.location='/add-expense';
+}
+else if(selected_value == 'page-add-expense-type'){
+  window.location='/add-expense-type';
+}
+else if(selected_value == 'page-add-fees'){
+  window.location='/add-fees';
 }
 else if(selected_value == 'page-all-classes'){
   window.location='/all-classes';
@@ -429,8 +445,20 @@ else if(selected_value == 'page-Progress-Bar'){
                   <a href="/all-fees" className="nav-link"><i className="flaticon-technological" /><span >Acconunt</span></a>
                   { this.state.displayAccount == true ? (
                   <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-fees")}>
-                      <a href="/all-fees" className="nav-link"><i className="fas fa-angle-right" />All Fees
+                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-fees")}>
+                    <a href="/add-fees" className="nav-link"><i className="fas fa-angle-right" />Add Fees
+                      </a>
+                  </li>
+                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-fees")}>
+                    <a href="/all-fees" className="nav-link"><i className="fas fa-angle-right" />All Fees
+                      </a>
+                  </li>
+                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-fees-collection")}>
+                    <a href="/add-fees-collection" className="nav-link"><i className="fas fa-angle-right" />Add Fees
+                      Collection</a>
+                  </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-fees-collection")}>
+                      <a href="/all-fees-collection" className="nav-link"><i className="fas fa-angle-right" />All Fees
                         Collection</a>
                     </li>
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-expense")}>
@@ -439,6 +467,10 @@ else if(selected_value == 'page-Progress-Bar'){
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-expense")}>
                       <a href="/add-expense" className="nav-link"><i className="fas fa-angle-right" />Add
                         Expenses</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-expense-type")}>
+                      <a href="/add-expense-type" className="nav-link"><i className="fas fa-angle-right" />Add
+                        Expenses Type</a>
                     </li>
                   </ul>
                   ): (
