@@ -29,7 +29,7 @@ export const addMessageFaliure = (error) =>{
 export const addMessage = (message_info) =>{
     return(dispatch) => {
       dispatch(addMessageRequest(message_info))
-      const url =`${config.api_root}/add_book`;
+      const url =`${config.api_root}/add_message`;
       const request_option = {
       method: "POST",
       headers: {

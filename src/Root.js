@@ -23,6 +23,7 @@ import AddFees from './Components/AddFees';
 import AllFees from './Components/AllFees';
 import AddFeesCollection from './Components/AddFeesCollection';
 import AllFeesCollection from './Components/AllFeesCollection';
+import AcceptFees from './Components/AcceptFees';
 import AllExpense from './Components/AllExpense';
 import AddExpense from './Components/AddExpense';
 import AddExpenseType from './Components/AddExpenseType';
@@ -39,6 +40,8 @@ import Transport from './Components/Transport';
 import Hostel from './Components/Hostel';
 import Notice from './Components/Notice';
 import Message from './Components/Message';
+import AllMessages from './Components/AllMessages';
+
 import Button from './Components/Button';
 import Grid from './Components/Grid';
 import Tab from './Components/Tab';
@@ -91,6 +94,7 @@ function Root(){
                  <Route path="/all-fees" component={AllFees} />
                  <Route path="/add-fees-collection" component={AddFeesCollection} />
                  <Route path="/all-fees-collection" component={AllFeesCollection} />
+                 <Route path="/accept-fees" component={AcceptFees} />
                  <Route path="/all-expense" component={AllExpense} />
                  <Route path="/add-expense" component={AddExpense} />
                  <Route path="/add-expense-type" component={AddExpenseType} />
@@ -106,6 +110,8 @@ function Root(){
                  <Route path="/hostal" component={Hostel} />
                  <Route path="/notice-board" component={Notice} />
                  <Route path="/message" component={Message} />
+                 <Route path="/all-message" component={AllMessages} />
+
                  <Route path="/grid" component={Grid} />
                  <Route path="/tab" component={Tab} />
                  <Route path="/Progress-Bar" component={ProgressBar} />

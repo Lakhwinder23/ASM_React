@@ -89,7 +89,7 @@ const rootReducer = combineReducers({
       AddGrade:AddGradeReducers,
       AddVehicle:AddVehicleReducers,
       AddBook:AddBookReducers,
-      AddMessag:AddMessageReducers,
+      AddMessage:AddMessageReducers,
       AcceptFees:AcceptFeesReducers,
       AssignVehicle:AssignVehicleReducers,
       AssignBook:AssignBookReducers,

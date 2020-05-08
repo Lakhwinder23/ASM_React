@@ -237,6 +237,9 @@ else if(selected_value == 'page-add-fees-collection'){
 else if(selected_value == 'page-all-fees-collection'){
   window.location='/all-fees-collection';
 }
+else if(selected_value == 'page-accept-fees'){
+  window.location='/accept-fees';
+}
 
 else if(selected_value == 'page-all-expense'){
   window.location='/all-expense';
@@ -461,8 +464,12 @@ else if(selected_value == 'page-Progress-Bar'){
                       <a href="/all-fees-collection" className="nav-link"><i className="fas fa-angle-right" />All Fees
                         Collection</a>
                     </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-accept-fees")}>
+                      <a href="/accept-fees" className="nav-link"><i className="fas fa-angle-right" />Accept
+                        Fees</a>
+                    </li>
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-expense")}>
-                      <a href="/all-expense" className="nav-link"><i className="fas fa-angle-right" />Expenses</a>
+                      <a href="/all-expense" className="nav-link"><i className="fas fa-angle-right" />All Expenses</a>
                     </li>
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-expense")}>
                       <a href="/add-expense" className="nav-link"><i className="fas fa-angle-right" />Add
