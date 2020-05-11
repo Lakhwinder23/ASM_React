@@ -29,7 +29,7 @@ export const assignVehicleFaliure = (error) =>{
 export const assignVehicle = (assign_vehicle_info) =>{
     return(dispatch) => {
       dispatch(assignVehicleRequest(assign_vehicle_info))
-      const url =`${config.api_root}/add_book`;
+      const url =`${config.api_root}/assign_vehicle`;
       const request_option = {
       method: "POST",
       headers: {

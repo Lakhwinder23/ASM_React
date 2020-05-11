@@ -1,8 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import Footer from './Footer';
 
 function AllTransport() {
+    const [activestate,setActivestate] = useState('')
+
+  //callbackFunction function start
+    const callbackFunction = (childData) => {
+      setActivestate(childData)
+  }
+  //callbackFunction function End
         return (
-            <div className="col-8-xxxl col-12">
+          <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
+      {/* Header Menu Area Start Here */}
+     <Header parentCallback = {() =>callbackFunction()}/>
+      {/* Header Menu Area End Here */}
+      {/* Page Area Start Here */}
+      <div className="dashboard-page-one">
+        {/* Sidebar Area Start Here */}
+        <Sidebar />
+        {/* Sidebar Area End Here */}
+        <div className="dashboard-content-one">
+          {/* Breadcubs Area Start Here */}
+          <div className="breadcrumbs-area">
+            <h3>Transport</h3>
+            <ul>
+              <li>
+                <a href="/">Home</a>
+              </li>
+              <li>All Vehicle</li>
+            </ul>
+          </div>
+          {/* Breadcubs Area End Here */}
+          {/* All Transport List  Area Start Here */}
                 <div className="card height-auto">
                   <div className="card-body">
                     <div className="heading-layout1">
@@ -441,7 +472,12 @@ function AllTransport() {
                     </div>
                   </div>
                 </div>
-              </div>
+                {/* All Transport List Area End Here */}
+                <Footer />
+                </div>
+                </div>
+                {/* Page Area End Here */}
+                </div>
         );
 }
 

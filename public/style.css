@@ -1136,6 +1136,9 @@ h6 {
   -o-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
 }
+.all-vehicle-search .fw-btn-fill{
+  padding: 0px !important;
+}
 .fw-btn-fill:hover {
   background: #042954;
 }

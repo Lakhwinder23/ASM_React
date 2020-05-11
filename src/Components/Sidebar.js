@@ -12,9 +12,11 @@ class Sidebar extends Component {
       displayAccount : false,
       displayclass : false,
       displayhostel : false,
+      displaytransport:false,
       displaymedium:false,
       displayexam : false,
       displayuielements : false,
+      displaymessage:false,
       displayattendence:false,
       displayprofession:false
     };
@@ -22,10 +24,12 @@ class Sidebar extends Component {
  this.showDropdownMenu = this.showDropdownMenu.bind(this);
  this.hideDropdownDashboard = this.hideDropdownDashboard.bind(this);
  this.hideDropdownuielements = this.hideDropdownuielements.bind(this);
+ this.hideDropdownmessage = this.hideDropdownmessage.bind(this);
  this.hideDropdownexam = this.hideDropdownexam.bind(this);
  this.hideDropdownAccount = this.hideDropdownAccount.bind(this);
  this.hideDropdownclass = this.hideDropdownclass.bind(this);
  this.hideDropdownhostel = this.hideDropdownhostel.bind(this);
+ this.hideDropdowntransport = this.hideDropdowntransport.bind(this);
  this.hideDropdownmedium = this.hideDropdownmedium.bind(this);
  this.hideDropdownprofession = this.hideDropdownprofession.bind(this);
  this.hideDropdownteachers = this.hideDropdownteachers.bind(this);
@@ -83,6 +87,11 @@ class Sidebar extends Component {
       document.addEventListener('click', this.hideDropdownhostel);
       });
   }
+  else if(value1 == 'transport'){
+    return this.setState({ displaytransport: true }, () => {
+      document.addEventListener('click', this.hideDropdowntransport);
+      });
+  }
   else if(value1 == 'profession'){
     return this.setState({ displayprofession: true }, () => {
       document.addEventListener('click', this.hideDropdownprofession);
@@ -103,12 +112,23 @@ class Sidebar extends Component {
       document.addEventListener('click', this.hideDropdownuielements);
       });
   }
+  else if(value1 == 'message'){
+    return this.setState({ displaymessage: true }, () => {
+      document.addEventListener('click', this.hideDropdownmessage);
+      });
+  }
   }
   hideDropdownuielements() {
     this.setState({ displayuielements: false }, () => {
       document.removeEventListener('click', this.hideDropdownuielements);
     });
   }
+  hideDropdownmessage() {
+    this.setState({ displaymessage: false }, () => {
+      document.removeEventListener('click', this.hideDropdownmessage);
+    });
+  }
+
   hideDropdownexam() {
     this.setState({ displayexam: false }, () => {
       document.removeEventListener('click', this.hideDropdownexam);
@@ -122,6 +142,11 @@ class Sidebar extends Component {
   hideDropdownhostel() {
     this.setState({ displayhostel: false }, () => {
       document.removeEventListener('click', this.hideDropdownhostel);
+    });
+  }
+  hideDropdowntransport() {
+    this.setState({ displaytransport: false }, () => {
+      document.removeEventListener('click', this.hideDropdowntransport);
     });
   }
   hideDropdownmedium() {
@@ -271,6 +296,18 @@ else if(selected_value == 'page-all-mediums'){
 else if(selected_value == 'page-add-medium'){
   window.location='/add-medium';
 }
+else if(selected_value == 'page-add-vehicle'){
+  window.location='/add-vehicle';
+}
+else if(selected_value == 'page-all-vehicle'){
+  window.location='/all-vehicle';
+}
+else if(selected_value == 'page-add-transport'){
+  window.location='/add-transport';
+}
+else if(selected_value == 'page-all-transport'){
+  window.location='/all-transport';
+}
 else if(selected_value == 'page-all-hostels'){
   window.location='/all-hostel';
 }
@@ -306,6 +343,12 @@ else if(selected_value == 'page-exam-grade'){
 }
 else if(selected_value == 'page-exam-result'){
   window.location='/exam-result';
+}
+else if(selected_value == 'page-add-message'){
+  window.location='/add-message';
+}
+else if(selected_value == 'page-all-message'){
+  window.location='/all-message';
 }
 else if(selected_value == 'page-button'){
   window.location='/button';
@@ -597,8 +640,31 @@ else if(selected_value == 'page-Progress-Bar'){
                   )
                   }
                 </li>
-                <li className="nav-item">
-                  <a href="/transport" className="nav-link"><i className="flaticon-bus-side-view" /><span>Transport</span></a>
+                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"transport")}>
+                  <a href="/" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Transport</span></a>
+                  { this.state.displaytransport == true ? (
+                  <ul className="nav sub-group-menu">
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-vehicle")}>
+                      <a href="/add-vehicle" className="nav-link"><i className="fas fa-angle-right" />Add
+                        Vehicle</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-vehicle")}>
+                      <a href="/all-vehicle" className="nav-link"><i className="fas fa-angle-right" />All
+                        Vehicle</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-transport")}>
+                      <a href="/add-transport" className="nav-link"><i className="fas fa-angle-right" />Add Transport
+                      </a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-transport")}>
+                      <a href="/all-transport" className="nav-link"><i className="fas fa-angle-right" />All Transport
+                      </a>
+                    </li>
+                  </ul>
+                  ): (
+                    null
+                  )
+                  }
                 </li>
                 <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"hostel")}>
                   <a href="/all-hostels" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Hostel</span></a>
@@ -633,8 +699,22 @@ else if(selected_value == 'page-Progress-Bar'){
                 <li className="nav-item">
                   <a href="/notice-board" className="nav-link"><i className="flaticon-script" /><span>Notice</span></a>
                 </li>
-                <li className="nav-item">
-                  <a href="/message" className="nav-link"><i className="flaticon-chat" /><span>Messeage</span></a>
+                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"message")}>
+                  <a href="#" className="nav-link"><i className="flaticon-menu-1" /><span >Message</span></a>
+                  { this.state.displaymessage == true ? (
+                  <ul className="nav sub-group-menu">
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-message")}>
+                      <a href="/add-message" className="nav-link"><i className="fas fa-angle-right" />Add Message</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-message")}>
+                      <a href="/all-message" className="nav-link"><i className="fas fa-angle-right" />All Message</a>
+                    </li>
+
+                  </ul>
+                   ): (
+                    null
+                  )
+                  }
                 </li>
                 <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"ui-elements")}>
                   <a href="#" className="nav-link"><i className="flaticon-menu-1" /><span >UI Elements</span></a>

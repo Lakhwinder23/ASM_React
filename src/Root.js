@@ -63,6 +63,10 @@ import AssignClass from './Components/AssignClass';
 import AssignIncharge from './Components/AssignIncharge';
 import AssignRoom from './Components/AssignRoom';
 import AddAttendence from './Components/AddAttendence';
+import AddVehicle from './Components/AddVehicle';
+import AllVehicles from './Components/AllVehicles';
+import AddTransport from './Components/AddTransport';
+import AllTransport from './Components/AllTransport';
 
 
 
@@ -106,10 +110,14 @@ function Root(){
                  <Route path="/exam-grade" component={ExamGrade} />
                  <Route path="/exam-result" component={ExamResult} />
                  <Route path="/student-exam-result" component={AllExamResultOfStudent} />
-                 <Route path="/transport" component={Transport} />
+
+                  <Route path="/add-transport" component={AddTransport} />
+                 <Route path="/all-transport" component={AllTransport} />
+                 <Route path="/add-vehicle" component={AddVehicle} />
+                 <Route path="/all-vehicle" component={AllVehicles} />
                  <Route path="/hostal" component={Hostel} />
                  <Route path="/notice-board" component={Notice} />
-                 <Route path="/message" component={Message} />
+                 <Route path="/add-message" component={Message} />
                  <Route path="/all-message" component={AllMessages} />
 
                  <Route path="/grid" component={Grid} />

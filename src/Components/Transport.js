@@ -25,7 +25,7 @@ function Transport() {
               <h3>Transport</h3>
               <ul>
                 <li>
-                  <a href="index-2.html">Home</a>
+                  <a href="/">Home</a>
                 </li>
                 <li>Transport</li>
               </ul>

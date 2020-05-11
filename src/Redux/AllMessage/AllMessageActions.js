@@ -26,13 +26,13 @@ export const fetchAllMessageFaliure = (error) =>{
   }
 }
 
-export const fetchAllBook = (message_info) =>{
+export const fetchAllMessage = (message_info) =>{
     return(dispatch) => {
       dispatch(fetchAllMessageRequest(message_info))
       const userId = message_info != undefined && message_info.userId != undefined ? message_info.userId : undefined
       const createdById = message_info != undefined && message_info.createdById != undefined  ? message_info.createdById : undefined
 
-      const url =`${config.api_root}/get_all_book`;
+      const url =`${config.api_root}/get_all_message`;
       const request_option = {
       method: "POST",
       headers: {

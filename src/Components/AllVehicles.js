@@ -10,43 +10,56 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux'
-import { fetchAllMessage } from '../Redux/AllMessage/AllMessageActions'
+import { fetchAllVehicle } from '../Redux/AllVehicle/AllVehicleActions'
 
-function AllMessages() {
+function AllVehicles() {
   // store data access start
-const allMessageData = useSelector(state =>state.AllMessage)
+const allVehicleData = useSelector(state =>state.AllVehicle)
 // store data access End
   const dispatch = useDispatch()  // for accessing the redux function
 
   // component all states define start
-  const [allMessageInfo,setMessageInfo] = useState([])
+  const [allVehicleInfo,setVehicleInfo] = useState([])
   const [activestate,setActivestate] = useState('')
+  const [inputValues,setInputValues] = useState({vehicleNumber:'',
+                                                  vehicleCode:'',
+                                                  totalSeats:'',
+                                                  busSize:''
+                                                    })
   // component all states define End
 
    //hooks start
-   // fetch allFees and teachers api hook start
+   // fetch allVehicle api hook start
    useEffect(() =>{
-     dispatch(fetchAllMessage())
+     dispatch(fetchAllVehicle())
    },[dispatch])
-// fetch allFees and teachers api hook End
+// fetch allVehicle api hook End
 
-// add data of allFees api into constant,hook start
+// add data of allVehicle api into constant,hook start
    useMemo(() =>{
-     if(allMessageData && allMessageData.all_message && allMessageData.all_message.result && allMessageData.all_message.success === true){
-       setMessageInfo(allMessageData.all_message.result)
+     if(allVehicleData && allVehicleData.all_vehicle && allVehicleData.all_vehicle.result && allVehicleData.all_vehicle.success === true){
+       setVehicleInfo(allVehicleData.all_vehicle.result)
      }
-   },[allMessageData])
-// add data of allFees api into constant,hook End
+   },[allVehicleData])
+// add data of allVehicle api into constant,hook End
 
 
    //hooks end
 
 // component function start
+//vehicleSearchHandler function start
+const vehicleSearchHandler = (event) =>{
+event.preventDefault()
+const vehicle_info = inputValues;
+  dispatch(fetchAllVehicle(vehicle_info))
+}
+//vehicleSearchHandler function End
 
+//callbackFunction function start
   const callbackFunction = (childData) => {
     setActivestate(childData)
 }
-
+//callbackFunction function End
 // component function end
         return (
           <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
@@ -61,12 +74,12 @@ const allMessageData = useSelector(state =>state.AllMessage)
         <div className="dashboard-content-one">
           {/* Breadcubs Area Start Here */}
           <div className="breadcrumbs-area">
-            <h3>Messaging</h3>
+            <h3>Transport</h3>
             <ul>
               <li>
                 <a href="/">Home</a>
               </li>
-              <li>All Message</li>
+              <li>All Vehicle</li>
             </ul>
           </div>
           {/* Breadcubs Area End Here */}
@@ -75,7 +88,7 @@ const allMessageData = useSelector(state =>state.AllMessage)
                    <div className="card-body">
                      <div className="heading-layout1">
                        <div className="item-title">
-                         <h3>All Message Lists</h3>
+                         <h3>All Vehicle Lists</h3>
                        </div>
                        <div className="dropdown">
                          <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -86,16 +99,21 @@ const allMessageData = useSelector(state =>state.AllMessage)
                          </div>
                        </div>
                      </div>
-                     <form className="mg-b-20">
+                     <form className="mg-b-20" onSubmit = {(e) =>vehicleSearchHandler(e)}>
                        <div className="row gutters-8">
-                         <div className="col-lg-4 col-12 form-group">
-                          <input type="text" placeholder="Search by Sender ..." className="form-control" />
+                         <div className="col-lg-3 col-12 form-group">
+                          <input type="text" value={inputValues.vehicleNumber} onChange={(e) =>setInputValues({...inputValues,vehicleNumber:e.target.value})} placeholder="Search by vehicle Number ..." className="form-control" />
                          </div>
-                         <div className="col-lg-4 col-12 form-group">
-                          <input type="text" placeholder="Search by Receiver" className="form-control" />
+                         <div className="col-lg-3 col-12 form-group">
+                          <input type="text" value={inputValues.vehicleCode} onChange={(e) =>setInputValues({...inputValues,vehicleCode:e.target.value})} placeholder="Search by vehicle Code..." className="form-control" />
                          </div>
-                         <div className="col-lg-2 col-12 form-group"></div>
+                         <div className="col-lg-3 col-12 form-group">
+                          <input type="text" value={inputValues.totalSeats} onChange={(e) =>setInputValues({...inputValues,totalSeats:e.target.value})} placeholder="Search by Total Seats..." className="form-control" />
+                         </div>
                          <div className="col-lg-2 col-12 form-group">
+                          <input type="text" value={inputValues.busSize} onChange={(e) =>setInputValues({...inputValues,busSize:e.target.value})} placeholder="Search by Bus Size..." className="form-control" />
+                         </div>
+                         <div className="col-lg-1 col-12 form-group all-vehicle-search">
                            <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
                          </div>
                        </div>
@@ -110,16 +128,16 @@ const allMessageData = useSelector(state =>state.AllMessage)
                                  <label className="form-check-label">ID</label>
                                </div>
                              </th>
-                             <th>Sender</th>
-                             <th>Receiver</th>
-                             <th>Title</th>
-                             <th>Message</th>
+                             <th>Vehicle Number</th>
+                             <th>Vehicle Code</th>
+                             <th>Total Seats</th>
+                             <th>Bus Size</th>
                              <th />
                            </tr>
                          </thead>
-                         {allMessageData.all_message_loading === false ? allMessageInfo && allMessageInfo.length > 0 ? (
+                         {allVehicleData.all_vehicle_loading === false ? allVehicleInfo && allVehicleInfo.length > 0 ? (
                          <tbody>
-                         {allMessageInfo.map((item,index) =>(
+                         {allVehicleInfo.map((item,index) =>(
                            <tr key={index}>
                              <td>
                                <div className="form-check">
@@ -127,10 +145,10 @@ const allMessageData = useSelector(state =>state.AllMessage)
                                  <label className="form-check-label">{item.id}</label>
                                </div>
                              </td>
-                              <td>{item.CreatedById}</td>
-                             <td>{item.UserId}</td>
-                             <td>{item.title}</td>
-                             <td>{item.message}</td>
+                              <td>{item.VehicleNumber}</td>
+                             <td>{item.VehicleCode}</td>
+                             <td>{item.TotalSeats}</td>
+                             <td>{item.BusSize}</td>
                              <td>
                                <div className="dropdown">
                                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -173,4 +191,4 @@ const allMessageData = useSelector(state =>state.AllMessage)
         );
 }
 
-export default AllMessages;
+export default AllVehicles;

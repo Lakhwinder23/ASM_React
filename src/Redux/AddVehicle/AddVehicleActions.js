@@ -26,7 +26,7 @@ export const addVehicleFaliure = (error) =>{
   }
 }
 
-export const addGrade = (vehicle_info) =>{
+export const addVehicle = (vehicle_info) =>{
     return(dispatch) => {
       dispatch(addVehicleRequest(vehicle_info))
       const url =`${config.api_root}/add_vechile`;
@@ -38,10 +38,9 @@ export const addGrade = (vehicle_info) =>{
               'Content-Type': 'application/json'
           },
       body: JSON.stringify({
-        VehicleNumber : vehicle_info.VehicleNumber,
-        VehicleCode : vehicle_info.VehicleCode,
-        TotalSeats  : vehicle_info.TotalSeats ,
-        BusSize  : vehicle_info.BusSize
+        VehicleNumber : vehicle_info.vehicleNumber,
+        TotalSeats  : vehicle_info.totalSeats ,
+        BusSize  : vehicle_info.busSize
       })
     }
     fetch(url, request_option)
