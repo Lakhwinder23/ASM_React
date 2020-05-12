@@ -38,15 +38,15 @@ export const addBook = (book_info) =>{
               'Content-Type': 'application/json'
           },
       body: JSON.stringify({
-        BookName : book_info.BookName,
-        TotalBook : book_info.TotalBook,
-        Writter  : book_info.Writter ,
-        Published  : book_info.Published,
-        Creatingdate  : book_info.Creatingdate,
-        BookType  : book_info.BookType,
-        Language  : book_info.Language,
-        ClassId  : book_info.ClassId == undefined ? undefined : book_info.ClassId,
-        SubjectId  : book_info.SubjectId == undefined ? undefined : book_info.SubjectId
+        BookName : book_info.bookName,
+        TotalBook : book_info.totalBook,
+        Writter  : book_info.writter ,
+        Published  : book_info.published,
+        Creatingdate  : book_info.creatingdate,
+        BookType  : book_info.bookType,
+        Language  : book_info.language,
+        ClassId  : book_info.classId == undefined ? undefined : book_info.classId,
+        SubjectId  : book_info.subjectId == undefined ? undefined : book_info.subjectId
 
 
       })
