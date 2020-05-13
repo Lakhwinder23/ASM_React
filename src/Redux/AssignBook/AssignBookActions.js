@@ -29,7 +29,7 @@ export const assignBookFaliure = (error) =>{
 export const assignBook = (assign_book_info) =>{
     return(dispatch) => {
       dispatch(assignBookRequest(assign_book_info))
-      const url =`${config.api_root}/add_book`;
+      const url =`${config.api_root}/assign_book`;
       const request_option = {
       method: "POST",
       headers: {

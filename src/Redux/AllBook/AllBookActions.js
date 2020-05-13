@@ -53,7 +53,7 @@ export const fetchAllBook = (book_info) =>{
     }
     fetch(url, request_option)
     .then(response => response.json())
-    .then(vehicle_res =>{
+    .then(book_res =>{
       const all_book_success = book_res
       dispatch(fetchAllBookSuccess(all_book_success))
     })

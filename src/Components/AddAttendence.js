@@ -9,10 +9,13 @@ import { addAttendence } from '../Redux/AddAttendence/AddAttendenceActions';
 import { fetchAllClasses } from '../Redux/AllClasses/AllClassesActions';
 import { fetchAllSections } from '../Redux/AllSections/AllSectionsActions';
 import { fetchAllTeachers } from '../Redux/AllTeachers/AllTeachersActions'
+import { fetchAllStudents } from '../Redux/AllStudents/AllStudentsActions'
 import {
   FormControl,
   FormGroup,
-  FormLabel
+  FormLabel,
+  Card,
+  Button
 } from "react-bootstrap";
 
 function AddAttendence(){
@@ -21,6 +24,7 @@ function AddAttendence(){
   const classes = useSelector(state =>state.AllClasses)
   const sections = useSelector(state =>state.AllSections)
   const teachers = useSelector(state =>state.AllTeachers)
+  const students = useSelector(state =>state.AllStudents)
   // store data access End
 
    const dispatch = useDispatch()  // for accessing the redux function
@@ -48,19 +52,30 @@ function AddAttendence(){
   const [mediumId,setMediumId] = useState('')
   const [teacherResult,setTeacherResult] = useState([])
   const [allTeachersInfo,setTeachersInfo] = useState([])
+  const [studentResult,setStudentResult] = useState([])
+  const [allStudentsInfo,setAllStudentsInfo] = useState([])
   console.log("mediumId",mediumId);
   console.log("allSectionsInfo",allSectionsInfo);
   console.log("allClassesInfo",allClassesInfo);
+  console.log("allStudentsInfo",allStudentsInfo);
    // component all states define End
 
    //hooks start
    useEffect(() =>{
      dispatch(fetchAllClasses())
      dispatch(fetchAllTeachers())
-     // const today =new Date()
-     // const date = today.getDate()+ '/' + (today.getMonth()+1) + '/' + today.getFullYear();
-     //
-     // setInputValues({...inputValues,date:date})
+     const today =new Date()
+     const month = today.getMonth()+1
+     console.log("month",month.toString().length)
+     if(month.toString().length == 1){
+       const date = today.getFullYear()+ '-' + '0'+(month) + '-' + today.getDate();
+        setInputValues({...inputValues,date:date})
+     }
+     else{
+       const date = today.getFullYear()+ '-' + (month) + '-' + today.getDate();
+        setInputValues({...inputValues,date:date})
+     }
+
    },[dispatch])
 
 
@@ -87,6 +102,28 @@ function AddAttendence(){
        setSectionsInfo(sections.all_sections.result)
      }
    },[sections.all_sections.result])
+
+   useMemo(() =>{
+     if(inputValues.classId !='' && inputValues.sectionId !=''){
+       const student_info = {
+         classId:inputValues.classId,
+         sectionId:inputValues.sectionId
+       }
+         dispatch(fetchAllStudents(student_info))
+     }
+   },[inputValues.classId,inputValues.sectionId])
+
+   useMemo(()=>{
+     if(students && students.all_students && students.all_students.result && students.all_students.success === true){
+       setStudentResult(students.all_students.result)
+     }
+   },[students])
+
+   useMemo(() =>{
+     if(studentResult && studentResult.data){
+       setAllStudentsInfo(studentResult.data)
+     }
+   },[studentResult])
 
    useMemo(()=>{
      if(teachers && teachers.all_teachers && teachers.all_teachers.result){
@@ -247,14 +284,28 @@ function AddAttendence(){
                             </FormGroup>
                         </div>
                         <div className="col-xl-3 col-lg-6 col-12 form-group">
-                          <label>Attendence Date *</label>
-                          <input type="Date" value={inputValues.date} onChange={(e) =>setInputValues({...inputValues,date:e.target.value})}  className="form-control" data-position="bottom right" required/>
-                          {error != null && error.Date ? (<h6 className="addStudent-error">*{JSON.stringify(error.Date).replace(/[\[\]"]+/g,"")}</h6>):null}
-                        </div>
-                        <div className="col-xl-3 col-lg-6 col-12 form-group">
                           <label>Present Student ID *</label>
                           <input type="text" value={inputValues.presentStudentIds} onChange={(e) =>setInputValues({...inputValues,presentStudentIds:e.target.value})}  className="form-control" required/>
                           {error != null && error.PresentStudentIds ? (<h6 className="addStudent-error">*{JSON.stringify(error.PresentStudentIds).replace(/[\[\]"]+/g,"")}</h6>):null}
+                        </div>
+                        <div className="col-12">
+                        <div className="row">
+                          <div className="col-4"></div>
+                          <div className="col-4">
+                          <Card>
+                            <Card.Img variant="top" src="/img/figure/admin.jpg" />
+                            <Card.Body>
+                            <Card.Title>Neha Saini</Card.Title>
+                            <Card.Text>
+                              123456789
+                            </Card.Text>
+                            <Button variant="danger">Absent</Button>
+                            <Button className="present-button" variant="success">Present</Button>
+                            </Card.Body>
+                          </Card>
+                          </div>
+                          <div className="col-4"></div>
+                        </div>
                         </div>
                         <div className="col-12 form-group mg-t-8">
                           <button type="submit" className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>

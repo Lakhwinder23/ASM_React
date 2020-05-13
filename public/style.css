@@ -4440,3 +4440,15 @@ label.parent-label {
     padding-bottom: 95px;
 }
 /* admission form style end */
+
+.card-img-top {
+  height: 215px !important;
+}
+.card .btn {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+}
+
+button.present-button.btn.btn-success {
+    margin-left: 65px;
+}

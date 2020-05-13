@@ -17,8 +17,14 @@ import TeacherPayment from './Components/TeacherPayment';
 import AllParents from './Components/AllParents';
 import ParentsDetail from './Components/ParentsDetail';
 import AddParents from './Components/AddParents';
+
+
 import AllBooks from './Components/AllBooks';
 import AddBook from './Components/AddBook';
+import AssignBook from './Components/AssignBook';
+import ReturnAssignBook from './Components/ReturnAssignBook';
+
+
 import AddFees from './Components/AddFees';
 import AllFees from './Components/AllFees';
 import AddFeesCollection from './Components/AddFeesCollection';
@@ -94,6 +100,8 @@ function Root(){
                  <Route path="/add-parents" component={AddParents} />
                  <Route path="/all-books" component={AllBooks} />
                  <Route path="/add-book" component={AddBook} />
+                 <Route path="/assign-book" component={AssignBook} />
+                 <Route path="/return-assign-book" component={ReturnAssignBook} />
                  <Route path="/add-fees" component={AddFees} />
                  <Route path="/all-fees" component={AllFees} />
                  <Route path="/add-fees-collection" component={AddFeesCollection} />

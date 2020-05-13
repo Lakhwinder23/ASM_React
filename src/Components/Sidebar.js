@@ -253,6 +253,12 @@ else if(selected_value == 'page-all-books'){
 else if(selected_value == 'page-add-book'){
   window.location='/add-book';
 }
+else if(selected_value == 'page-assign-book'){
+  window.location='/assign-book';
+}
+else if(selected_value == 'page-return-assign-book'){
+  window.location='/return-assign-book';
+}
 else if(selected_value == 'page-all-fees'){
   window.location='/all-fees';
 }
@@ -479,6 +485,14 @@ else if(selected_value == 'page-Progress-Bar'){
                     </li>
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-book")}>
                       <a href="/add-book" className="nav-link"><i className="fas fa-angle-right" />Add New
+                        Book</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-book")}>
+                      <a href="/assign-book" className="nav-link"><i className="fas fa-angle-right" />Assign
+                        Book</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-return-assign-book")}>
+                      <a href="/return-assign-book" className="nav-link"><i className="fas fa-angle-right" />Return Assign
                         Book</a>
                     </li>
                   </ul>
