@@ -15,7 +15,8 @@ import {
   FormGroup,
   FormLabel,
   Card,
-  Button
+  Button,
+  Form
 } from "react-bootstrap";
 
 function AddAttendence(){
@@ -54,10 +55,18 @@ function AddAttendence(){
   const [allTeachersInfo,setTeachersInfo] = useState([])
   const [studentResult,setStudentResult] = useState([])
   const [allStudentsInfo,setAllStudentsInfo] = useState([])
+  const [duplicate,setDuplicate] = useState([])
+  const [popStudentInfo,setPopStudentInfo] = useState([])
+  const [absentStudentInfo,setAbsentStudentInfo] = useState([])
+  const [presentStudentInfo,setPresentStudentInfo] = useState([])
+  const [presentStudentIds,setPresentStudentIds] = useState([])
   console.log("mediumId",mediumId);
   console.log("allSectionsInfo",allSectionsInfo);
-  console.log("allClassesInfo",allClassesInfo);
+  console.log("presentStudentIds",presentStudentIds.toString());
   console.log("allStudentsInfo",allStudentsInfo);
+  console.log("presentStudentInfo",presentStudentInfo);
+  console.log("absentStudentInfo",absentStudentInfo);
+  console.log("studentResult",studentResult);
    // component all states define End
 
    //hooks start
@@ -110,6 +119,9 @@ function AddAttendence(){
          sectionId:inputValues.sectionId
        }
          dispatch(fetchAllStudents(student_info))
+         setAbsentStudentInfo([])
+         setPresentStudentInfo([])
+         setPopStudentInfo([])
      }
    },[inputValues.classId,inputValues.sectionId])
 
@@ -124,6 +136,19 @@ function AddAttendence(){
        setAllStudentsInfo(studentResult.data)
      }
    },[studentResult])
+
+   useMemo(() =>{
+     if(studentResult && studentResult.data){
+       setDuplicate(studentResult.data)
+     }
+   },[studentResult])
+
+   useMemo(() =>{
+     if(allStudentsInfo && allStudentsInfo.length > 0 && popStudentInfo && popStudentInfo.length == 0){
+       setPopStudentInfo(allStudentsInfo[0])
+      allStudentsInfo.shift()
+     }
+   },[allStudentsInfo])
 
    useMemo(()=>{
      if(teachers && teachers.all_teachers && teachers.all_teachers.result){
@@ -151,6 +176,57 @@ function AddAttendence(){
 
   },[add_attendence_data.add_attendence])
 
+  useMemo(() =>{
+    if(absentStudentInfo && absentStudentInfo.length > 0 ){
+      if(allStudentsInfo && allStudentsInfo.length > 0){
+        setPopStudentInfo(allStudentsInfo[0])
+        const remainingallStudentsInfo = allStudentsInfo
+          remainingallStudentsInfo.shift()
+        setAllStudentsInfo(remainingallStudentsInfo)
+      }
+      else{
+        setPopStudentInfo([])
+      }
+    }
+  },[absentStudentInfo])
+
+  useMemo(() =>{
+    if(presentStudentInfo && presentStudentInfo.length > 0 ){
+      if(allStudentsInfo && allStudentsInfo.length > 0){
+        setPopStudentInfo(allStudentsInfo[0])
+        const remainingallStudentsInfo = allStudentsInfo
+          remainingallStudentsInfo.shift()
+        setAllStudentsInfo(remainingallStudentsInfo)
+      }
+      else{
+        setPopStudentInfo([])
+      }
+
+    }
+  },[presentStudentInfo])
+
+  // useMemo(() =>{
+  //   if(presentStudentIds && presentStudentIds.length > 0){
+  //     presentStudentIds.map((item,index) =>{
+  //       setPresentStudentInfo(presentStudentInfo.filter(({id}) =>id != presentStudentIds[index]))
+  //     })
+  //   }
+  // },[presentStudentIds])
+
+  useMemo(() =>{
+    if(presentStudentIds && presentStudentIds.length > 0 && presentStudentIds.length ==  presentStudentInfo.length){
+      const attendence_info = {
+        classId:inputValues.classId,
+        sectionId:inputValues.sectionId,
+        teacherId:inputValues.teacherId,
+        date:inputValues.date,
+        presentStudentIds:presentStudentIds.toString()
+      }
+        dispatch(addAttendence(attendence_info))
+    }
+
+  },[presentStudentIds])
+
   //hooks end
   const callbackFunction = (childData) => {
     setActivestate(childData)
@@ -173,10 +249,31 @@ function AddAttendence(){
     }
 
   }
+
+  const presentStudentHandler = (event) =>{
+      event.preventDefault()
+      const removedData = presentStudentInfo.filter(({ id }) =>id == event.target.value)
+    console.log("removedData",removedData)
+    setPresentStudentInfo(presentStudentInfo.filter(({ id }) =>id != event.target.value))
+     setAbsentStudentInfo([...absentStudentInfo,removedData[0]])
+  }
+
+  const absentStudentHandler = (event) =>{
+    event.preventDefault()
+    const removedData = absentStudentInfo.filter(({ id }) =>id == event.target.value)
+  console.log("removedData",removedData)
+  setAbsentStudentInfo(absentStudentInfo.filter(({ id }) =>id != event.target.value))
+   setPresentStudentInfo([...presentStudentInfo,removedData[0]])
+  }
     const addAttendenceHandler = (event) =>{
     event.preventDefault()
-    const attendence_info = inputValues;
-      dispatch(addAttendence(attendence_info))
+    if(presentStudentInfo && presentStudentInfo.length > 0){
+      let value = []
+      presentStudentInfo.map((item,index) =>{
+        value.push(item.id)
+      })
+      setPresentStudentIds(value)
+    }
   }
 
 
@@ -283,32 +380,90 @@ function AddAttendence(){
                               {error != null && error.TeacherId ? (<h6 className="addStudent-error">*{JSON.stringify(error.TeacherId).replace(/[\[\]"]+/g,"")}</h6>):null}
                             </FormGroup>
                         </div>
-                        <div className="col-xl-3 col-lg-6 col-12 form-group">
-                          <label>Present Student ID *</label>
-                          <input type="text" value={inputValues.presentStudentIds} onChange={(e) =>setInputValues({...inputValues,presentStudentIds:e.target.value})}  className="form-control" required/>
-                          {error != null && error.PresentStudentIds ? (<h6 className="addStudent-error">*{JSON.stringify(error.PresentStudentIds).replace(/[\[\]"]+/g,"")}</h6>):null}
-                        </div>
                         <div className="col-12">
                         <div className="row">
                           <div className="col-4"></div>
                           <div className="col-4">
-                          <Card>
-                            <Card.Img variant="top" src="/img/figure/admin.jpg" />
-                            <Card.Body>
-                            <Card.Title>Neha Saini</Card.Title>
-                            <Card.Text>
-                              123456789
-                            </Card.Text>
-                            <Button variant="danger">Absent</Button>
-                            <Button className="present-button" variant="success">Present</Button>
-                            </Card.Body>
-                          </Card>
+                          {students && students.all_students && students.all_students.success === false ?
+                              students.all_students.error ? students.all_students.error+" "+"of students" :null
+                             :popStudentInfo && Object.keys(popStudentInfo).length > 0 ? (
+                            <Card>
+                              <Card.Img variant="top" src="/img/figure/admin.jpg" />
+                              <Card.Body>
+                              <Card.Title>{popStudentInfo.StudentName}</Card.Title>
+                              <Card.Text>
+                                {popStudentInfo.RollNumber}
+                              </Card.Text>
+                              <Button variant="danger" onClick={(e) =>setAbsentStudentInfo([...absentStudentInfo,popStudentInfo])}>Absent</Button>
+                              <Button className="present-button" variant="success" onClick={(e) =>setPresentStudentInfo([...presentStudentInfo,popStudentInfo])}>Present</Button>
+                              </Card.Body>
+                            </Card>
+                          ):null}
                           </div>
                           <div className="col-4"></div>
                         </div>
                         </div>
+                        {allStudentsInfo &&
+                        allStudentsInfo.length == 0 &&
+                        popStudentInfo &&
+                        popStudentInfo.length == 0 ? (
+                          <div className="col-12 present-absent-info">
+                            <div className="row">
+                                <div className="col-2"></div>
+                                 <div className="col-3">
+                                 {presentStudentInfo &&
+                                   presentStudentInfo.length > 0 ?(
+                                 <>
+                                 <h4>Present Students</h4>
+                                 {presentStudentInfo.map((item,index) =>(
+                                   <Form.Group id="formGridCheckbox" key={index}>
+                                     <Form.Check
+                                     type="checkbox"
+                                     label={item.RollNumber}
+                                     name={item.RollNumber}
+                                     id={item.RollNumber}
+                                     value={item.id}
+                                     defaultChecked={true}
+                                     onClick={(e) =>presentStudentHandler(e)}
+                                     />
+                                   </Form.Group>
+                                 ))}
+                                 </>
+                                 ):null}
+                                 </div>
+
+                                <div className="col-2"></div>
+
+                                    <div className="col-3">
+                                    {absentStudentInfo &&
+                                      absentStudentInfo.length > 0 ?(
+                                    <>
+                                    <h4>Absent Students</h4>
+                                    {absentStudentInfo.map((item,index) =>(
+                                      <Form.Group id="formGridCheckbox" key={index}>
+                                        <Form.Check
+                                        type="checkbox"
+                                        label={item.RollNumber}
+                                        name={item.RollNumber}
+                                        id={item.RollNumber}
+                                        value={item.id}
+                                        defaultChecked={false}
+                                        onClick={(e) =>absentStudentHandler(e)}
+                                        />
+                                      </Form.Group>
+                                    ))}
+                                    </>
+                                    ):null}
+                                    </div>
+                                    <div className="col-2"></div>
+                            </div>
+                          </div>
+                        ) :null}
+
                         <div className="col-12 form-group mg-t-8">
+                        {allStudentsInfo && allStudentsInfo.length == 0 && popStudentInfo && popStudentInfo.length == 0 ? (
                           <button type="submit" className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+                        ):null}
                           <button type="reset" className="btn-fill-lg bg-blue-dark btn-hover-yellow" onClick={(e) =>resetHandler(e)}>Reset</button>
                         </div>
                       </div>

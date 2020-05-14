@@ -4452,3 +4452,8 @@ label.parent-label {
 button.present-button.btn.btn-success {
     margin-left: 65px;
 }
+
+.col-12.present-absent-info {
+    margin-bottom: 80px;
+    margin-top: 40px;
+}
