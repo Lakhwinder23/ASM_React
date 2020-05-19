@@ -146,7 +146,7 @@ function AllFeesCollection() {
                             <td>{item.SectionName}</td>
                             <td>{Object.keys(allFeesCollectionInfo[index])[3]}</td>
                             <td>${item.MonthFees}</td>
-                            {item.status == "paid" ? (
+                            {item.Status == "Paid" ? (
                               <td className="badge badge-pill badge-success d-block mg-t-8">{item.Status}</td>
                             ) : (
                               <td className="badge badge-pill badge-danger d-block mg-t-8">{item.Status}</td>

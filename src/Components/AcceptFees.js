@@ -5,27 +5,27 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
   FormControl,
   FormGroup,
-  FormLabel
+  FormLabel,
+  Form
 } from "react-bootstrap";
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
-import { addFees } from '../Redux/AddFees/AddFeesActions'
-import {fetchAllClasses} from '../Redux/AllClasses/AllClassesActions'
+import { acceptFees } from '../Redux/AcceptFees/AcceptFeesActions'
+import { fetchAllFeesCollection } from '../Redux/AllFeesCollection/AllFeesCollectionActions'
 function AcceptFees(){
   // store data access start
-const addFeesData = useSelector(state =>state.AddFees)
-const classes = useSelector(state =>state.AllClasses)
+const acceptFeesData = useSelector(state =>state.AcceptFees)
+const allFeesCollectionData = useSelector(state =>state.AllFeesCollection)
 // store data access End
   const dispatch = useDispatch()  // for accessing the redux function
 
   // component all states define start
-  const [classesResult,setClassesResult] = useState([])
-  const [allClassesInfo,setClassesInfo] = useState([])
+  const [allFeesCollectionResult,setFeesCollectionResult] = useState([])
+  const [allFeesCollectionInfo,setFeesCollectionInfo] = useState([])
   const [inputValues,setInputValues] = useState({
-                                          classId:"",
-                                          monthlyFees:"",
-                                          admissionFee:""
+                                          payId:"",
+                                          paymode:""
   })
   const [activestate,setActivestate] = useState('')
     const [error,setError] = useState(null)
@@ -33,49 +33,53 @@ const classes = useSelector(state =>state.AllClasses)
   // component all states define End
 
    //hooks start
-   // fetch classes and teachers api hook start
+   // fetch allFeesCollection api hook start
    useEffect(() =>{
-     dispatch(fetchAllClasses())
+     dispatch(fetchAllFeesCollection())
    },[dispatch])
-// fetch classes and teachers api hook End
+  // fetch allFeesCollection api hook End
 
-// add data of classes api into constant,hook start
+  // add data of allFeesCollection api into constant,hook start
    useMemo(() =>{
-     if(classes && classes.all_classes && classes.all_classes.result && classes.all_classes.success === true){
-       setClassesResult(classes.all_classes.result)
+     if(allFeesCollectionData && allFeesCollectionData.all_fees_collection && allFeesCollectionData.all_fees_collection.result && allFeesCollectionData.all_fees_collection.success === true){
+       setFeesCollectionResult(allFeesCollectionData.all_fees_collection.result)
      }
-   },[classes])
-// add data of classes api into constant,hook End
+   },[allFeesCollectionData])
+  // add data of allFeesCollection api into constant,hook End
 
-// when classesResult change add data into classInfo,hook start
+  // add data of allFeesCollection api into constant,hook start
+   useMemo(() =>{
+     if(allFeesCollectionResult && allFeesCollectionResult.data){
+       setFeesCollectionInfo(allFeesCollectionResult.data)
+     }
+   },[allFeesCollectionResult])
+  // add data of allFeesCollection api into constant,hook End
+
+
+// add data of acceptFees api into constant,hook start
    useMemo(()=>{
-     if(classesResult && classesResult.data){
-           setClassesInfo(classesResult.data)
+     if(acceptFeesData && acceptFeesData.accept_fees && acceptFeesData.accept_fees.error){
+       setError(acceptFeesData.accept_fees.error)
      }
-   },[classesResult])
-// when classesResult change add data into classInfo,hook End
+   },[acceptFeesData])
+// add data of acceptFees api into constant,hook End
 
-
-// add data of addFees api into constant,hook start
+// add data of acceptFees api into constant,hook start
    useMemo(()=>{
-     if(addFeesData && addFeesData.add_fees && addFeesData.add_fees.error){
-       setError(addFeesData.add_fees.error)
+     if(acceptFeesData && acceptFeesData.accept_fees && acceptFeesData.accept_fees.success){
+        setSuccessStatus(acceptFeesData.accept_fees.success)
      }
-     else if(addFeesData && addFeesData.add_fees && addFeesData.add_fees.success){
-        setSuccessStatus(addFeesData.add_fees.success)
-     }
-   },[addFeesData])
-// add data of addFees api into constant,hook End
-
+   },[acceptFeesData])
+// add data of acceptFees api into constant,hook End
    //hooks end
 
 // component function start
 
 // examHandler function start
-   const feesHandler = (event) =>{
+   const acceptfeesHandler = (event) =>{
    event.preventDefault()
-   const fees_info = inputValues;
-     dispatch(addFees(fees_info))
+   const accept_fees_info = inputValues;
+     dispatch(acceptFees(accept_fees_info))
  }
 // examHandler function End
 
@@ -116,7 +120,7 @@ const classes = useSelector(state =>state.AllClasses)
             {/* Breadcubs Area End Here */}
             {/* Add Expense Area Start Here */}
             <div className="card height-auto">
-            {addFeesData && addFeesData.add_fees_loading === false ? successStatus === false || successStatus === null  ? (
+            {acceptFeesData && acceptFeesData.accept_fees_loading === false ? successStatus === false || successStatus === null  ? (
               <div className="card-body">
                 <div className="heading-layout1">
                   <div className="item-title">
@@ -131,34 +135,92 @@ const classes = useSelector(state =>state.AllClasses)
                     </div>
                   </div>
                 </div>
-                <form className="new-added-form" onSubmit={(e) =>feesHandler(e)}>
+                <form className="new-added-form" onSubmit={(e) =>acceptfeesHandler(e)}>
                   <div className="row">
-                    <div className="col-12-xxxl col-lg-6 col-12 form-group">
+                    <div className="col-12-xxxl col-lg-12 col-12 form-group">
                     <FormGroup>
-                        <FormLabel>Class *</FormLabel>
-                        <FormControl
-                          required
-                          type="text"
-                          onChange={(e) =>setInputValues({...inputValues,classId:e.target.value})}
-                          as="select"
-                        >
-                        <option value="">Please Select Class *</option>
-                        {allClassesInfo ? allClassesInfo.map((item,index) =>(
-                          <option value={item.id} key={index}>{item.ClassName} {item.MediumName}Medium</option>
-                        )):null}
-                        </FormControl>
-                        {error != null && error.ClassId ? (<h6 className="addStudent-error">*{JSON.stringify(error.ClassId).replace(/[\[\]"]+/g,"")}</h6>):null}
+                        <FormLabel>Please Select User *</FormLabel>
+                        {error != null && error.paymode ? (<h6 className="addStudent-error">*{JSON.stringify(error.paymode).replace(/[\[\]"]+/g,"")}</h6>):null}
+                        <div className="table-responsive">
+                          <table className="table data-table text-nowrap">
+                            <thead>
+                              <tr>
+                                <th>Please select payId</th>
+                                <th>ID</th>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>Medium</th>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Expense</th>
+                                <th>Amount</th>
+                                <th>E-mail</th>
+                                <th />
+                              </tr>
+                            </thead>
+                            {allFeesCollectionData.all_fees_collection_loading === false ? allFeesCollectionInfo && allFeesCollectionInfo.length > 0 ? (
+                            <tbody>
+                              {allFeesCollectionInfo.filter(unpaiditem =>unpaiditem.Status == "UnPaid").map((item,index) =>(
+                              <tr>
+                                <td>
+                                  <Form.Check
+                                    required
+                                    type="radio"
+                                    className="feescollectionRadio"
+                                    name="formHorizontalRadios"
+                                    id={item.id}
+                                    value={item.id}
+                                    onClick={(e) =>setInputValues({...inputValues,payId:e.target.value})}
+                                    //onChange={(evt) => this.changeTitle(evt)}
+                                  />
+                                </td>
+                                <td>{item.id}</td>
+                                <td><img src="img/figure/student2.png" alt="student" /></td>
+                                <td>{item.StudentName}</td>
+                                <td>{item.StudentGender}</td>
+                                <td>{item.MediumName}</td>
+                                <td>{item.ClassName}</td>
+                                <td>{item.SectionName}</td>
+                                <td>{Object.keys(allFeesCollectionInfo[index])[3]}</td>
+                                <td>${item.MonthFees}</td>
+                                <td>{item.StudentEmail}</td>
+                              </tr>
+                              ))}
+                            </tbody>
+                          ):
+                          (<tr><td colspan="10"><h6 className="text-center">No data available in table</h6></td></tr>)
+                        :(<tr>
+                          <td colspan="10">
+                        <Loader
+                        className = "student-detail-loader"
+                      type="MutatingDots"
+                      color="#fea801"
+                      height={100}
+                      width={100}
+
+                        />
+                        </td>
+                        </tr>)}
+                          </table>
+                        </div>
                       </FormGroup>
                     </div>
                     <div className="col-12-xxxl col-lg-6 col-12 form-group">
-                      <label>Monthly Fees *</label>
-                      <input type="number" value={inputValues.monthlyFees} onChange={(e) =>setInputValues({...inputValues,monthlyFees:e.target.value})}  className="form-control" required/>
-                      {error != null && error.MonthlyFees ? (<h6 className="addStudent-error">*{JSON.stringify(error.MonthlyFees).replace(/[\[\]"]+/g,"")}</h6>):null}
-                    </div>
-                    <div className="col-12-xxxl col-lg-6 col-12 form-group">
-                      <label>Admission Fees *</label>
-                      <input type="number" value={inputValues.admissionFee} onChange={(e) =>setInputValues({...inputValues,admissionFee:e.target.value})}  className="form-control" required/>
-                      {error != null && error.AdmissionFees ? (<h6 className="addStudent-error">*{JSON.stringify(error.AdmissionFees).replace(/[\[\]"]+/g,"")}</h6>):null}
+                    <FormGroup>
+                        <FormLabel>Payment Mode *</FormLabel>
+                        <FormControl
+                          required
+                          type="text"
+                          onChange={(e) =>setInputValues({...inputValues,paymode:e.target.value})}
+                          as="select"
+                        >
+                        <option value="">Please Select Payment Mode *</option>
+                        <option value="1">Cash</option>
+                        <option value="2">Online</option>
+                        </FormControl>
+                        {error != null && error.paymode ? (<h6 className="addStudent-error">*{JSON.stringify(error.paymode).replace(/[\[\]"]+/g,"")}</h6>):null}
+                      </FormGroup>
                     </div>
                     <div className="col-12 form-group mg-t-8">
                       <button type="submit" className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
@@ -170,7 +232,7 @@ const classes = useSelector(state =>state.AllClasses)
             ) : (<div className="card-body">
                   <div className="success-greeting">
                   <h2>Thank You!</h2>
-                  <h2>Fees is Added Successfully!</h2>
+                  <h2>Fees Paid Successfully!</h2>
                   </div>
               </div>):(<div className="card-body">
                   <div className="Student-Loader">

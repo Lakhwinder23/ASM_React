@@ -29,7 +29,7 @@ export const acceptFeesFaliure = (error) =>{
 export const acceptFees = (accept_fees_info) =>{
     return(dispatch) => {
       dispatch(acceptFeesRequest(accept_fees_info))
-      const url =`${config.api_root}/add_book`;
+      const url =`${config.api_root}/accept_fee`;
       const request_option = {
       method: "POST",
       headers: {
@@ -38,7 +38,7 @@ export const acceptFees = (accept_fees_info) =>{
               'Content-Type': 'application/json'
           },
       body: JSON.stringify({
-        payid : accept_fees_info.payid,
+        payid : accept_fees_info.payId,
         paymode : accept_fees_info.paymode
       })
     }

@@ -4457,3 +4457,13 @@ button.present-button.btn.btn-success {
     margin-bottom: 80px;
     margin-top: 40px;
 }
+.feescollectionRadio.form-check {
+    text-align: center;
+    /* font-size: 18px; */
+}
+.feescollectionRadio input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+    width: 26px;
+    height: 17px;
+}

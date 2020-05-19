@@ -26,12 +26,18 @@ const [studentResult,setStudentResult] = useState([])
 console.log("studentResult--",studentResult);
 const [allStudentsInfo,setAllStudentsInfo] = useState([])
 const [attendenceResult,setAttendenceResult] = useState([])
+const [day,setDay] = useState(null)
 console.log("attendenceResult--",attendenceResult);
-
+// if(attendenceResult[0] && attendenceResult[0].Month){
+//   console.log("attendenceResult--",(attendenceResult[0].Date).toLocaleString('default', { month: 'long' }));
+// }
 
 useMemo(() =>{
     dispatch(fetchAllStudents(studentAttendenceFilterInput))
-    dispatch(fetchAllAllAttendence(studentAttendenceFilterInput))
+    const all_attendence_info = {
+      role:'2'
+    }
+    dispatch(fetchAllAllAttendence(all_attendence_info))
 },[studentAttendenceFilterInput])
 useMemo(()=>{
   if(students && students.all_students && students.all_students.result){
@@ -46,10 +52,51 @@ useMemo(()=>{
 },[studentResult])
 
 useMemo(()=>{
-  if(all_attendence_data && all_attendence_data.all_attendence && all_attendence_data.all_attendence.result){
+  if(all_attendence_data && all_attendence_data.all_attendence && all_attendence_data.all_attendence.result && all_attendence_data.all_attendence.success === true){
     setAttendenceResult(all_attendence_data.all_attendence.result)
   }
 },[all_attendence_data.all_attendence.result])
+
+useMemo(() =>{
+  if(attendenceResult && attendenceResult[0] && attendenceResult[0].Month){
+    if(attendenceResult[0].Month == "01" ){
+      setDay("January")
+    }
+    else if (attendenceResult[0].Month == "02") {
+      setDay("February")
+    }
+    else if (attendenceResult[0].Month == "03") {
+      setDay("March")
+    }
+    else if (attendenceResult[0].Month == "04") {
+      setDay("April")
+    }
+    else if (attendenceResult[0].Month == "05") {
+      setDay("May")
+    }
+    else if (attendenceResult[0].Month == "06") {
+      setDay("June")
+    }
+    else if (attendenceResult[0].Month == "07") {
+      setDay("July")
+    }
+    else if (attendenceResult[0].Month == "08") {
+      setDay("August")
+    }
+    else if (attendenceResult[0].Month == "09") {
+      setDay("September")
+    }
+    else if (attendenceResult[0].Month == "10") {
+      setDay("October")
+    }
+    else if (attendenceResult[0].Month == "11") {
+      setDay("November")
+    }
+    else if (attendenceResult[0].Month == "12") {
+      setDay("December")
+    }
+  }
+},[attendenceResult])
   const callbackFunctionInput = (childInputData) =>{
     console.log("childInputData",childInputData);
     setStudentAttendenceFilterInput({
@@ -81,7 +128,7 @@ useMemo(()=>{
                   <h3>Student Attendence</h3>
                   <ul>
                     <li>
-                      <a href="index-2.html">Home</a>
+                      <a href="/">Home</a>
                     </li>
                     <li>Attendence</li>
                   </ul>
@@ -97,7 +144,7 @@ useMemo(()=>{
                       <div className="card-body">
                         <div className="heading-layout1">
                           <div className="item-title">
-                            <h3>Attendence Sheet of All Students</h3>
+                            <h3>Attendence Sheet of All Students {day !=null && attendenceResult && attendenceResult[0] && attendenceResult[0].Year ? ("("+day+ " , " +attendenceResult[0].Year+")") : null}</h3>
                           </div>
                           <div className="dropdown">
                             <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
