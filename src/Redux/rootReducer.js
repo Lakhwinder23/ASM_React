@@ -49,6 +49,7 @@ import AllVehicleReducers from './AllVehicle/AllVehicleReducers'
 import AllBookReducers from './AllBook/AllBookReducers'
 import AllMessageReducers from './AllMessage/AllMessageReducers'
 import ReturnAssignBookReducers from './ReturnAssignBook/ReturnAssignBookReducers'
+import LoginReducers from './Login/LoginReducers'
 
 
 
@@ -102,7 +103,8 @@ const rootReducer = combineReducers({
       AllVehicle:AllVehicleReducers,
       AllBook:AllBookReducers,
       AllMessage:AllMessageReducers,
-      ReturnAssignBook:ReturnAssignBookReducers
+      ReturnAssignBook:ReturnAssignBookReducers,
+      Login:LoginReducers
 })
 
 export default rootReducer

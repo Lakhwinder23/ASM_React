@@ -73,6 +73,7 @@ import AddVehicle from './Components/AddVehicle';
 import AllVehicles from './Components/AllVehicles';
 import AddTransport from './Components/AddTransport';
 import AllTransport from './Components/AllTransport';
+import Login from './Components/Login';
 
 
 
@@ -83,6 +84,7 @@ function Root(){
           <Provider store={store}>
             <Router>
             <Switch>
+                <Route exact path="/login"  component={Login}/>
                 <Route exact path="/"  component={App}/>
                  <Route path="/students" component={Students} />
                  <Route path="/parents" component={Parents} />

@@ -4467,3 +4467,37 @@ button.present-button.btn.btn-success {
     width: 26px;
     height: 17px;
 }
+.login-header .navbar {
+    padding: 1.5rem 8rem !important;
+}
+.bg-orange {
+    background-color: #ff9d01eb !important;
+}
+.login-header a.nav-link {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+}
+.Login .btn-primary {
+    color: #fff !important;
+    background-color: #fea414 !important;
+    border-color: #fea414 !important;
+    margin-top: 21px !important;
+}
+.Login .btn {
+    padding: 10px 10px !important;
+    font-size: 17px !important;
+    border-radius: 10px !important;
+}
+.login-page {
+    margin-top: 30%;
+}
+.Login {
+    margin-top: 20px;
+    background-color: #fea41436;
+    padding: 20px 20px 30px;
+    box-shadow: 0 0 20px #000;
+}
+.Login button.btn.btn-primary.btn-block:hover{
+  background-color: #fea41436;
+}
