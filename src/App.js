@@ -3,7 +3,8 @@ import './App.css';
 import Header from './Components/Header';
 import Sidebar from './Components/Sidebar';
 import Admindashboard from './Components/Admindashboard';
-
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 class App extends Component {
   constructor(props){
@@ -12,10 +13,18 @@ class App extends Component {
       activestate : ''
     }
   }
+  componentDidMount(){
+    if(this.props.isLogin && this.props.isLogin.is_Login === false){
+      //window.location.href = './login'
+      console.log("this.props.isLogin",this.props.isLogin.is_Login)
+    }
+  }
+
   callbackFunction = (childData) => {
     this.setState({activestate: childData})
 }
   render() {
+
     return (
       <div id="wrapper"  className={this.state.activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
         {/* Header Menu Area Start Here sidebar-collapsed*/}
@@ -33,8 +42,12 @@ class App extends Component {
     );
   }
 }
-
-export default App;
+const mapStateToProps = state => ({
+  isLogin: state.LoginCheck
+});
+export default connect(
+  mapStateToProps
+)(App);
 // function App() {
 //   return (
 //     <div id="wrapper" className="wrapper bg-ash sidebar-collapsed">
