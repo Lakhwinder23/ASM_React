@@ -55,7 +55,7 @@ const loginData = useSelector(state =>state.Login)
 
 if(loginData.login.success === true){
   localStorage.setItem('access_token', loginData.login.result.token);
-  localStorage.setItem('user', inputValue.email);
+  localStorage.setItem('user_email', inputValue.email);
       window.location.href = '/';
     }
   return(

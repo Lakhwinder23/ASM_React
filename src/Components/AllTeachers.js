@@ -16,6 +16,7 @@ function AllTeachers(){
     const [teacherResult,setTeacherResult] = useState([])
     const [allTeachersInfo,setTeachersInfo] = useState([])
   const [activestate,setActivestate] = useState('')
+  
   useEffect(() =>{
     dispatch(fetchAllTeachers())
   },[dispatch])

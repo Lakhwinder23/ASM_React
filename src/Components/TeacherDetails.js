@@ -6,27 +6,34 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { useSelector,useDispatch } from 'react-redux'
 import {
-  fetchTeacherDetail
-} from '../Redux/TeacherDetail/TeacherDetailActions'
+  fetchAllTeachers
+} from '../Redux/AllTeachers/AllTeachersActions'
 
 
 function TeacherDetails() {
-  const teacherDetail = useSelector(state =>state.TeacherDetail)
-  console.log("teacherDetail",teacherDetail);
+  const teachers = useSelector(state =>state.AllTeachers)
+  console.log("teachers",teachers);
   const dispatch = useDispatch()
-  const teacher_id = "2";
-  const [teacherDetailInfo,setTeacherDetailInfo] = useState([])
-  console.log("teacherDetailInfo",teacherDetailInfo)
+  const teacher_id = "6";
+  const [teacherResult,setTeacherResult] = useState([])
+  const [allTeachersInfo,setTeachersInfo] = useState([])
+  console.log("allTeachersInfo",allTeachersInfo)
 
   useEffect(() =>{
-    dispatch(fetchTeacherDetail(teacher_id))
+    dispatch(fetchAllTeachers(teacher_id))
   },[dispatch])
 
   useMemo(()=>{
-    if(teacherDetail && teacherDetail.teacher_detail && teacherDetail.teacher_detail.result ){
-          setTeacherDetailInfo(teacherDetail.teacher_detail.result)
+    if(teachers && teachers.all_teachers && teachers.all_teachers.result){
+      setTeacherResult(teachers.all_teachers.result)
     }
-  },[teacherDetail])
+  },[teachers.all_teachers.result])
+
+  useMemo(()=>{
+    if(teacherResult && teacherResult.data){
+          setTeachersInfo(teacherResult.data)
+    }
+  },[teacherResult])
   const [activestate,setActivestate] = useState('')
   const callbackFunction = (childData) => {
     setActivestate(childData)
@@ -69,14 +76,14 @@ function TeacherDetails() {
                         </div>
                       </div>
                     </div>
-                    {teacherDetail && teacherDetail.teacher_detail_loading === false ? teacherDetailInfo && teacherDetailInfo.length > 0 ? (
+                    {teachers && teachers.all_teachers_loading === false ? allTeachersInfo && allTeachersInfo.length > 0 ? (
                       <div className="single-info-details">
                         <div className="item-img">
                           <img src="img/figure/teacher.jpg" alt="teacher" />
                         </div>
                         <div className="item-content">
                           <div className="header-inline item-header">
-                            <h3 className="text-dark-medium font-medium">{teacherDetailInfo[0].TeacherName}</h3>
+                            <h3 className="text-dark-medium font-medium">{allTeachersInfo[0].TeacherName}</h3>
                             <div className="header-elements">
                               <ul>
                                 <li><a href="#"><i className="far fa-edit" /></a></li>
@@ -90,35 +97,35 @@ function TeacherDetails() {
                               <tbody>
                                 <tr>
                                   <td>Name:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].TeacherName}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].TeacherName}</td>
                                 </tr>
                                 <tr>
                                   <td>Gender:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].Gender}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].Gender}</td>
                                 </tr>
                                 <tr>
                                   <td>Father Name:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].FatherName}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].FatherName}</td>
                                 </tr>
                                 <tr>
                                   <td>Mother Name:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].MotherName}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].MotherName}</td>
                                 </tr>
                                 <tr>
                                   <td>Religion:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].Religion}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].Religion}</td>
                                 </tr>
                                 <tr>
                                   <td>Joining Date:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].JoiningDate}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].JoiningDate}</td>
                                 </tr>
                                 <tr>
                                   <td>E-mail:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].email}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].email}</td>
                                 </tr>
                                 <tr>
                                   <td>Subject:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].ProfessionName}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].ProfessionName}</td>
                                 </tr>
                                 <tr>
                                   <td>Class:</td>
@@ -130,15 +137,15 @@ function TeacherDetails() {
                                 </tr>
                                 <tr>
                                   <td>ID No:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].ProfessionId}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].ProfessionId}</td>
                                 </tr>
                                 <tr>
                                   <td>Address:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].Address}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].Address}</td>
                                 </tr>
                                 <tr>
                                   <td>Phone:</td>
-                                  <td className="font-medium text-dark-medium">{teacherDetailInfo[0].Mobile}</td>
+                                  <td className="font-medium text-dark-medium">{allTeachersInfo[0].Mobile}</td>
                                 </tr>
                               </tbody>
                             </table>

@@ -1,9 +1,7 @@
 import {combineReducers} from 'redux';
 import AllStudentsReducers from './AllStudents/AllStudentsReducers'
-import StudentDetailReducers from './StudentDetail/StudentDetailReducers'
 import AdmissionFormReducers from './AdmissionForm/AdmissionFormReducers'
 import AllTeachersReducers from './AllTeachers/AllTeachersReducers'
-import TeacherDetailReducers from './TeacherDetail/TeacherDetailReducers'
 import AllParentsReducers from './AllParents/AllParentsReducers'
 import AddMediumReducers from './AddMedium/AddMediumReducers'
 import AddClassReducers from './AddClass/AddClassReducers'
@@ -56,10 +54,8 @@ import LoginCheckReducers from './LoginCheck/LoginCheckReducers'
 
 const rootReducer = combineReducers({
       AllStudents:AllStudentsReducers,
-      StudentDetail:StudentDetailReducers,
       AdmissionForm:AdmissionFormReducers,
       AllTeachers:AllTeachersReducers,
-      TeacherDetail:TeacherDetailReducers,
       AllParents:AllParentsReducers,
       AddMedium:AddMediumReducers,
       AddClass:AddClassReducers,

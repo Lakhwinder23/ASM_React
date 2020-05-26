@@ -502,7 +502,7 @@ else if(selected_value == 'page-Progress-Bar'){
                   }
                 </li>
                 <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"Account")}>
-                  <a href="/all-fees" className="nav-link"><i className="flaticon-technological" /><span >Acconunt</span></a>
+                  <a href="/all-fees" className="nav-link"><i className="flaticon-technological" /><span >Account</span></a>
                   { this.state.displayAccount == true ? (
                   <ul className="nav sub-group-menu">
                   <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-fees")}>
@@ -754,9 +754,6 @@ else if(selected_value == 'page-Progress-Bar'){
                 </li>
                 <li className="nav-item">
                   <a href="/map" className="nav-link"><i className="flaticon-planet-earth" /><span>Map</span></a>
-                </li>
-                <li className="nav-item">
-                  <a href="/account" className="nav-link"><i className="flaticon-settings" /><span>Account</span></a>
                 </li>
               </ul>
             </div>

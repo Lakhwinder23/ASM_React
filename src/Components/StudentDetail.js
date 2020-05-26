@@ -6,27 +6,39 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux'
 import {
-  fetchStudentDetail
-} from '../Redux/StudentDetail/StudentDetailActions'
+  fetchAllStudents
+} from '../Redux/AllStudents/AllStudentsActions'
 
 
 function StudentDetail() {
-  const studentDetail = useSelector(state =>state.StudentDetail)
-  console.log("studentDetail",studentDetail);
+  const students = useSelector(state =>state.AllStudents)
+  console.log("students",students);
   const dispatch = useDispatch()
   const [activestate,setActivestate] = useState('')
-  const student_id = "3";
-  const [studentDetailInfo,setStudentDetailInfo] = useState([])
-  console.log("studentDetailInfo",studentDetailInfo)
+  const student_id = "9";
+  const [studentResult,setStudentResult] = useState([])
+  console.log("studentResult",studentResult);
+  const [allStudentsInfo,setAllStudentsInfo] = useState([])
+  console.log("allStudentsInfo",allStudentsInfo)
   useEffect(() =>{
-    dispatch(fetchStudentDetail(student_id))
+    const student_info = {
+      studentId:student_id
+    }
+    dispatch(fetchAllStudents(student_info))
   },[dispatch])
 
   useMemo(()=>{
-    if(studentDetail && studentDetail.student_detail && studentDetail.student_detail.result ){
-          setStudentDetailInfo(studentDetail.student_detail.result)
+    if(students && students.all_students && students.all_students.result){
+      setStudentResult(students.all_students.result)
     }
-  },[studentDetail])
+  },[students.all_students.result])
+
+
+  useMemo(()=>{
+    if(studentResult && studentResult.data){
+          setAllStudentsInfo(studentResult.data)
+    }
+  },[studentResult])
   const callbackFunction = (childData) => {
     setActivestate(childData)
 }
@@ -68,14 +80,14 @@ function StudentDetail() {
                         </div>
                       </div>
                     </div>
-                    {studentDetail && studentDetail.student_detail_loading === false ?  studentDetailInfo && studentDetailInfo.length > 0 ? (
+                    {students && students.all_students_loading === false ?  allStudentsInfo && allStudentsInfo.length > 0 ? (
                       <div className="single-info-details">
                         <div className="item-img">
                           <img src="img/figure/student1.jpg" alt="student" />
                         </div>
                         <div className="item-content">
                           <div className="header-inline item-header">
-                            <h3 className="text-dark-medium font-medium">{studentDetailInfo[0].StudentName}</h3>
+                            <h3 className="text-dark-medium font-medium">{allStudentsInfo[0].StudentName}</h3>
                             <div className="header-elements">
                               <ul>
                                 <li><a href="#"><i className="far fa-edit" /></a></li>
@@ -89,55 +101,55 @@ function StudentDetail() {
                               <tbody>
                                 <tr>
                                   <td>Name:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].StudentName}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].StudentName}</td>
                                 </tr>
                                 <tr>
                                   <td>Gender:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].Gender}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].Gender}</td>
                                 </tr>
                                 <tr>
                                   <td>Father Name:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].FatherName}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].FatherName}</td>
                                 </tr>
                                 <tr>
                                   <td>Mother Name:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].MotherName}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].MotherName}</td>
                                 </tr>
                                 <tr>
                                   <td>Date Of Birth:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].DateofBirth}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].DateofBirth}</td>
                                 </tr>
                                 <tr>
                                   <td>Religion:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].Religion}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].Religion}</td>
                                 </tr>
                                 <tr>
                                   <td>Father Occupation:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].FatherOccupation}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].FatherOccupation}</td>
                                 </tr>
                                 <tr>
                                   <td>E-mail:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].email}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].email}</td>
                                 </tr>
                                 <tr>
                                   <td>Admission Date:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].AdmissionDate}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].AdmissionDate}</td>
                                 </tr>
                                 <tr>
                                   <td>Class:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].ClassName}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].ClassName}</td>
                                 </tr>
                                 <tr>
                                   <td>Section:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].SectionName}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].SectionName}</td>
                                 </tr>
                                 <tr>
                                   <td>Roll:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].RollNumber}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].RollNumber}</td>
                                 </tr>
                                 <tr>
                                   <td>Address:</td>
-                                  <td className="font-medium text-dark-medium">{studentDetailInfo[0].Address}</td>
+                                  <td className="font-medium text-dark-medium">{allStudentsInfo[0].Address}</td>
                                 </tr>
                               </tbody>
                             </table>
