@@ -49,7 +49,13 @@ import AllMessageReducers from './AllMessage/AllMessageReducers'
 import ReturnAssignBookReducers from './ReturnAssignBook/ReturnAssignBookReducers'
 import LoginReducers from './Login/LoginReducers'
 import LoginCheckReducers from './LoginCheck/LoginCheckReducers'
-
+import SpecificUserDetailReducers from './SpecificUserDetail/SpecificUserDetailReducers'
+import AllExpenseTypeReducers from './AllExpenseType/AllExpenseTypeReducers'
+import AllDriverReducers from './AllDriver/AllDriverReducers'
+import AllExpenseReducers from './AllExpense/AllExpenseReducers'
+import AllAssignRoomReducers from './AllAssignRoom/AllAssignRoomReducers'
+import AllAssignBookReducers from './AllAssignBook/AllAssignBookReducers'
+import AllAssignVehicleReducers from './AllAssignVehicle/AllAssignVehicleReducers'
 
 
 const rootReducer = combineReducers({
@@ -102,7 +108,14 @@ const rootReducer = combineReducers({
       AllMessage:AllMessageReducers,
       ReturnAssignBook:ReturnAssignBookReducers,
       Login:LoginReducers,
-      LoginCheck:LoginCheckReducers
+      LoginCheck:LoginCheckReducers,
+      SpecificUserDetail:SpecificUserDetailReducers,
+      AllExpenseType:AllExpenseTypeReducers,
+      AllDriver:AllDriverReducers,
+      AllExpense:AllExpenseReducers,
+      AllAssignRoom:AllAssignRoomReducers,
+      AllAssignBook:AllAssignBookReducers,
+      AllAssignVehicle:AllAssignVehicleReducers
 })
 
 export default rootReducer

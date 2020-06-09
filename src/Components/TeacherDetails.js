@@ -12,16 +12,28 @@ import {
 
 function TeacherDetails() {
   const teachers = useSelector(state =>state.AllTeachers)
+  const specificUserDetailData = useSelector(state =>state.SpecificUserDetail)
   console.log("teachers",teachers);
   const dispatch = useDispatch()
-  const teacher_id = "6";
+  const teacher_id = specificUserDetailData &&
+    specificUserDetailData.specific_user_detail &&
+    Object.keys(specificUserDetailData.specific_user_detail).length > 0 &&
+    specificUserDetailData.specific_user_detail.success === true &&
+    specificUserDetailData.specific_user_detail.result &&
+    Object.keys(specificUserDetailData.specific_user_detail.result).length > 0 &&
+    specificUserDetailData.specific_user_detail.result.id ? specificUserDetailData.specific_user_detail.result.id : null;
   const [teacherResult,setTeacherResult] = useState([])
   const [allTeachersInfo,setTeachersInfo] = useState([])
   console.log("allTeachersInfo",allTeachersInfo)
 
   useEffect(() =>{
-    dispatch(fetchAllTeachers(teacher_id))
-  },[dispatch])
+    if(teacher_id != null){
+      const teacher_info = {
+        teacherId:teacher_id
+      }
+      dispatch(fetchAllTeachers(teacher_info))
+    }
+  },[teacher_id])
 
   useMemo(()=>{
     if(teachers && teachers.all_teachers && teachers.all_teachers.result){

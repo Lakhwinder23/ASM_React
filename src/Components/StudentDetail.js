@@ -11,21 +11,33 @@ import {
 
 
 function StudentDetail() {
+// store data access start
   const students = useSelector(state =>state.AllStudents)
+  const specificUserDetailData = useSelector(state =>state.SpecificUserDetail)
+// store data access End
   console.log("students",students);
   const dispatch = useDispatch()
   const [activestate,setActivestate] = useState('')
-  const student_id = "9";
+  const student_id = specificUserDetailData &&
+    specificUserDetailData.specific_user_detail &&
+    Object.keys(specificUserDetailData.specific_user_detail).length > 0 &&
+    specificUserDetailData.specific_user_detail.success === true &&
+    specificUserDetailData.specific_user_detail.result &&
+    Object.keys(specificUserDetailData.specific_user_detail.result).length > 0 &&
+    specificUserDetailData.specific_user_detail.result.id ? specificUserDetailData.specific_user_detail.result.id : null
   const [studentResult,setStudentResult] = useState([])
   console.log("studentResult",studentResult);
   const [allStudentsInfo,setAllStudentsInfo] = useState([])
   console.log("allStudentsInfo",allStudentsInfo)
   useEffect(() =>{
-    const student_info = {
-      studentId:student_id
+    if(student_id != null){
+      const student_info = {
+        studentId:student_id
+      }
+      dispatch(fetchAllStudents(student_info))
     }
-    dispatch(fetchAllStudents(student_info))
-  },[dispatch])
+
+  },[student_id])
 
   useMemo(()=>{
     if(students && students.all_students && students.all_students.result){

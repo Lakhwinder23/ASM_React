@@ -2,6 +2,7 @@ import React,{useMemo,useState,useEffect} from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import store from './Redux/store';
 import { loginCheck } from './Redux/LoginCheck/LoginCheckActions';
+import { fetchSpecificUserDetail } from './Redux/SpecificUserDetail/SpecificUserDetailActions';
 import { Redirect } from "react-router-dom";
 import { Provider } from 'react-redux';
 
@@ -134,6 +135,7 @@ function Root(){
     if(localStorage.getItem("access_token") != undefined && localStorage.getItem("user_email") != undefined){
       const login_check_info = true
       store.dispatch(loginCheck(login_check_info))
+      store.dispatch(fetchSpecificUserDetail())  
     }
   },[])
         return (

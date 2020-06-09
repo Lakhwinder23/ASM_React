@@ -1,10 +1,48 @@
 import React, { useMemo,useState } from 'react';
 import { loginCheck } from '../Redux/LoginCheck/LoginCheckActions';
-import {useDispatch } from 'react-redux'
+import {useDispatch,useSelector } from 'react-redux'
 
 function Header({parentCallback}){
+  // store data access start
+const specificUserDetailData = useSelector(state =>state.SpecificUserDetail)
+// store data access End
   const dispatch = useDispatch()
   const [active,setActivestate] = useState(false)
+  const [roleName,setRoleName] = useState("")
+
+  useMemo(() =>{
+    if(specificUserDetailData &&
+      specificUserDetailData.specific_user_detail &&
+      Object.keys(specificUserDetailData.specific_user_detail).length > 0 &&
+      specificUserDetailData.specific_user_detail.success === true &&
+      specificUserDetailData.specific_user_detail.result &&
+      Object.keys(specificUserDetailData.specific_user_detail.result).length > 0 &&
+      specificUserDetailData.specific_user_detail.result.Role
+    ){
+      if(specificUserDetailData.specific_user_detail.result.Role === 1){
+        setRoleName("Admin")
+      }
+      else if(specificUserDetailData.specific_user_detail.result.Role === 2){
+        setRoleName("Teacher")
+      }
+      else if(specificUserDetailData.specific_user_detail.result.Role === 3){
+        setRoleName("Student")
+      }
+      else if(specificUserDetailData.specific_user_detail.result.Role === 4){
+        setRoleName("Parent")
+      }
+      else if(specificUserDetailData.specific_user_detail.result.Role === 5){
+        setRoleName("Clerk")
+      }
+      else if(specificUserDetailData.specific_user_detail.result.Role === 6){
+        setRoleName("Librarian")
+      }
+      else if(specificUserDetailData.specific_user_detail.result.Role === 7){
+        setRoleName("Bus Driver")
+      }
+    }
+
+  },[specificUserDetailData])
 
 
   const toggleClass =() =>{
@@ -72,17 +110,37 @@ const logout = () =>{
       <ul className="navbar-nav">
         <li className="navbar-item dropdown header-admin">
           <a className="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-            <div className="admin-title">
-              <h5 className="item-title">Stevne Zone</h5>
-              <span>Admin</span>
-            </div>
+          {specificUserDetailData &&
+             specificUserDetailData.specific_user_detail &&
+              Object.keys(specificUserDetailData.specific_user_detail).length > 0 &&
+              specificUserDetailData.specific_user_detail.success === true &&
+              specificUserDetailData.specific_user_detail.result &&
+              Object.keys(specificUserDetailData.specific_user_detail.result).length > 0 ? (
+                <div className="admin-title">
+                  <h5 className="item-title">{
+                      specificUserDetailData.specific_user_detail.result.Firstname ?
+                      specificUserDetailData.specific_user_detail.result.Firstname + " " + specificUserDetailData.specific_user_detail.result.Lastname
+                      : null
+                    }</h5>
+                  <span>{roleName != "" ? roleName : null}</span>
+                </div>
+              ):null}
             <div className="admin-img">
               <img src="img/figure/admin.jpg" alt="Admin" />
             </div>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
             <div className="item-header">
-              <h6 className="item-title">Steven Zone</h6>
+              <h6 className="item-title">{specificUserDetailData &&
+                 specificUserDetailData.specific_user_detail &&
+                  Object.keys(specificUserDetailData.specific_user_detail).length > 0 &&
+                  specificUserDetailData.specific_user_detail.success === true &&
+                  specificUserDetailData.specific_user_detail.result &&
+                  Object.keys(specificUserDetailData.specific_user_detail.result).length > 0 ?
+                  specificUserDetailData.specific_user_detail.result.Firstname + " " + specificUserDetailData.specific_user_detail.result.Lastname
+                  :null
+                }
+                  </h6>
             </div>
             <div className="item-content">
               <ul className="settings-list">
