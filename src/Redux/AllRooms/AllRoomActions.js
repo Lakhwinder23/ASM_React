@@ -5,9 +5,10 @@ import {
 } from './AllRoomConstants'
 import {config} from '../config'
 
-export const fetchAllRoomRequest = () =>{
+export const fetchAllRoomRequest = (all_rooms_info) =>{
   return{
-    type : FETCH_ALLROOM_REQUEST
+    type : FETCH_ALLROOM_REQUEST,
+    payload:all_rooms_info
   }
 }
 
@@ -25,16 +26,21 @@ export const fetchAllRoomFaliure = (error) =>{
   }
 }
 
-export const fetchAllRooms = () =>{
+export const fetchAllRooms = (all_rooms_info) =>{
     return(dispatch) => {
-      dispatch(fetchAllRoomRequest())
+      dispatch(fetchAllRoomRequest(all_rooms_info))
       const url =`${config.api_root}/get_all_room`;
       const request_option = {
       method: "GET",
       headers: {
               'Accept': 'application/json',
-              'Authorization': 'Bearer '+ config.token
-          }
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
+          body:JSON.stringify({
+            HostelId: all_rooms_info.hostelId != undefined ? all_rooms_info.hostelId :undefined,
+            RoomId: all_rooms_info.roomId != undefined ? all_rooms_info.roomId :undefined
+          })
     }
     fetch(url, request_option)
     .then(response => response.json())

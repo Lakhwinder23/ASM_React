@@ -5,9 +5,10 @@ import {
 } from './AllMediumConstants'
 import {config} from '../config'
 
-export const fetchAllMediumRequest = () =>{
+export const fetchAllMediumRequest = (all_mediums_info) =>{
   return{
-    type : FETCH_ALLMEDIUM_REQUEST
+    type : FETCH_ALLMEDIUM_REQUEST,
+    payload:all_mediums_info
   }
 }
 
@@ -25,16 +26,20 @@ export const fetchAllMediumFaliure = (error) =>{
   }
 }
 
-export const fetchAllMediums = () =>{
+export const fetchAllMediums = (all_mediums_info) =>{
     return(dispatch) => {
-      dispatch(fetchAllMediumRequest())
+      dispatch(fetchAllMediumRequest(all_mediums_info))
       const url =`${config.api_root}/get_all_medium`;
       const request_option = {
       method: "GET",
       headers: {
               'Accept': 'application/json',
-              'Authorization': 'Bearer '+ config.token
-          }
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
+          body:JSON.stringify({
+            MediumId: all_mediums_info.mediumId != undefined ? all_mediums_info.mediumId :undefined
+          })
     }
     fetch(url, request_option)
     .then(response => response.json())

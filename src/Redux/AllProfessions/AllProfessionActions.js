@@ -5,9 +5,10 @@ import {
 } from './AllProfessionConstants'
 import {config} from '../config'
 
-export const fetchAllProfessionRequest = () =>{
+export const fetchAllProfessionRequest = (all_professions_info) =>{
   return{
-    type : FETCH_ALLPROFESSION_REQUEST
+    type : FETCH_ALLPROFESSION_REQUEST,
+    payload:all_professions_info
   }
 }
 
@@ -25,16 +26,20 @@ export const fetchAllProfessionFaliure = (error) =>{
   }
 }
 
-export const fetchAllProfessions = () =>{
+export const fetchAllProfessions = (all_professions_info) =>{
     return(dispatch) => {
-      dispatch(fetchAllProfessionRequest())
+      dispatch(fetchAllProfessionRequest(all_professions_info))
       const url =`${config.api_root}/get_all_profession`;
       const request_option = {
       method: "GET",
       headers: {
               'Accept': 'application/json',
-              'Authorization': 'Bearer '+ config.token
-          }
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
+          body:JSON.stringify({
+            ProfessionId: all_professions_info.professionId != undefined ? all_professions_info.professionId :undefined
+          })
     }
     fetch(url, request_option)
     .then(response => response.json())

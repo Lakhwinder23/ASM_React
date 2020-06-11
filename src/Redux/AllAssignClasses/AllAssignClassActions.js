@@ -5,9 +5,10 @@ import {
 } from './AllAssignClassConstants'
 import {config} from '../config'
 
-export const fetchAllAssignClassRequest = () =>{
+export const fetchAllAssignClassRequest = (all_assign_class_info) =>{
   return{
-    type : FETCH_ALLASSIGNCLASS_REQUEST
+    type : FETCH_ALLASSIGNCLASS_REQUEST,
+    payload:all_assign_class_info
   }
 }
 
@@ -25,16 +26,23 @@ export const fetchAllAssignClassFaliure = (error) =>{
   }
 }
 
-export const fetchAllAssignClasses = () =>{
+export const fetchAllAssignClasses = (all_assign_class_info) =>{
     return(dispatch) => {
-      dispatch(fetchAllAssignClassRequest())
+      dispatch(fetchAllAssignClassRequest(all_assign_class_info))
       const url =`${config.api_root}/get_all_assign_class`;
       const request_option = {
-      method: "GET",
+      method: "POST",
       headers: {
               'Accept': 'application/json',
-              'Authorization': 'Bearer '+ config.token
-          }
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
+      body:JSON.stringify({
+        ClassId:all_assign_class_info != undefined ? all_assign_class_info.classId != undefined ? all_assign_class_info.classId :undefined:undefined,
+        SectionId:all_assign_class_info != undefined ? all_assign_class_info.sectionId != undefined ? all_assign_class_info.sectionId :undefined:undefined,
+        TeacherId:all_assign_class_info != undefined ? all_assign_class_info.teacherId != undefined ? all_assign_class_info.teacherId :undefined:undefined,
+        IsIncharge:all_assign_class_info != undefined ? all_assign_class_info.isIncharge != undefined ? all_assign_class_info.isIncharge :undefined:undefined,
+      })
     }
     fetch(url, request_option)
     .then(response => response.json())

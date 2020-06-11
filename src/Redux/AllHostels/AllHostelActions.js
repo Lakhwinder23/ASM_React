@@ -5,9 +5,10 @@ import {
 } from './AllHostelConstants'
 import {config} from '../config'
 
-export const fetchAllHostelRequest = () =>{
+export const fetchAllHostelRequest = (all_hostels_info) =>{
   return{
-    type : FETCH_ALLHOSTEL_REQUEST
+    type : FETCH_ALLHOSTEL_REQUEST,
+    payload:all_hostels_info
   }
 }
 
@@ -25,16 +26,20 @@ export const fetchAllHostelFaliure = (error) =>{
   }
 }
 
-export const fetchAllHostels = () =>{
+export const fetchAllHostels = (all_hostels_info) =>{
     return(dispatch) => {
-      dispatch(fetchAllHostelRequest())
+      dispatch(fetchAllHostelRequest(all_hostels_info))
       const url =`${config.api_root}/get_all_hostel`;
       const request_option = {
       method: "GET",
       headers: {
               'Accept': 'application/json',
-              'Authorization': 'Bearer '+ config.token
-          }
+              'Authorization': 'Bearer '+ config.token,
+              'Content-Type': 'application/json'
+          },
+          body:JSON.stringify({
+            HostelId: all_hostels_info.hostelId != undefined ? all_hostels_info.hostelId :undefined
+          })
     }
     fetch(url, request_option)
     .then(response => response.json())
