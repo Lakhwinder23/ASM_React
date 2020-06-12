@@ -12,10 +12,12 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { addExpense } from '../Redux/AddExpense/AddExpenseActions'
 import {fetchAllTeachers} from '../Redux/AllTeachers/AllTeachersActions'
+import { fetchAllExpenseType } from '../Redux/AllExpenseType/AllExpenseTypeActions'
 function AddExpense(){
   // store data access start
 const addExpenseData = useSelector(state =>state.AddExpense)
 const teachers = useSelector(state =>state.AllTeachers)
+const allExpenseTypeData = useSelector(state =>state.AllExpenseType)
 // store data access End
   const dispatch = useDispatch()  // for accessing the redux function
 
@@ -33,17 +35,19 @@ const teachers = useSelector(state =>state.AllTeachers)
                                           userId:undefined
   })
   const [expenseType,setExpenseType] = useState(null)
+  const [allExpenseTypeInfo,setExpenseTypeInfo] = useState([])
   const [activestate,setActivestate] = useState('')
     const [error,setError] = useState(null)
     const [successStatus,setSuccessStatus] = useState(null)
   // component all states define End
 
    //hooks start
-   //fetch teacher api ,hook start
+   //fetch teacher api and allExpenseType api ,hook start
    useEffect(() =>{
      dispatch(fetchAllTeachers())
+     dispatch(fetchAllExpenseType())
    },[dispatch])
-//fetch teacher api ,hook End
+//fetch teacher api and allExpenseType api ,hook End
 
 // add data of teacher api into constant,hook start
    useMemo(()=>{
@@ -60,6 +64,14 @@ const teachers = useSelector(state =>state.AllTeachers)
      }
    },[teacherResult])
 //when teacherResult change add data into constant,hook End
+
+// add data of allExpenseType api into constant,hook start
+   useMemo(() =>{
+     if(allExpenseTypeData && allExpenseTypeData.all_expense_type && allExpenseTypeData.all_expense_type.result && allExpenseTypeData.all_expense_type.success === true){
+       setExpenseTypeInfo(allExpenseTypeData.all_expense_type.result)
+     }
+   },[allExpenseTypeData])
+// add data of allExpenseType api into constant,hook End
 
 //when inputValues change then add data into constant, hook start
    useMemo(() =>{
@@ -163,12 +175,10 @@ const teachers = useSelector(state =>state.AllTeachers)
                           onChange={(e) =>setInputValues({...inputValues,expenseTypeId:e.target.value})}
                           as="select"
                         >
-                        <option value="">Please Select Class *</option>
-                        <option value={1}>Transport</option>
-                        <option value={2}>Salary</option>
-                        <option value={3}>Maintanance</option>
-                        <option value={4}>Purchase</option>
-                        <option value={5}>Utilities</option>
+                        <option value="">Please Select Expanse Type *</option>
+                        {allExpenseTypeInfo && allExpenseTypeInfo.length > 0 ? allExpenseTypeInfo.map((item,index) =>(
+                          <option value={item.id} key={index}>{item.ExpenseType}</option>
+                        ) ): null}
                         </FormControl>
                         {error != null && error.ExpenseTypeId ? (<h6 className="addStudent-error">*{JSON.stringify(error.ExpenseTypeId).replace(/[\[\]"]+/g,"")}</h6>):null}
                       </FormGroup>

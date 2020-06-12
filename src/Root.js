@@ -54,6 +54,7 @@ import AcceptFees from './Components/AcceptFees';
 import AllExpense from './Components/AllExpense';
 import AddExpense from './Components/AddExpense';
 import AddExpenseType from './Components/AddExpenseType';
+import AllExpenseType from './Components/AllExpenseType';
 
 //class portion
 import AllClasses from './Components/AllClasses';
@@ -93,6 +94,7 @@ import AddVehicle from './Components/AddVehicle';
 import AllVehicles from './Components/AllVehicles';
 import AddTransport from './Components/AddTransport';
 import AllTransport from './Components/AllTransport';
+import AllAssignVehicle from './Components/AllAssignVehicle';
 
 //Hostel portion
 import Hostel from './Components/Hostel';
@@ -135,7 +137,7 @@ function Root(){
     if(localStorage.getItem("access_token") != undefined && localStorage.getItem("user_email") != undefined){
       const login_check_info = true
       store.dispatch(loginCheck(login_check_info))
-      store.dispatch(fetchSpecificUserDetail())  
+      store.dispatch(fetchSpecificUserDetail())
     }
   },[])
         return (
@@ -189,6 +191,7 @@ function Root(){
                    <Route path="/all-expense" component={AllExpense} />
                    <Route path="/add-expense" component={AddExpense} />
                    <Route path="/add-expense-type" component={AddExpenseType} />
+                   <Route path="/all-expense-type" component={AllExpenseType} />
 
                    { /*class portion routes*/}
                    <Route path="/all-classes" component={AllClasses} />
@@ -226,6 +229,7 @@ function Root(){
                    <Route path="/all-transport" component={AllTransport} />
                    <Route path="/add-vehicle" component={AddVehicle} />
                    <Route path="/all-vehicle" component={AllVehicles} />
+                   <Route path="/all-assign-vehicle" component={AllAssignVehicle} />
 
                    {/* Hostel portion routes */}
                    <Route path="/add-room" component={AddRoom} />

@@ -281,6 +281,10 @@ else if(selected_value == 'page-add-expense'){
 else if(selected_value == 'page-add-expense-type'){
   window.location='/add-expense-type';
 }
+else if(selected_value == 'page-all-expense-type'){
+  window.location='/all-expense-type';
+}
+
 else if(selected_value == 'page-add-fees'){
   window.location='/add-fees';
 }
@@ -534,6 +538,10 @@ else if(selected_value == 'page-Progress-Bar'){
                     </li>
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-expense-type")}>
                       <a href="/add-expense-type" className="nav-link"><i className="fas fa-angle-right" />Add
+                        Expenses Type</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-expense-type")}>
+                      <a href="/all-expense-type" className="nav-link"><i className="fas fa-angle-right" />All
                         Expenses Type</a>
                     </li>
                   </ul>
