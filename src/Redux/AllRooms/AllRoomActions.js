@@ -31,15 +31,15 @@ export const fetchAllRooms = (all_rooms_info) =>{
       dispatch(fetchAllRoomRequest(all_rooms_info))
       const url =`${config.api_root}/get_all_room`;
       const request_option = {
-      method: "GET",
+      method: "POST",
       headers: {
               'Accept': 'application/json',
               'Authorization': 'Bearer '+ config.token,
               'Content-Type': 'application/json'
           },
           body:JSON.stringify({
-            HostelId: all_rooms_info.hostelId != undefined ? all_rooms_info.hostelId :undefined,
-            RoomId: all_rooms_info.roomId != undefined ? all_rooms_info.roomId :undefined
+            HostelId: all_rooms_info != undefined ? all_rooms_info.hostelId != undefined ? all_rooms_info.hostelId : undefined : undefined,
+            RoomId: all_rooms_info != undefined ? all_rooms_info.roomId != undefined ? all_rooms_info.roomId :undefined: undefined
           })
     }
     fetch(url, request_option)

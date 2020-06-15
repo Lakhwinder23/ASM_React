@@ -34,6 +34,7 @@ import TeacherDetails from './Components/TeacherDetails';
 import AddTeacher from './Components/AddTeacher';
 import TeacherPayment from './Components/TeacherPayment';
 import AssignIncharge from './Components/AssignIncharge';
+import AllAssignIncharge from './Components/AllAssignIncharge';
 
 //Book portion
 import AllBooks from './Components/AllBooks';
@@ -94,7 +95,7 @@ import AddVehicle from './Components/AddVehicle';
 import AllVehicles from './Components/AllVehicles';
 import AddTransport from './Components/AddTransport';
 import AllTransport from './Components/AllTransport';
-import AllAssignVehicle from './Components/AllAssignVehicle';
+
 
 //Hostel portion
 import Hostel from './Components/Hostel';
@@ -103,6 +104,7 @@ import AddHostel from './Components/AddHostel';
 import AllRoom from './Components/AllRoom';
 import AllHostel from './Components/AllHostel';
 import AssignRoom from './Components/AssignRoom';
+import AllAssignRoom from './Components/AllAssignRoom';
 
 //Notice portion
 import Notice from './Components/Notice';
@@ -167,6 +169,7 @@ function Root(){
                    <Route path="/teacher-payment" component={TeacherPayment} />
                    <Route path="/teachers" component={Teachers} />
                    <Route path="/assign-incharge" component={AssignIncharge} />
+                   <Route path="/all-assign-incharge" component={AllAssignIncharge} />
 
                    {/*Parents portion Routes */}
                    <Route path="/parents" component={Parents} />
@@ -187,7 +190,7 @@ function Root(){
                    <Route path="/all-fees-collection" component={AllFeesCollection} />
                    <Route path="/accept-fees" component={AcceptFees} />
 
-                   { /*xpense portion routes */}
+                   { /*Expense portion routes */}
                    <Route path="/all-expense" component={AllExpense} />
                    <Route path="/add-expense" component={AddExpense} />
                    <Route path="/add-expense-type" component={AddExpenseType} />
@@ -229,7 +232,6 @@ function Root(){
                    <Route path="/all-transport" component={AllTransport} />
                    <Route path="/add-vehicle" component={AddVehicle} />
                    <Route path="/all-vehicle" component={AllVehicles} />
-                   <Route path="/all-assign-vehicle" component={AllAssignVehicle} />
 
                    {/* Hostel portion routes */}
                    <Route path="/add-room" component={AddRoom} />
@@ -237,7 +239,7 @@ function Root(){
                    <Route path="/all-room" component={AllRoom} />
                    <Route path="/all-hostel" component={AllHostel} />
                    <Route path="/assign-room" component={AssignRoom} />
-                   <Route path="/hostal" component={Hostel} />
+                   <Route path="/all-assign-room" component={AllAssignRoom} />
 
                    {/* notice portion routes */}
                    <Route path="/notice-board" component={Notice} />

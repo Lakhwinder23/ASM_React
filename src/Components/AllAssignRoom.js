@@ -1,93 +1,40 @@
 import React, {useState,useEffect,useMemo} from 'react';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import {
-  FormControl,
-  FormGroup,
-  FormLabel
-} from "react-bootstrap";
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux'
-import { fetchAllAssignVehicle } from '../Redux/AllAssignVehicle/AllAssignVehicleActions'
-import {fetchAllClasses} from '../Redux/AllClasses/AllClassesActions'
+import {
+  fetchAllAssignRoom
+} from '../Redux/AllAssignRoom/AllAssignRoomActions'
 
-function AllAssignVehicle() {
-  // store data access start
-const allAssignVehicleData = useSelector(state =>state.AllAssignVehicle)
-const classes = useSelector(state =>state.AllClasses)
-// store data access End
-  const dispatch = useDispatch()  // for accessing the redux function
+function AllAssignRoom() {
+  const allAssignRoomData = useSelector(state =>state.AllAssignRoom)
+  const dispatch = useDispatch()
+    const [allAssignRoomResult,setAllAssignRoomResult] = useState([])
+    const [allAssignRoomInfo,setAllAssignRoomInfo] = useState([])
+      const [activestate,setActivestate] = useState('')
 
-  // component all states define start
-  const [allssignVehicleResult,setssignVehicleResult] = useState([])
-  const [allssignVehicleInfo,setssignVehicleInfo] = useState([])
-  const [classesResult,setClassesResult] = useState([])
-  const [allClassesInfo,setClassesInfo] = useState([])
-  const [activestate,setActivestate] = useState('')
-  const [inputValues,setInputValues] = useState({
-                                          classId:undefined,
-  })
-  // component all states define End
+    useEffect(() =>{
+      dispatch(fetchAllAssignRoom())
+    },[dispatch])
 
-   //hooks start
-   // fetch allAssignVehicle and teachers api hook start
-   useEffect(() =>{
-     dispatch(fetchAllAssignVehicle())
-     dispatch(fetchAllClasses())
-   },[dispatch])
-// fetch allAssignVehicle and teachers api hook End
+    useMemo(()=>{
+      if(allAssignRoomData && allAssignRoomData.all_assign_room && allAssignRoomData.all_assign_room.result){
+        setAllAssignRoomResult(allAssignRoomData.all_assign_room.result)
+      }
+    },[allAssignRoomData])
 
-// add data of allAssignVehicle api into constant,hook start
-   useMemo(() =>{
-     if(allAssignVehicleData && allAssignVehicleData.all_assign_vehicle && allAssignVehicleData.all_assign_vehicle.result && allAssignVehicleData.all_assign_vehicle.success === true){
-       setssignVehicleResult(allAssignVehicleData.all_assign_vehicle.result)
-     }
-   },[allAssignVehicleData])
-// add data of allAssignVehicle api into constant,hook End
+    useMemo(()=>{
+      if(allAssignRoomResult && allAssignRoomResult.data){
+            setAllAssignRoomInfo(allAssignRoomResult.data)
+      }
+    },[allAssignRoomResult])
 
-// when allssignVehicleResult change add data into allssignVehicleInfo,hook start
- useMemo(()=>{
-   if(allssignVehicleResult && allssignVehicleResult.data){
-         setssignVehicleInfo(allssignVehicleResult.data)
-   }
- },[allssignVehicleResult])
-// when allssignVehicleResult change add data into allssignVehicleInfo,hook End
-
-// add data of classes api into constant,hook start
- useMemo(() =>{
-   if(classes && classes.all_classes && classes.all_classes.result && classes.all_classes.success === true){
-     setClassesResult(classes.all_classes.result)
-   }
- },[classes])
-// add data of classes api into constant,hook End
-
-// when classesResult change add data into classInfo,hook start
- useMemo(()=>{
-   if(classesResult && classesResult.data){
-         setClassesInfo(classesResult.data)
-   }
- },[classesResult])
-// when classesResult change add data into classInfo,hook End
-
-
-   //hooks end
-
-// component function start
-// examHandler function start
-   const feesHandler = (event) =>{
-   event.preventDefault()
-   const fees_info = inputValues;
-     dispatch(fetchAllAssignVehicle(fees_info))
- }
-// examHandler function End
-
-  const callbackFunction = (childData) => {
-    setActivestate(childData)
-}
-
-// component function end
+    const callbackFunction = (childData) => {
+      setActivestate(childData)
+    }
         return (
           <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
       {/* Header Menu Area Start Here */}
@@ -101,12 +48,12 @@ const classes = useSelector(state =>state.AllClasses)
         <div className="dashboard-content-one">
           {/* Breadcubs Area Start Here */}
           <div className="breadcrumbs-area">
-            <h3>Transport</h3>
+            <h3>Hostel</h3>
             <ul>
               <li>
                 <a href="/">Home</a>
               </li>
-              <li>All Transport</li>
+              <li>All Assign Rooms</li>
             </ul>
           </div>
           {/* Breadcubs Area End Here */}
@@ -115,7 +62,7 @@ const classes = useSelector(state =>state.AllClasses)
                    <div className="card-body">
                      <div className="heading-layout1">
                        <div className="item-title">
-                         <h3>All Transport Lists</h3>
+                         <h3>All Assign Rooms Lists</h3>
                        </div>
                        <div className="dropdown">
                          <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -126,24 +73,16 @@ const classes = useSelector(state =>state.AllClasses)
                          </div>
                        </div>
                      </div>
-                     <form className="mg-b-20" onSubmit={(e) =>feesHandler(e)}>
+                     <form className="mg-b-20">
                        <div className="row gutters-8">
                          <div className="col-lg-4 col-12 form-group">
-                           <FormGroup>
-                               <FormControl
-                                 required
-                                 type="text"
-                                 onChange={(e) =>setInputValues({...inputValues,classId:e.target.value})}
-                                 as="select"
-                               >
-                               <option value="undefined">Search by class ...</option>
-                               {allClassesInfo ? allClassesInfo.map((item,index) =>(
-                                 <option value={item.id} key={index}>{item.ClassName} {item.MediumName}Medium</option>
-                               )):null}
-                               </FormControl>
-                             </FormGroup>
+                           <input type="text" placeholder="Search by Hostel ..." className="form-control" />
                          </div>
-                         <div className="col-lg-6 col-12 form-group"></div>
+                         <div className="col-lg-4 col-12 form-group">
+                           <input type="text" placeholder="Search by Student ..." className="form-control" />
+                         </div>
+                         <div className="col-lg-2 col-12 form-group">
+                         </div>
                          <div className="col-lg-2 col-12 form-group">
                            <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
                          </div>
@@ -156,33 +95,34 @@ const classes = useSelector(state =>state.AllClasses)
                              <th>
                                <div className="form-check">
                                  <input type="checkbox" className="form-check-input checkAll" />
-                                 <label className="form-check-label">Route Name</label>
+                                 <label className="form-check-label">Hostel Name</label>
                                </div>
                              </th>
-                             <th>Vehicle No</th>
-                             <th>Driver Name</th>
-                             <th>Driver License</th>
-                             <th>Contact Number</th>
+                             <th>Room No</th>
+                             <th>Room Type</th>
+                             <th>Number Of Beds</th>
+                             <th>Cost Per Bed</th>
+                             <th>Maximum Student</th>
+                             <th>Student Name</th>
                              <th />
                            </tr>
                          </thead>
-                         {allAssignVehicleData.all_assign_vehicle_loading === false ? allssignVehicleInfo && allssignVehicleInfo.length > 0 ? (
+                         {allAssignRoomData.all_assign_room_loading === false ? allAssignRoomInfo && allAssignRoomInfo.length > 0 ? (
                          <tbody>
-                         {allssignVehicleInfo.map((item,index) =>(
+                         {allAssignRoomInfo.map((item,index) =>(
                            <tr key={index}>
                              <td>
                                <div className="form-check">
                                  <input type="checkbox" className="form-check-input" />
-                                 <label className="form-check-label">{item.RouteName}</label>
+                                 <label className="form-check-label">{item.HostelName}</label>
                                </div>
                              </td>
-                             <td>{item.VehicleNumber}</td>
-                             {allClassesInfo && allClassesInfo.length > 0 ? allClassesInfo.filter(filteritem =>filteritem.id === item.ClassId).
-                               map((classitem,index) =>(
-                                 <td>{classitem.ClassName}</td>
-                               )):null}
-                             <td></td>
-                             <td></td>
+                             <td>{item.RoomNumber}</td>
+                             <td>{item.RoomType}</td>
+                             <td>{item.TotalBeds}</td>
+                             <td>{item.CostPerBeds}</td>
+                             <td>{item.AllowedLimitofStudent}</td>
+                             <td>{item.StudentName}</td>
                              <td>
                                <div className="dropdown">
                                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -225,4 +165,4 @@ const classes = useSelector(state =>state.AllClasses)
         );
 }
 
-export default AllAssignVehicle;
+export default AllAssignRoom;

@@ -28,7 +28,7 @@ export const fetchAllAssignRoomFaliure = (error) =>{
 export const fetchAllAssignRoom = () =>{
     return(dispatch) => {
       dispatch(fetchAllAssignRoomRequest())
-      const url =`${config.api_root}/get_all_expense_Type`;
+      const url =`${config.api_root}/get_all_assign_room`;
       const request_option = {
       method: "GET",
       headers: {

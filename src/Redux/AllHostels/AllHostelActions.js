@@ -31,14 +31,14 @@ export const fetchAllHostels = (all_hostels_info) =>{
       dispatch(fetchAllHostelRequest(all_hostels_info))
       const url =`${config.api_root}/get_all_hostel`;
       const request_option = {
-      method: "GET",
+      method: "POST",
       headers: {
               'Accept': 'application/json',
               'Authorization': 'Bearer '+ config.token,
               'Content-Type': 'application/json'
           },
           body:JSON.stringify({
-            HostelId: all_hostels_info.hostelId != undefined ? all_hostels_info.hostelId :undefined
+            HostelId: all_hostels_info != undefined ? all_hostels_info.hostelId != undefined ? all_hostels_info.hostelId :undefined:undefined
           })
     }
     fetch(url, request_option)

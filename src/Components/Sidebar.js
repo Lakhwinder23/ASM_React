@@ -234,7 +234,9 @@ else if(selected_value == 'page-add-teacher'){
 else if(selected_value == 'page-assign-incharge'){
   window.location='/assign-incharge';
 }
-
+else if(selected_value == 'page-all-assign-incharge'){
+  window.location='/all-assign-incharge';
+}
 else if(selected_value == 'page-teacher-payment'){
   window.location='/teacher-payment';
 }
@@ -332,6 +334,9 @@ else if(selected_value == 'page-add-room'){
 }
 else if(selected_value == 'page-assign-room'){
   window.location='/assign-room';
+}
+else if(selected_value == 'page-all-assign-room'){
+  window.location='/all-assign-room';
 }
 else if(selected_value == 'page-all-professions'){
   window.location='/all-profession';
@@ -447,6 +452,10 @@ else if(selected_value == 'page-Progress-Bar'){
                     </li>
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-incharge")}>
                       <a href="/assign-incharge" className="nav-link"><i className="fas fa-angle-right" />Assign
+                        Incharge To Teacher</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-incharge")}>
+                      <a href="/all-assign-incharge" className="nav-link"><i className="fas fa-angle-right" />All Assign
                         Incharge To Teacher</a>
                     </li>
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-teacher-payment")}>
@@ -711,6 +720,10 @@ else if(selected_value == 'page-Progress-Bar'){
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-room")}>
                       <a href="/assign-room" className="nav-link"><i className="fas fa-angle-right" />Assign
                         Room To Student</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-room")}>
+                      <a href="/all-assign-room" className="nav-link"><i className="fas fa-angle-right" />All Assign
+                        Room </a>
                     </li>
                   </ul>
                   ): (

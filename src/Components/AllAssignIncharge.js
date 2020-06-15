@@ -9,7 +9,7 @@ import {
   fetchAllAssignClasses
 } from '../Redux/AllAssignClasses/AllAssignClassActions'
 
-function AllAssignClasses() {
+function AllAssignIncharge() {
   const assignClasses = useSelector(state =>state.AllAssignClass)
   console.log("rooms",assignClasses);
   const dispatch = useDispatch()
@@ -19,7 +19,10 @@ function AllAssignClasses() {
     console.log("allAssignClassInfo",allAssignClassInfo);
     const [activestate,setActivestate] = useState('')
     useEffect(() =>{
-      dispatch(fetchAllAssignClasses())
+      const all_assign_class_info = {
+        isIncharge:true
+      }
+      dispatch(fetchAllAssignClasses(all_assign_class_info))
     },[dispatch])
 
     useMemo(()=>{
@@ -51,12 +54,12 @@ function AllAssignClasses() {
           <div className="dashboard-content-one">
             {/* Breadcubs Area Start Here */}
             <div className="breadcrumbs-area">
-              <h3>Assign Class</h3>
+              <h3>Assign Incharge</h3>
               <ul>
                 <li>
                   <a href="/">Home</a>
                 </li>
-                <li>All Assign Classes</li>
+                <li>All Assign Incharge</li>
               </ul>
             </div>
             {/* Breadcubs Area End Here */}
@@ -65,7 +68,7 @@ function AllAssignClasses() {
               <div className="card-body">
                 <div className="heading-layout1">
                   <div className="item-title">
-                    <h3>All Assign Classes Data</h3>
+                    <h3>All Assign Incharge Data</h3>
                   </div>
                   <div className="dropdown">
                     <a className="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -79,13 +82,13 @@ function AllAssignClasses() {
                 <form className="mg-b-20">
                   <div className="row gutters-8">
                     <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by ID ..." className="form-control" />
+                      <input type="text" placeholder="Search by Class Name..." className="form-control" />
                     </div>
                     <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Name ..." className="form-control" />
+                      <input type="text" placeholder="Search by Section Name ..." className="form-control" />
                     </div>
                     <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Phone ..." className="form-control" />
+                      <input type="text" placeholder="Search by Teacher Name ..." className="form-control" />
                     </div>
                     <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
                       <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
@@ -160,4 +163,4 @@ function AllAssignClasses() {
         );
 }
 
-export default AllAssignClasses;
+export default AllAssignIncharge;
