@@ -1,13 +1,54 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect,useMemo} from 'react';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
+import { useSelector,useDispatch } from 'react-redux'
+import { fetchAllExpense } from '../Redux/AllExpense/AllExpenseActions'
 
 function AllExpense(){
+  // store data access start
+const allExpenseData = useSelector(state =>state.AllExpense)
+// store data access End
+  const dispatch = useDispatch()  // for accessing the redux function
+
+  // component all states define start
+  const [allExpenseResult,setAllExpenseResult] = useState([])
+  const [allExpenseInfo,setAllExpenseInfo] = useState([])
   const [activestate,setActivestate] = useState('')
+  // component all states define End
+
+   //hooks start
+   // fetch allExpense  api hook start
+   useEffect(() =>{
+     dispatch(fetchAllExpense())
+   },[dispatch])
+// fetch allExpense  api hook End
+
+// add data of allAssignBook api into constant,hook start
+   useMemo(() =>{
+     if(allExpenseData && allExpenseData.all_expense && allExpenseData.all_expense.result && allExpenseData.all_expense.success === true){
+       setAllExpenseResult(allExpenseData.all_expense.result)
+     }
+   },[allExpenseData])
+// add data of allAssignBook api into constant,hook End
+
+// when allExpenseResult data change than data add into constant,hook start
+   useMemo(() =>{
+     if(allExpenseResult && allExpenseResult.data){
+       setAllExpenseInfo(allExpenseResult.data)
+     }
+   },[allExpenseResult])
+// when allExpenseResult data change than data add into constant,hook End
+   //hooks end
+
+// component function start
+
   const callbackFunction = (childData) => {
     setActivestate(childData)
-  }
+}
+
         return (
             <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
         {/* Header Menu Area Start Here */}
@@ -82,21 +123,23 @@ function AllExpense(){
                         <th />
                       </tr>
                     </thead>
+                    {allExpenseData.all_expense_loading === false ? allExpenseInfo && allExpenseInfo.length > 0 ? (
                     <tbody>
+                    {allExpenseInfo.map((item,index) =>(
                       <tr>
                         <td>
                           <div className="form-check">
                             <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0021</label>
+                            <label className="form-check-label">{item.Expenseid}</label>
                           </div>
                         </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
+                        <td>{item.Name}</td>
+                        <td>{item.ExpenseType}</td>
+                        <td>${item.Amount}</td>
+                        <td className={`badge badge-pill badge-success ${item.Status === "Paid" ? ("badge-success") : ("badge-danger") } d-block mg-t-8`}>{item.Status}</td>
+                        <td>{item.Phone}</td>
+                        <td>{item.Email}</td>
+                        <td>{item.Date}</td>
                         <td>
                           <div className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -110,628 +153,22 @@ function AllExpense(){
                           </div>
                         </td>
                       </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0022</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0023</label>
-                          </div>
-                        </td>
-                        <td>Maria Jones</td>
-                        <td>Utilities</td>
-                        <td>$1,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0024</label>
-                          </div>
-                        </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0025</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0026</label>
-                          </div>
-                        </td>
-                        <td>Maria Jones</td>
-                        <td>Utilities</td>
-                        <td>$1,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0027</label>
-                          </div>
-                        </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0028</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0029</label>
-                          </div>
-                        </td>
-                        <td>Maria Jones</td>
-                        <td>Utilities</td>
-                        <td>$1,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0030</label>
-                          </div>
-                        </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0031</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0032</label>
-                          </div>
-                        </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0033</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0034</label>
-                          </div>
-                        </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0035</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0036</label>
-                          </div>
-                        </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0037</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0038</label>
-                          </div>
-                        </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0039</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0040</label>
-                          </div>
-                        </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0041</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0042</label>
-                          </div>
-                        </td>
-                        <td>Mark Willy</td>
-                        <td>Salary</td>
-                        <td>$2,0000.00</td>
-                        <td className="badge badge-pill badge-success d-block mg-t-8">Paid</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0043</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#0044</label>
-                          </div>
-                        </td>
-                        <td>Jesseual</td>
-                        <td>Transport</td>
-                        <td>$5,0000.00</td>
-                        <td className="badge badge-pill badge-danger d-block mg-t-8">Due</td>
-                        <td>+ 123 9988568</td>
-                        <td>kazifahim93@gmail.com</td>
-                        <td>02/02/2019</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
+                      ))}
                     </tbody>
+                  ):
+                  (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
+                :(<tr>
+                  <td colspan="6">
+                <Loader
+                className = "student-detail-loader"
+              type="MutatingDots"
+              color="#fea801"
+              height={100}
+              width={100}
+
+                />
+                </td>
+                </tr>)}
                   </table>
                 </div>
               </div>

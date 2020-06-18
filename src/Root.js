@@ -36,10 +36,16 @@ import TeacherPayment from './Components/TeacherPayment';
 import AssignIncharge from './Components/AssignIncharge';
 import AllAssignIncharge from './Components/AllAssignIncharge';
 
+//Driver Portion
+import AddDriver from './Components/AddDriver';
+import AllDriver from './Components/AllDriver';
+
+
 //Book portion
 import AllBooks from './Components/AllBooks';
 import AddBook from './Components/AddBook';
 import AssignBook from './Components/AssignBook';
+import AllAssignBooks from './Components/AllAssignBooks';
 import ReturnAssignBook from './Components/ReturnAssignBook';
 
 
@@ -177,10 +183,15 @@ function Root(){
                    <Route path="/parents-detail" component={ParentsDetail} />
                    <Route path="/add-parents" component={AddParents} />
 
+                   {/*Driver portion Routes */}
+                   <Route path="/add-driver" component={AddDriver} />
+                   <Route path="/all-driver" component={AllDriver} />
+
                    { /*Book Portion Routes */}
                    <Route path="/all-books" component={AllBooks} />
                    <Route path="/add-book" component={AddBook} />
                    <Route path="/assign-book" component={AssignBook} />
+                   <Route path="/all-assign-book" component={AllAssignBooks} />
                    <Route path="/return-assign-book" component={ReturnAssignBook} />
 
                    { /*Fees portion routes */}

@@ -28,7 +28,7 @@ export const fetchAllExpenseFaliure = (error) =>{
 export const fetchAllExpense = () =>{
     return(dispatch) => {
       dispatch(fetchAllExpenseRequest())
-      const url =`${config.api_root}/get_all_expense_Type`;
+      const url =`${config.api_root}/get_all_expense`;
       const request_option = {
       method: "GET",
       headers: {

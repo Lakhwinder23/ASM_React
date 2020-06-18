@@ -38,7 +38,7 @@ export const fetchAllProfessions = (all_professions_info) =>{
               'Content-Type': 'application/json'
           },
           body:JSON.stringify({
-            ProfessionId: all_professions_info.professionId != undefined ? all_professions_info.professionId :undefined
+            ProfessionId: all_professions_info != undefined ? all_professions_info.professionId != undefined ? all_professions_info.professionId :undefined:undefined
           })
     }
     fetch(url, request_option)

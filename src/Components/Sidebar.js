@@ -7,6 +7,7 @@ class Sidebar extends Component {
       displayDashboard: false,
       displaystudent : false,
       displayparents : false,
+      displaydrivers : false,
       displayteachers : false,
       displaylibrary : false,
       displayAccount : false,
@@ -35,6 +36,7 @@ class Sidebar extends Component {
  this.hideDropdownteachers = this.hideDropdownteachers.bind(this);
  this.hideDropdownlibrary = this.hideDropdownlibrary.bind(this);
  this.hideDropdownparents = this.hideDropdownparents.bind(this);
+ this.hideDropdowndrivers = this.hideDropdowndrivers.bind(this);
  this.hideDropdownstudent = this.hideDropdownstudent.bind(this);
  this.hideDropdownattendence = this.hideDropdownattendence.bind(this);
   }
@@ -60,6 +62,11 @@ class Sidebar extends Component {
   else if(value1 == 'parents'){
     return this.setState({ displayparents: true }, () => {
       document.addEventListener('click', this.hideDropdownparents);
+      });
+  }
+  else if(value1 == 'driver'){
+    return this.setState({ displaydrivers: true }, () => {
+      document.addEventListener('click', this.hideDropdowndrivers);
       });
   }
   else if(value1 == 'library'){
@@ -196,6 +203,11 @@ hideDropdownparents() {
     document.removeEventListener('click', this.hideDropdownparents);
   });
 }
+hideDropdowndrivers() {
+  this.setState({ displaydrivers: false }, () => {
+    document.removeEventListener('click', this.hideDropdowndrivers);
+  });
+}
 openPageHandler = (event,selected_value) =>{
   event.preventDefault();
   if(selected_value == 'page-admin'){
@@ -248,6 +260,12 @@ else if(selected_value == 'page-parents-detail'){
 }
 else if(selected_value == 'page-add-parents'){
   window.location='/add-parents';
+}
+else if(selected_value == 'page-all-drivers'){
+  window.location='/all-driver';
+}
+else if(selected_value == 'page-add-driver'){
+  window.location='/add-driver';
 }
 else if(selected_value == 'page-all-books'){
   window.location='/all-books';
@@ -481,6 +499,24 @@ else if(selected_value == 'page-Progress-Bar'){
                     <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-parents")}>
                       <a href="/add-parents" className="nav-link"><i className="fas fa-angle-right" />Add
                         Parent</a>
+                    </li>
+                  </ul>
+                  ): (
+                    null
+                  )
+                  }
+                </li>
+                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"driver")}>
+                  <a href="/all-parents" className="nav-link"><i className="flaticon-couple" /><span >Drivers</span></a>
+                  { this.state.displaydrivers == true ? (
+                  <ul className="nav sub-group-menu">
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-drivers")}>
+                      <a href="/all-driver" className="nav-link"><i className="fas fa-angle-right" />All
+                        Drivers</a>
+                    </li>
+                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-driver")}>
+                      <a href="/add-driver" className="nav-link"><i className="fas fa-angle-right" />Add
+                        Driver</a>
                     </li>
                   </ul>
                   ): (

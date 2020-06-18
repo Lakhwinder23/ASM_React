@@ -62,7 +62,8 @@ export const addStudentHandler = (student_info) =>{
         ParentMobile :student_info.parentMobile,
         ParentEmail :student_info.parentEmail,
         ParentExsits :student_info.parentExsits,
-        ParentId :student_info.parentId
+        ParentId :student_info.parentId,
+        LicenseNumber:student_info.licenseNumber != undefined ? student_info.licenseNumber : undefined
       })
     }
     fetch(url, request_option)
