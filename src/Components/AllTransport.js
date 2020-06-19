@@ -76,7 +76,7 @@ const allDriverData = useSelector(state =>state.AllDriver)
 
 // component function start
 // examHandler function start
-   const feesHandler = (event) =>{
+   const driverHandler = (event) =>{
    event.preventDefault()
    const all_assign_vehicle_info = inputValues;
      dispatch(fetchAllAssignVehicle(all_assign_vehicle_info))
@@ -126,7 +126,7 @@ const allDriverData = useSelector(state =>state.AllDriver)
                          </div>
                        </div>
                      </div>
-                     <form className="mg-b-20" onSubmit={(e) =>feesHandler(e)}>
+                     <form className="mg-b-20" onSubmit={(e) =>driverHandler(e)}>
                        <div className="row gutters-8">
                          <div className="col-lg-3 col-12 form-group">
                            <FormGroup>

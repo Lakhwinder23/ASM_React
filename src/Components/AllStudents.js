@@ -1,32 +1,53 @@
 import React, {useState,useEffect,useMemo} from 'react';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import {
+  FormControl,
+  FormGroup,
+  FormLabel
+} from "react-bootstrap";
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux'
-import {
-  fetchAllStudents
-} from '../Redux/AllStudents/AllStudentsActions'
+import { fetchAllStudents } from '../Redux/AllStudents/AllStudentsActions'
+import { fetchAllClasses } from '../Redux/AllClasses/AllClassesActions';
+import { fetchAllSections } from '../Redux/AllSections/AllSectionsActions';
 
 function AllStudents(){
+  // store data access start
+  const classes = useSelector(state =>state.AllClasses)
   const students = useSelector(state =>state.AllStudents)
-  console.log("students",students);
-  const dispatch = useDispatch()
+  const sections = useSelector(state =>state.AllSections)
+  // store data access End
+
+  const dispatch = useDispatch()  // for accessing the redux function
   const [activestate,setActivestate] = useState('')
   const [studentResult,setStudentResult] = useState([])
-  console.log("studentResult",studentResult);
   const [allStudentsInfo,setAllStudentsInfo] = useState([])
-  console.log("allStudentsInfo",allStudentsInfo);
+  const [classesResult,setClassesResult] = useState([])
+  const [allClassesInfo,setClassesInfo] = useState([])
+  const [allSectionsInfo,setSectionsInfo] = useState([])
   const [loader,setLoader] = useState(false)
+  const [inputValues,setInputValues] = useState({
+                                          classId:"",
+                                          sectionId:"",
+                                          studentId:""
+  })
+  const [mediumId,setMediumId] = useState('')
+
   useEffect(() =>{
     dispatch(fetchAllStudents())
+    dispatch(fetchAllClasses())
   },[dispatch])
 
   useMemo(()=>{
-    if(students && students.all_students && students.all_students.result){
+    if(students && students.all_students && students.all_students.success === true && students.all_students.result){
       setStudentResult(students.all_students.result)
     }
+    else(
+      setStudentResult([])
+    )
   },[students.all_students.result])
 
   useMemo(()=>{
@@ -37,7 +58,59 @@ function AllStudents(){
     if(studentResult && studentResult.data){
           setAllStudentsInfo(studentResult.data)
     }
+    else{
+      setAllStudentsInfo([])
+    }
   },[studentResult])
+
+  useMemo(()=>{
+    if(classes && classes.all_classes && classes.all_classes.success === true && classes.all_classes.result){
+      setClassesResult(classes.all_classes.result)
+    }
+  },[classes])
+
+  useMemo(()=>{
+    if(classesResult && classesResult.data){
+          setClassesInfo(classesResult.data)
+    }
+  },[classesResult])
+
+  useMemo(() =>{
+    if(mediumId !='' && inputValues.classId !=''){
+        dispatch(fetchAllSections(inputValues.classId,mediumId))
+    }
+  },[mediumId,inputValues.classId])
+
+  useMemo(()=>{
+    if(sections && sections.all_sections && sections.all_sections.result){
+      setSectionsInfo(sections.all_sections.result)
+    }
+  },[sections.all_sections.result])
+
+
+  const classHandler = (event) =>{
+
+    const classInfo = event.target.value
+    console.log("classInfo",event.target.value)
+    if(classInfo !=""){
+      setInputValues({...inputValues,classId:classInfo})
+      allClassesInfo.filter(classid =>classid.id ==
+         classInfo).map((item,index) =>{
+        setMediumId(item.ClassMediumId)
+      })
+
+    }
+    else{
+      setInputValues({...inputValues,classId:classInfo,sectionId:classInfo})
+    }
+
+  }
+
+  const studentFilterHandler = (event) =>{
+    event.preventDefault();
+    const student_info = inputValues
+    dispatch(fetchAllStudents(student_info))
+  }
   const callbackFunction = (childData) => {
     setActivestate(childData)
   }
@@ -79,17 +152,53 @@ function AllStudents(){
                         </div>
                       </div>
                     </div>
-                    <form className="mg-b-20">
+                    <form className="mg-b-20" onSubmit={(e) =>studentFilterHandler(e)}>
                       <div className="row gutters-8">
                         <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by Roll ..." className="form-control" />
-                        </div>
-                        <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by Name ..." className="form-control" />
+                        <FormGroup>
+                            <FormControl
+                              type="text"
+                              onChange={(e) =>setInputValues({...inputValues,studentId:e.target.value})}
+                              as="select"
+                            >
+                            <option value="">Search by Roll ..."</option>
+                            {allStudentsInfo ? allStudentsInfo.map((item,index) =>(
+                              <option value={item.id} key={index}>{item.RollNumber}</option>
+                            )):null}
+                            </FormControl>
+                          </FormGroup>
                         </div>
                         <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by Class ..." className="form-control" />
+                        <FormGroup>
+                            <FormControl
+                              type="text"
+                              onChange={(e) =>classHandler(e)}
+                              as="select"
+                            >
+                            <option value="">Search by Class ...</option>
+                            {allClassesInfo ? allClassesInfo.map((item,index) =>(
+                              <option value={item.id} key={index}>{item.ClassName} {item.MediumName}Medium</option>
+                            )):null}
+                            </FormControl>
+                          </FormGroup>
                         </div>
+                        <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                        {mediumId !='' && inputValues.classId !='' ? (
+                        <FormGroup>
+                            <FormControl
+                              type="text"
+                              onChange={(e) =>setInputValues({...inputValues,sectionId:e.target.value})}
+                              as="select"
+                            >
+                            <option value="">Search by Section ...</option>
+                            {allSectionsInfo ? allSectionsInfo.map((item,index) =>(
+                              <option value={item.id} key={index}>{item.SectionName}</option>
+                            ) ): null}
+                            </FormControl>
+                          </FormGroup>
+                          ) : null}
+                        </div>
+
                         <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
                           <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
                         </div>

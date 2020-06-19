@@ -31,7 +31,7 @@ export const fetchAllProfessions = (all_professions_info) =>{
       dispatch(fetchAllProfessionRequest(all_professions_info))
       const url =`${config.api_root}/get_all_profession`;
       const request_option = {
-      method: "GET",
+      method: "POST",
       headers: {
               'Accept': 'application/json',
               'Authorization': 'Bearer '+ config.token,

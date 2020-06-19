@@ -29,9 +29,9 @@ export const fetchAllStudentsFaliure = (error) =>{
 export const fetchAllStudents = (student_info) =>{
     return(dispatch) => {
       dispatch(fetchAllStudentsRequest(student_info))
-      const classid = student_info != undefined ? student_info.classId : undefined
-      const sectionid = student_info != undefined ? student_info.sectionId : undefined
-      const studentid = student_info != undefined ? student_info.studentId : undefined
+      const classid = student_info != undefined ? student_info.classId != "" ? student_info.classId : undefined: undefined
+      const sectionid = student_info != undefined ? student_info.sectionId != "" ? student_info.sectionId : undefined: undefined
+      const studentid = student_info != undefined ? student_info.studentId != "" ? student_info.studentId : undefined : undefined
       const url =`${config.api_root}/get_all_student`;
       const request_option = {
       method: "POST",
