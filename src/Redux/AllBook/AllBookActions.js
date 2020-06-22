@@ -29,11 +29,11 @@ export const fetchAllBookFaliure = (error) =>{
 export const fetchAllBook = (book_info) =>{
     return(dispatch) => {
       dispatch(fetchAllBookRequest(book_info))
-      const writter = book_info != undefined && book_info.writter != undefined ? book_info.writter : undefined
-      const classId = book_info != undefined && book_info.classId != undefined  ? book_info.classId : undefined
-      const published = book_info != undefined && book_info.published != undefined ? book_info.published : undefined
-      const subjectId = book_info != undefined && book_info.subjectId != undefined  ? book_info.subjectId : undefined
-      const bookType = book_info != undefined && book_info.bookType != undefined  ? book_info.bookType : undefined
+      const writter = book_info != undefined ? book_info.writter != "undefined" ? book_info.writter : undefined :undefined
+      const classId = book_info != undefined ? book_info.classId != "undefined"  ? book_info.classId : undefined : undefined
+      const published = book_info != undefined ? book_info.published != "undefined" ? book_info.published : undefined : undefined
+      const subjectId = book_info != undefined ? book_info.subjectId != "undefined"  ? book_info.subjectId : undefined :undefined
+      const bookType = book_info != undefined ? book_info.bookType != "undefined"  ? book_info.bookType : undefined :undefined
 
       const url =`${config.api_root}/get_all_book`;
       const request_option = {

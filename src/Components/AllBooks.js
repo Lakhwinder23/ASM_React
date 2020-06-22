@@ -5,25 +5,49 @@ import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { useSelector,useDispatch } from 'react-redux'
+import {
+  FormControl,
+  FormGroup,
+  FormLabel
+} from "react-bootstrap";
 import { fetchAllBook } from '../Redux/AllBook/AllBookActions'
+import {
+  fetchAllClasses
+} from '../Redux/AllClasses/AllClassesActions'
+import {
+  fetchAllSubjects
+} from '../Redux/AllSubjects/AllSubjectsActions'
 
 
 function AllBooks() {
   // store data access start
 const allBookData = useSelector(state =>state.AllBook)
+const classes = useSelector(state =>state.AllClasses)
+const subjects = useSelector(state =>state.AllSubjects)
+
 // store data access End
   const dispatch = useDispatch()  // for accessing the redux function
 
   // component all states define start
   const [allBookResult,setBookResult] = useState([])
   const [allBookInfo,setBookInfo] = useState([])
+  const [classesResult,setClassesResult] = useState([])
+  const [allClassesInfo,setClassesInfo] = useState([])
+  const [allSubjectsInfo,setSubjectsInfo] = useState([])
   const [activestate,setActivestate] = useState('')
+  const [mediumId,setMediumId] = useState(null)
+  const [inputValues,setInputValues] = useState({
+                                        writter:undefined,
+                                        classId:undefined,
+                                        subjectId:undefined
+  })
   // component all states define End
 
    //hooks start
    // fetch allBook and teachers api hook start
    useEffect(() =>{
      dispatch(fetchAllBook())
+     dispatch(fetchAllClasses())
    },[dispatch])
 // fetch allBook and teachers api hook End
 
@@ -31,6 +55,10 @@ const allBookData = useSelector(state =>state.AllBook)
    useMemo(() =>{
      if(allBookData && allBookData.all_book && allBookData.all_book.result && allBookData.all_book.success === true){
        setBookResult(allBookData.all_book.result)
+       setInputValues({...inputValues,writer:undefined})
+     }
+     else{
+       setBookResult([])
      }
    },[allBookData])
 // add data of allFees api into constant,hook End
@@ -40,12 +68,74 @@ const allBookData = useSelector(state =>state.AllBook)
      if(allBookData && allBookResult.data){
        setBookInfo(allBookResult.data)
      }
+     else{
+       setBookInfo([])
+     }
    },[allBookResult])
 // when allBookResult data change than data add into constant,hook End
+
+// add data of allclasses api into constant,hook start
+
+useMemo(()=>{
+  if(classes && classes.all_classes && classes.all_classes.result){
+    setClassesResult(classes.all_classes.result)
+  }
+},[classes.all_classes.result])
+
+// add data of allclasses api into constant,hook end
+
+// when classesResult data change than data add into constant,hook start
+useMemo(()=>{
+  if(classesResult && classesResult.data){
+        setClassesInfo(classesResult.data)
+  }
+},[classesResult])
+// when classesResult data change than data add into constant,hook end
+
+// when classid change allsubject api fetch data, hook start
+useMemo(()=>{
+  if(inputValues.classId != undefined && mediumId != null){
+    dispatch(fetchAllSubjects(inputValues.classId,mediumId))
+  }
+
+},[inputValues.classId])
+// when classid change allsubject api fetch data, hook end
+
+
+//add data of allsubject api into constant,hook start
+useMemo(()=>{
+  if(subjects && subjects.all_subjects && subjects.all_subjects.success === true && subjects.all_subjects.result){
+    setSubjectsInfo(subjects.all_subjects.result)
+  }
+},[subjects])
+//add data of allsubject api into constant,hook end
    //hooks end
 
 // component function start
+const classHandler = (event) =>{
 
+  const classInfo = event.target.value
+  console.log("classInfo",event.target.value)
+  if(classInfo !="undefined"){
+    setInputValues({...inputValues,classId:classInfo})
+    allClassesInfo.filter(classid =>classid.id ==
+       classInfo).map((item,index) =>{
+      setMediumId(item.ClassMediumId)
+    })
+
+  }
+  else{
+    setInputValues({...inputValues,classId:classInfo,subjectId:classInfo})
+    setMediumId(null)
+  }
+
+}
+
+const bookFilterHandler =(event) =>{
+  event.preventDefault();
+  const book_info = inputValues;
+  dispatch(fetchAllBook(book_info))
+}
   const callbackFunction = (childData) => {
     setActivestate(childData)
 }
@@ -89,18 +179,57 @@ const allBookData = useSelector(state =>state.AllBook)
                         </div>
                       </div>
                     </div>
-                    <form className="mg-b-20">
+                    <form className="mg-b-20" onSubmit={(e) =>bookFilterHandler(e)}>
                       <div className="row gutters-8">
+                        <div className="col-2-xxxl col-xl-2 col-lg-2 col-12 form-group">
+                        <input type="text" placeholder="Search by Name ..." className="form-control" />
+                        </div>
                         <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by ID ..." className="form-control" />
+                        <FormGroup>
+                            <FormControl
+                              type="text"
+                              onChange={(e) =>classHandler(e)}
+                              as="select"
+                            >
+                            <option value="undefined">Search by class ..."</option>
+                            {allClassesInfo ? allClassesInfo.map((item,index) =>(
+                              <option value={item.id} key={index}>{item.ClassName}{item.MediumName}</option>
+                            )):null}
+                            </FormControl>
+                          </FormGroup>
                         </div>
-                        <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by Name ..." className="form-control" />
+                        {inputValues.classId != "undefined" && mediumId != null ? (
+                          <div className="col-2-xxxl col-xl-2 col-lg-2 col-12 form-group">
+                          <FormGroup>
+                              <FormControl
+                                type="text"
+                                onChange={(e) =>setInputValues({...inputValues,subjectId:e.target.value})}
+                                as="select"
+                              >
+                              <option value="undefined">Search by subject ..."</option>
+                              {allSubjectsInfo && allSubjectsInfo.length > 0 ? allSubjectsInfo.map((item,index) =>(
+                                <option value={item.id} key={index}>{item.SubjectName}</option>
+                              )):null}
+                              </FormControl>
+                            </FormGroup>
+                          </div>
+                        ):null}
+
+                        <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                        <FormGroup>
+                            <FormControl
+                              type="text"
+                              onChange={(e) =>setInputValues({...inputValues,writter:e.target.value})}
+                              as="select"
+                            >
+                            <option value="undefined">Search by writer ..."</option>
+                            {allBookInfo ? allBookInfo.map((item,index) =>(
+                              <option value={item.Writter} key={index}>{item.Writter}</option>
+                            )):null}
+                            </FormControl>
+                          </FormGroup>
                         </div>
-                        <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by Phone ..." className="form-control" />
-                        </div>
-                        <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
+                        <div className="col-2-xxxl col-xl-2 col-lg-2 col-12 form-group">
                           <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
                         </div>
                       </div>

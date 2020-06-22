@@ -4,26 +4,48 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import {
+  FormControl,
+  FormGroup,
+  FormLabel
+} from "react-bootstrap";
 import { useSelector,useDispatch } from 'react-redux'
 import {
   fetchAllTeachers
 } from '../Redux/AllTeachers/AllTeachersActions'
+import {
+  fetchAllProfessions
+} from '../Redux/AllProfessions/AllProfessionActions'
 
 function AllTeachers(){
   const teachers = useSelector(state =>state.AllTeachers)
+  const professions = useSelector(state =>state.AllProfession)
   console.log("teachers",teachers);
   const dispatch = useDispatch()
     const [teacherResult,setTeacherResult] = useState([])
     const [allTeachersInfo,setTeachersInfo] = useState([])
+    const [allProfessionInfo,setProfessionInfo] = useState([])
+    const [inputValues,setInputValues] = useState({
+                                            teacherId:"undefined",
+                                            professionId:"undefined",
+    })
   const [activestate,setActivestate] = useState('')
-  
+
   useEffect(() =>{
     dispatch(fetchAllTeachers())
+    dispatch(fetchAllProfessions())
   },[dispatch])
 
   useMemo(()=>{
-    if(teachers && teachers.all_teachers && teachers.all_teachers.result){
+    if(teachers && teachers.all_teachers && teachers.all_teachers.success === true && teachers.all_teachers.result){
       setTeacherResult(teachers.all_teachers.result)
+      setInputValues({
+        ...inputValues,
+        teacherId:"undefined",
+      })
+    }
+    else{
+      setTeacherResult([])
     }
   },[teachers.all_teachers.result])
 
@@ -31,7 +53,21 @@ function AllTeachers(){
     if(teacherResult && teacherResult.data){
           setTeachersInfo(teacherResult.data)
     }
+    else{
+      setTeachersInfo([])
+    }
   },[teacherResult])
+  useMemo(()=>{
+    if(professions && professions.all_professions && professions.all_professions.result && professions.all_professions.success === true){
+      setProfessionInfo(professions.all_professions.result)
+    }
+  },[professions])
+
+  const teacherFilterHandler = (event) =>{
+    event.preventDefault();
+    const teacher_info = inputValues
+    dispatch(fetchAllTeachers(teacher_info))
+  }
 
   const callbackFunction = (childData) => {
     setActivestate(childData)
@@ -74,13 +110,35 @@ function AllTeachers(){
                         </div>
                       </div>
                     </div>
-                    <form className="mg-b-20">
+                    <form className="mg-b-20" onSubmit={(e) =>teacherFilterHandler(e)}>
                       <div className="row gutters-8">
                         <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by ID ..." className="form-control" />
+                        <FormGroup>
+                            <FormControl
+                              type="text"
+                              onChange={(e) =>setInputValues({...inputValues,teacherId:e.target.value})}
+                              as="select"
+                            >
+                            <option value="undefined">Search by ID ..."</option>
+                            {allTeachersInfo ? allTeachersInfo.map((item,index) =>(
+                              <option value={item.id} key={index}>{item.id}</option>
+                            )):null}
+                            </FormControl>
+                          </FormGroup>
                         </div>
                         <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by Name ..." className="form-control" />
+                        <FormGroup>
+                            <FormControl
+                              type="text"
+                              onChange={(e) =>setInputValues({...inputValues,professionId:e.target.value})}
+                              as="select"
+                            >
+                            <option value="undefined">Search by Subject ..."</option>
+                            {allProfessionInfo ? allProfessionInfo.map((item,index) =>(
+                              <option value={item.id} key={index}>{item.ProfessionName}</option>
+                            )):null}
+                            </FormControl>
+                          </FormGroup>
                         </div>
                         <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
                           <input type="text" placeholder="Search by Phone ..." className="form-control" />

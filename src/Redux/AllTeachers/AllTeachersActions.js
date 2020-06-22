@@ -38,8 +38,8 @@ export const fetchAllTeachers = (teacher_info) =>{
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                    TeacherId : teacher_info != undefined ? teacher_info.teacherId : undefined,
-                    ProfessionId : teacher_info != undefined ? teacher_info.professionId : undefined
+                    TeacherId : teacher_info != undefined ? teacher_info.teacherId !="undefined" ? teacher_info.teacherId : undefined :undefined,
+                    ProfessionId : teacher_info != undefined ? teacher_info.professionId != "undefined"? teacher_info.professionId : undefined : undefined
               })
     }
     fetch(url, request_option)

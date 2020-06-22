@@ -44,6 +44,7 @@ function AllStudents(){
   useMemo(()=>{
     if(students && students.all_students && students.all_students.success === true && students.all_students.result){
       setStudentResult(students.all_students.result)
+      setInputValues({...inputValues, studentId:""})
     }
     else(
       setStudentResult([])
