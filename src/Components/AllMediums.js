@@ -21,10 +21,10 @@ function AllMediums() {
     },[dispatch])
 
     useMemo(()=>{
-      if(mediums && mediums.all_mediums && mediums.all_mediums.result){
+      if(mediums && mediums.all_mediums && mediums.all_mediums.success === true && mediums.all_mediums.result){
         setAllMediumsInfo(mediums.all_mediums.result)
       }
-    },[mediums.all_mediums.result])
+    },[mediums])
 
 
 
@@ -69,22 +69,6 @@ function AllMediums() {
                     </div>
                   </div>
                 </div>
-                <form className="mg-b-20">
-                  <div className="row gutters-8">
-                    <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by ID ..." className="form-control" />
-                    </div>
-                    <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Name ..." className="form-control" />
-                    </div>
-                    <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Phone ..." className="form-control" />
-                    </div>
-                    <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                      <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                    </div>
-                  </div>
-                </form>
                 <div className="table-responsive">
                   <table className="table display data-table text-nowrap">
                     <thead>

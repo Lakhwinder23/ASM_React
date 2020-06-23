@@ -38,10 +38,10 @@ export const fetchAllAssignClasses = (all_assign_class_info) =>{
               'Content-Type': 'application/json'
           },
       body:JSON.stringify({
-        ClassId:all_assign_class_info != undefined ? all_assign_class_info.classId != undefined ? all_assign_class_info.classId :undefined:undefined,
-        SectionId:all_assign_class_info != undefined ? all_assign_class_info.sectionId != undefined ? all_assign_class_info.sectionId :undefined:undefined,
-        TeacherId:all_assign_class_info != undefined ? all_assign_class_info.teacherId != undefined ? all_assign_class_info.teacherId :undefined:undefined,
-        IsIncharge:all_assign_class_info != undefined ? all_assign_class_info.isIncharge != undefined ? all_assign_class_info.isIncharge :undefined:undefined,
+        ClassId:all_assign_class_info != undefined ? all_assign_class_info.classId !="" ? all_assign_class_info.classId :undefined:undefined,
+        SectionId:all_assign_class_info != undefined ? all_assign_class_info.sectionId !="" ? all_assign_class_info.sectionId :undefined:undefined,
+        TeacherId:all_assign_class_info != undefined ? all_assign_class_info.teacherId !="" ? all_assign_class_info.teacherId :undefined:undefined,
+        IsIncharge:all_assign_class_info != undefined ? all_assign_class_info.isIncharge !="" ? all_assign_class_info.isIncharge :undefined:undefined,
       })
     }
     fetch(url, request_option)

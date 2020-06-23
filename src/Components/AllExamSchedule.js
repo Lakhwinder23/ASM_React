@@ -91,7 +91,7 @@ const exams = useSelector(state =>state.AllExams)
                             <th />
                           </tr>
                         </thead>
-                        {exams.all_exams_loading === false ? allExamsInfo && allExamsInfo.length == 0 ? (
+                        {exams.all_exams_loading === false ? allExamsInfo && allExamsInfo.length > 0 ? (
                         <tbody>
                          {allExamsInfo.map((item,index) =>(
                           <tr key={index}>

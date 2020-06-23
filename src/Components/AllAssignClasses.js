@@ -4,37 +4,144 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import { useSelector,useDispatch } from 'react-redux'
 import {
-  fetchAllAssignClasses
-} from '../Redux/AllAssignClasses/AllAssignClassActions'
+  FormControl,
+  FormGroup,
+  FormLabel
+} from "react-bootstrap";
+import { useSelector,useDispatch } from 'react-redux'
+import { fetchAllAssignClasses } from '../Redux/AllAssignClasses/AllAssignClassActions'
+import { fetchAllClasses } from '../Redux/AllClasses/AllClassesActions'
+import { fetchAllSections } from '../Redux/AllSections/AllSectionsActions';
+import { fetchAllTeachers } from '../Redux/AllTeachers/AllTeachersActions'
 
 function AllAssignClasses() {
   const assignClasses = useSelector(state =>state.AllAssignClass)
+  const classes = useSelector(state =>state.AllClasses)
+  const sections = useSelector(state =>state.AllSections)
+  const teachers = useSelector(state =>state.AllTeachers)
   console.log("rooms",assignClasses);
   const dispatch = useDispatch()
     const [assignClassResult,setAssignClassResult] = useState([])
     console.log("assignClassResult",assignClassResult);
     const [allAssignClassInfo,setAllAssignClassInfo] = useState([])
     console.log("allAssignClassInfo",allAssignClassInfo);
+    const [classesResult,setClassesResult] = useState([])
+    const [allClassesInfo,setClassesInfo] = useState([])
+    const [allSectionsInfo,setSectionsInfo] = useState([])
+    const [teacherResult,setTeacherResult] = useState([])
+    const [allTeachersInfo,setTeachersInfo] = useState([])
+    const [mediumId,setMediumId] = useState('')
+    const [inputValues,setInputValues] = useState({
+                                            classId:"",
+                                            sectionId:"",
+                                            teacherId:"",
+                                            isIncharge:""
+    })
+
     const [activestate,setActivestate] = useState('')
     useEffect(() =>{
       dispatch(fetchAllAssignClasses())
+      dispatch(fetchAllClasses())
+      dispatch(fetchAllTeachers())
     },[dispatch])
 
     useMemo(()=>{
-      if(assignClasses && assignClasses.all_assign_classes && assignClasses.all_assign_classes.result){
+      if(assignClasses && assignClasses.all_assign_classes && assignClasses.all_assign_classes.success === true && assignClasses.all_assign_classes.result){
         setAssignClassResult(assignClasses.all_assign_classes.result)
       }
-    },[assignClasses.all_assign_classes.result])
+      else{
+        setAssignClassResult([])
+      }
+    },[assignClasses])
 
     useMemo(()=>{
       if(assignClassResult && assignClassResult.data){
             setAllAssignClassInfo(assignClassResult.data)
       }
+      else{
+        setAllAssignClassInfo([])
+      }
     },[assignClassResult])
 
+    // add data of allclasses api into constant,hook start
 
+    useMemo(()=>{
+      if(classes && classes.all_classes && classes.all_classes.success === true && classes.all_classes.result){
+        setClassesResult(classes.all_classes.result)
+      }
+    },[classes])
+
+    // add data of allclasses api into constant,hook end
+
+    // when classesResult data change than data add into constant,hook start
+    useMemo(()=>{
+      if(classesResult && classesResult.data){
+            setClassesInfo(classesResult.data)
+      }
+    },[classesResult])
+    // when classesResult data change than data add into constant,hook end
+
+    // fetch allSections and allsubject api,hook start
+       useMemo(() =>{
+         if(mediumId !='' && inputValues.classId !=''){
+             dispatch(fetchAllSections(inputValues.classId,mediumId))
+         }
+       },[mediumId,inputValues.classId])
+    // fetch allSections and allsubject api,hook End
+
+    // add data of allSections api into constant,hook start
+       useMemo(()=>{
+         if(sections && sections.all_sections && sections.all_sections.result && sections.all_sections.success === true){
+           setSectionsInfo(sections.all_sections.result)
+         }
+       },[sections])
+    // add data of allSections api into constant,hook End
+
+    // add data of teachers api into constant,hook start
+       useMemo(()=>{
+         if(teachers && teachers.all_teachers && teachers.all_teachers.result && teachers.all_teachers.success === true){
+           setTeacherResult(teachers.all_teachers.result)
+         }
+       },[teachers])
+    // add data of teachers api into constant,hook End
+
+    // when teacherResult change add data into teachersInfo,hook start
+       useMemo(()=>{
+         if(teacherResult && teacherResult.data){
+               setTeachersInfo(teacherResult.data)
+         }
+       },[teacherResult])
+    // when teacherResult change add data into teachersInfo,hook End
+
+    // classHandler function start
+    const classHandler = (event) =>{
+
+      const classInfo = event.target.value
+      console.log("classInfo",event.target.value)
+      if(classInfo !=""){
+        setInputValues({...inputValues,classId:classInfo})
+        allClassesInfo.filter(classid =>classid.id ==
+           classInfo).map((item,index) =>{
+          setMediumId(item.ClassMediumId)
+        })
+
+      }
+      else{
+        setInputValues({...inputValues,classId:classInfo,subjectId:classInfo})
+        setMediumId(null)
+      }
+
+    }
+    // classHandler function END
+
+    // examHandler function start
+       const allAssignClassesFilterHandler = (event) =>{
+       event.preventDefault()
+       const all_assign_class_info = inputValues;
+         dispatch(fetchAllAssignClasses(all_assign_class_info))
+     }
+    // examHandler function End
   const callbackFunction = (childData) => {
     setActivestate(childData)
   }
@@ -76,18 +183,67 @@ function AllAssignClasses() {
                     </div>
                   </div>
                 </div>
-                <form className="mg-b-20">
+                <form className="mg-b-20" onSubmit={(e) =>allAssignClassesFilterHandler(e)}>
                   <div className="row gutters-8">
+                    <div className="col-2-xxxl col-xl-2 col-lg-2 col-12 form-group">
+                    <FormGroup>
+                        <FormControl
+                          type="text"
+                          onChange={(e) =>classHandler(e)}
+                          as="select"
+                        >
+                        <option value="">Search by class ..."</option>
+                        {allClassesInfo ? allClassesInfo.map((item,index) =>(
+                          <option value={item.id} key={index}>{item.ClassName}{item.MediumName}</option>
+                        )):null}
+                        </FormControl>
+                      </FormGroup>
+                    </div>
+                    {mediumId !='' && inputValues.classId !='' ? (
+                    <div className="col-2-xxxl col-xl-2 col-lg-2 col-12 form-group">
+                    <FormGroup>
+                        <FormControl
+                          type="text"
+                          onChange={(e) =>setInputValues({...inputValues,sectionId:e.target.value})}
+                          as="select"
+                        >
+                        <option value="">Search by section ..."</option>
+                        {allSectionsInfo && allSectionsInfo.length > 0 ? allSectionsInfo.map((item,index) =>(
+                          <option value={item.id} key={index}>{item.SectionName}</option>
+                        )):null}
+                        </FormControl>
+                      </FormGroup>
+                    </div>
+                      ) : null}
                     <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by ID ..." className="form-control" />
+                    <FormGroup>
+                        <FormControl
+                          type="text"
+                          onChange={(e) =>setInputValues({...inputValues,teacherId:e.target.value})}
+                          as="select"
+                        >
+                        <option value="">Search by Teacher ...</option>
+                        {allTeachersInfo ? allTeachersInfo.map((item,index) =>(
+                          <option value={item.id} key={index}>{item.TeacherName}</option>
+                        )):null}
+                        </FormControl>
+                      </FormGroup>
                     </div>
-                    <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Name ..." className="form-control" />
+                    <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                    <FormGroup>
+                        <FormControl
+                          type="text"
+                          onChange={(e) =>setInputValues({...inputValues,isIncharge:e.target.value})}
+                          as="select"
+                        >
+                        <option value="">Search by Incharge</option>
+                        <option value="1">Yes</option>
+                        <option value="2">No</option>
+
+                        </FormControl>
+                      </FormGroup>
                     </div>
-                    <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Phone ..." className="form-control" />
-                    </div>
-                    <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
+                    <div className="col-1-xxxl col-xl-2 col-lg-2 col-12 form-group">
                       <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
                     </div>
                   </div>
@@ -113,8 +269,9 @@ function AllAssignClasses() {
                         <th />
                       </tr>
                     </thead>
+                    {assignClasses.all_assign_classes_loading === false ? allAssignClassInfo && allAssignClassInfo.length > 0 ? (
                     <tbody>
-                    {allAssignClassInfo ? allAssignClassInfo.map((item,index) =>(
+                    {allAssignClassInfo.map((item,index) =>(
                       <tr key={index}>
                         <td>
                           <div className="form-check">
@@ -143,10 +300,22 @@ function AllAssignClasses() {
                           </div>
                         </td>
                       </tr>
-                    )):(
-                      <h6>No data available in table</h6>
-                    )}
+                    ))}
                     </tbody>
+                  ):
+                  (<tr><td colspan="9"><h6 className="text-center">No data available in table</h6></td></tr>)
+                :(<tr>
+                  <td colspan="9">
+                <Loader
+                className = "student-detail-loader"
+              type="MutatingDots"
+              color="#fea801"
+              height={100}
+              width={100}
+
+                />
+                </td>
+                </tr>)}
                   </table>
                 </div>
               </div>

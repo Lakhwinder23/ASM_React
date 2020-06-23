@@ -31,14 +31,14 @@ export const fetchAllMediums = (all_mediums_info) =>{
       dispatch(fetchAllMediumRequest(all_mediums_info))
       const url =`${config.api_root}/get_all_medium`;
       const request_option = {
-      method: "GET",
+      method: "POST",
       headers: {
               'Accept': 'application/json',
               'Authorization': 'Bearer '+ config.token,
               'Content-Type': 'application/json'
           },
           body:JSON.stringify({
-            MediumId: all_mediums_info.mediumId != undefined ? all_mediums_info.mediumId :undefined
+            MediumId: all_mediums_info != undefined ? all_mediums_info.mediumId != undefined ? all_mediums_info.mediumId :undefined:undefined
           })
     }
     fetch(url, request_option)
