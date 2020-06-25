@@ -131,6 +131,7 @@ import Map from './Components/Map';
 
 function Root(){
   const [isLogin,setIsLogin] = useState(false)
+  const [role,setRole] = useState(null)
   console.log("isLogin",store.getState().LoginCheck.is_Login)
   store.subscribe(() => {
     if(store.getState() &&
@@ -139,6 +140,17 @@ function Root(){
   ){
     setIsLogin(store.getState().LoginCheck.is_Login)
   }
+});
+
+store.subscribe(() => {
+  if(store.getState() &&
+  store.getState().SpecificUserDetail &&
+  store.getState().SpecificUserDetail.specific_user_detail &&
+  store.getState().SpecificUserDetail.specific_user_detail.result &&
+  store.getState().SpecificUserDetail.specific_user_detail.result.Role
+){
+  setRole(store.getState().SpecificUserDetail.specific_user_detail.result.Role)
+}
 });
 
   useEffect(() =>{
@@ -161,103 +173,304 @@ function Root(){
                   {/*Admin route */}
                   <Route exact path="/"  component={App}/>
 
-                  {/* student portion routes */}
-                   <Route path="/students" component={Students} />
-                   <Route path="/all-students" component={AllStudents} />
-                   <Route path="/student-detail" component={StudentDetail} />
-                   <Route path="/admission-form" component={AdmissionForm} />
-                   <Route path="/student-promotion" component={StudentPromotion} />
 
-                   {/* Teachers portion Routes */}
-                   <Route path="/all-teachers" component={AllTeachers} />
-                   <Route path="/teacher-detail" component={TeacherDetails} />
-                   <Route path="/add-teacher" component={AddTeacher} />
-                   <Route path="/teacher-payment" component={TeacherPayment} />
-                   <Route path="/teachers" component={Teachers} />
-                   <Route path="/assign-incharge" component={AssignIncharge} />
-                   <Route path="/all-assign-incharge" component={AllAssignIncharge} />
+                  {role != null ? (
+                      <>
+                      {console.log("neha route",role)}
+                      {role === 3 ?
+                        (
+                           <>
+                          <Route path="/students" component={Students} />
+                          <Route path="/student-detail" component={StudentDetail} />
+                        <Route path="/all-students" component={AllStudents} />
+                        <Route path="/all-teachers" component={AllTeachers} />
+                        <Route path="/all-assign-incharge" component={AllAssignIncharge} />
+                        <Route path="/all-books" component={AllBooks} />
+                        <Route path="/all-classes" component={AllClasses} />
+                        <Route path="/class-routine" component={ClassRoutine} />
+                        <Route path="/all-assign-class" component={AllAssignClasses} />
+                        <Route path="/all-medium" component={AllMediums} />
+                        <Route path="/all-profession" component={AllProfessions} />
+                        <Route path="/all-driver" component={AllDriver} />
+                        <Route path="/section" component={AllSections} />
+                        <Route path="/subject" component={Subject} />
+                        <Route path="/exam-schedule" component={ExamSchedule} />
+                        <Route path="/exam-grade" component={ExamGrade} />
+                        <Route path="/exam-result" component={ExamResult} />
+                        <Route path="/all-transport" component={AllTransport} />
+                        <Route path="/all-vehicle" component={AllVehicles} />
+                        <Route path="/all-room" component={AllRoom} />
+                        <Route path="/all-hostel" component={AllHostel} />
+                        <Route path="/all-assign-room" component={AllAssignRoom} />
+                        <Route path="/notice-board" component={Notice} />
+                        <Route path="/add-message" component={Message} />
+                        <Route path="/all-message" component={AllMessages} />
+                        </>
+                      ) :role === 1 ? (
+                        <>
+                        {/* student portion routes */ }
+                        <Route path="/students" component={Students} />
+                        <Route path="/student-detail" component={StudentDetail} />
+                        <Route path="/admission-form" component={AdmissionForm} />
+                        <Route path="/student-promotion" component={StudentPromotion} />
+                        <Route path="/all-students" component={AllStudents} />
 
-                   {/*Parents portion Routes */}
-                   <Route path="/parents" component={Parents} />
-                   <Route path="/all-parents" component={AllParents} />
-                   <Route path="/parents-detail" component={ParentsDetail} />
-                   <Route path="/add-parents" component={AddParents} />
+                        {/* Teachers portion Routes */}
+                        <Route path="/all-teachers" component={AllTeachers} />
+                        <Route path="/teacher-detail" component={TeacherDetails} />
+                        <Route path="/add-teacher" component={AddTeacher} />
+                        <Route path="/teacher-payment" component={TeacherPayment} />
+                        <Route path="/teachers" component={Teachers} />
+                        <Route path="/assign-incharge" component={AssignIncharge} />
+                        <Route path="/all-assign-incharge" component={AllAssignIncharge} />
 
-                   {/*Driver portion Routes */}
-                   <Route path="/add-driver" component={AddDriver} />
-                   <Route path="/all-driver" component={AllDriver} />
+                        {/*Parents portion Routes */}
+                        <Route path="/parents" component={Parents} />
+                        <Route path="/all-parents" component={AllParents} />
+                        <Route path="/parents-detail" component={ParentsDetail} />
+                        <Route path="/add-parents" component={AddParents} />
 
-                   { /*Book Portion Routes */}
-                   <Route path="/all-books" component={AllBooks} />
-                   <Route path="/add-book" component={AddBook} />
-                   <Route path="/assign-book" component={AssignBook} />
-                   <Route path="/all-assign-book" component={AllAssignBooks} />
-                   <Route path="/return-assign-book" component={ReturnAssignBook} />
+                        {/*Driver portion Routes */}
+                        <Route path="/add-driver" component={AddDriver} />
+                        <Route path="/all-driver" component={AllDriver} />
 
-                   { /*Fees portion routes */}
-                   <Route path="/add-fees" component={AddFees} />
-                   <Route path="/all-fees" component={AllFees} />
-                   <Route path="/add-fees-collection" component={AddFeesCollection} />
-                   <Route path="/all-fees-collection" component={AllFeesCollection} />
-                   <Route path="/accept-fees" component={AcceptFees} />
+                        { /*Book Portion Routes */}
+                        <Route path="/all-books" component={AllBooks} />
+                        <Route path="/add-book" component={AddBook} />
+                        <Route path="/assign-book" component={AssignBook} />
+                        <Route path="/all-assign-book" component={AllAssignBooks} />
+                        <Route path="/return-assign-book" component={ReturnAssignBook} />
 
-                   { /*Expense portion routes */}
-                   <Route path="/all-expense" component={AllExpense} />
-                   <Route path="/add-expense" component={AddExpense} />
-                   <Route path="/add-expense-type" component={AddExpenseType} />
-                   <Route path="/all-expense-type" component={AllExpenseType} />
+                        { /*Fees portion routes */}
+                        <Route path="/add-fees" component={AddFees} />
+                        <Route path="/all-fees" component={AllFees} />
+                        <Route path="/add-fees-collection" component={AddFeesCollection} />
+                        <Route path="/all-fees-collection" component={AllFeesCollection} />
+                        <Route path="/accept-fees" component={AcceptFees} />
 
-                   { /*class portion routes*/}
-                   <Route path="/all-classes" component={AllClasses} />
-                   <Route path="/class-routine" component={ClassRoutine} />
-                   <Route path="/add-class" component={AddClass} />
-                   <Route path="/all-assign-class" component={AllAssignClasses} />
-                   <Route path="/assign-class" component={AssignClass} />
+                        { /*Expense portion routes */}
+                        <Route path="/all-expense" component={AllExpense} />
+                        <Route path="/add-expense" component={AddExpense} />
+                        <Route path="/add-expense-type" component={AddExpenseType} />
+                        <Route path="/all-expense-type" component={AllExpenseType} />
 
-                   {/* Medium portion routes*/}
-                   <Route path="/add-medium" component={AddMedium} />
-                   <Route path="/all-medium" component={AllMediums} />
+                        { /*class portion routes*/}
+                        <Route path="/all-classes" component={AllClasses} />
+                        <Route path="/class-routine" component={ClassRoutine} />
+                        <Route path="/add-class" component={AddClass} />
+                        <Route path="/all-assign-class" component={AllAssignClasses} />
+                        <Route path="/assign-class" component={AssignClass} />
 
-                   {/*Profession portion routes */}
-                   <Route path="/add-profession" component={AddProfession} />
-                   <Route path="/all-profession" component={AllProfessions} />
+                        {/* Medium portion routes*/}
+                        <Route path="/add-medium" component={AddMedium} />
+                        <Route path="/all-medium" component={AllMediums} />
 
-                   {/*Section portion routes */}
-                   <Route path="/section" component={AllSections} />
+                        {/*Profession portion routes */}
+                        <Route path="/add-profession" component={AddProfession} />
+                        <Route path="/all-profession" component={AllProfessions} />
 
-                   {/* subject portion routes */}
-                   <Route path="/subject" component={Subject} />
+                        {/*Section portion routes */}
+                        <Route path="/section" component={AllSections} />
 
-                   {/* attendence portion routes */}
-                   <Route path="/add-attendence" component={AddAttendence} />
-                   <Route path="/all-attendence" component={AllAttendence} />
+                        {/* subject portion routes */}
+                        <Route path="/subject" component={Subject} />
 
-                   {/* exam portion Routes */}
-                   <Route path="/exam-schedule" component={ExamSchedule} />
-                   <Route path="/exam-grade" component={ExamGrade} />
-                   <Route path="/exam-result" component={ExamResult} />
-                   <Route path="/student-exam-result" component={AllExamResultOfStudent} />
+                        {/* attendence portion routes */}
+                        <Route path="/add-attendence" component={AddAttendence} />
+                        <Route path="/all-attendence" component={AllAttendence} />
 
-                   {/* transport portion routes */}
-                    <Route path="/add-transport" component={AddTransport} />
-                   <Route path="/all-transport" component={AllTransport} />
-                   <Route path="/add-vehicle" component={AddVehicle} />
-                   <Route path="/all-vehicle" component={AllVehicles} />
+                        {/* exam portion Routes */}
+                        <Route path="/exam-schedule" component={ExamSchedule} />
+                        <Route path="/exam-grade" component={ExamGrade} />
+                        <Route path="/exam-result" component={ExamResult} />
 
-                   {/* Hostel portion routes */}
-                   <Route path="/add-room" component={AddRoom} />
-                   <Route path="/add-hostel" component={AddHostel} />
-                   <Route path="/all-room" component={AllRoom} />
-                   <Route path="/all-hostel" component={AllHostel} />
-                   <Route path="/assign-room" component={AssignRoom} />
-                   <Route path="/all-assign-room" component={AllAssignRoom} />
+                        {/* transport portion routes */}
+                         <Route path="/add-transport" component={AddTransport} />
+                        <Route path="/all-transport" component={AllTransport} />
+                        <Route path="/add-vehicle" component={AddVehicle} />
+                        <Route path="/all-vehicle" component={AllVehicles} />
 
-                   {/* notice portion routes */}
-                   <Route path="/notice-board" component={Notice} />
+                        {/* Hostel portion routes */}
+                        <Route path="/add-room" component={AddRoom} />
+                        <Route path="/add-hostel" component={AddHostel} />
+                        <Route path="/all-room" component={AllRoom} />
+                        <Route path="/all-hostel" component={AllHostel} />
+                        <Route path="/assign-room" component={AssignRoom} />
+                        <Route path="/all-assign-room" component={AllAssignRoom} />
 
-                  {/* message portion routes */}
-                   <Route path="/add-message" component={Message} />
-                   <Route path="/all-message" component={AllMessages} />
+                        {/* notice portion routes */}
+                        <Route path="/notice-board" component={Notice} />
+
+                       {/* message portion routes */}
+                        <Route path="/add-message" component={Message} />
+                        <Route path="/all-message" component={AllMessages} />
+                        </>
+                      ): role === 2 ? (
+                        <>
+                        <Route path="/all-students" component={AllStudents} />
+                        <Route path="/admission-form" component={AdmissionForm} />
+                        <Route path="/student-promotion" component={StudentPromotion} />
+                        <Route path="/all-teachers" component={AllTeachers} />
+                        <Route path="/teacher-detail" component={TeacherDetails} />
+                        <Route path="/teachers" component={Teachers} />
+                        <Route path="/assign-incharge" component={AssignIncharge} />
+                        <Route path="/all-assign-incharge" component={AllAssignIncharge} />
+                        <Route path="/all-parents" component={AllParents} />
+                        <Route path="/add-parents" component={AddParents} />
+                        <Route path="/all-driver" component={AllDriver} />
+                        <Route path="/all-books" component={AllBooks} />
+                        <Route path="/all-classes" component={AllClasses} />
+                        <Route path="/class-routine" component={ClassRoutine} />
+                        <Route path="/add-class" component={AddClass} />
+                        <Route path="/all-assign-class" component={AllAssignClasses} />
+                        <Route path="/assign-class" component={AssignClass} />
+                        <Route path="/all-medium" component={AllMediums} />
+                        <Route path="/all-profession" component={AllProfessions} />
+                        {/*Section portion routes */}
+                        <Route path="/section" component={AllSections} />
+
+                        {/* subject portion routes */}
+                        <Route path="/subject" component={Subject} />
+                        {/* attendence portion routes */}
+                        <Route path="/add-attendence" component={AddAttendence} />
+                        <Route path="/all-attendence" component={AllAttendence} />
+                        {/* exam portion Routes */}
+                        <Route path="/exam-schedule" component={ExamSchedule} />
+                        <Route path="/exam-grade" component={ExamGrade} />
+                        <Route path="/exam-result" component={ExamResult} />
+
+                        <Route path="/all-transport" component={AllTransport} />
+                        <Route path="/all-vehicle" component={AllVehicles} />
+                        <Route path="/all-room" component={AllRoom} />
+                        <Route path="/all-hostel" component={AllHostel} />
+                        <Route path="/all-assign-room" component={AllAssignRoom} />
+                        {/* notice portion routes */}
+                        <Route path="/notice-board" component={Notice} />
+
+                       {/* message portion routes */}
+                        <Route path="/add-message" component={Message} />
+                        <Route path="/all-message" component={AllMessages} />
+                        </>
+                      ): role === 4 ? (
+                        <>
+                          <Route path="/all-students" component={AllStudents} />
+                          <Route path="/all-teachers" component={AllTeachers} />
+                          <Route path="/parents" component={Parents} />
+                          <Route path="/all-parents" component={AllParents} />
+                          <Route path="/parents-detail" component={ParentsDetail} />
+                          <Route path="/all-assign-incharge" component={AllAssignIncharge} />
+                          <Route path="/all-driver" component={AllDriver} />
+                          <Route path="/all-books" component={AllBooks} />
+                          <Route path="/all-assign-book" component={AllAssignBooks} />
+                          <Route path="/all-fees" component={AllFees} />
+                          <Route path="/all-classes" component={AllClasses} />
+                          <Route path="/class-routine" component={ClassRoutine} />
+                          <Route path="/all-assign-class" component={AllAssignClasses} />
+                          <Route path="/all-medium" component={AllMediums} />
+                          {/*Section portion routes */}
+                          <Route path="/section" component={AllSections} />
+
+                          {/* subject portion routes */}
+                          <Route path="/subject" component={Subject} />
+                          <Route path="/all-attendence" component={AllAttendence} />
+                          <Route path="/exam-schedule" component={ExamSchedule} />
+                          <Route path="/exam-grade" component={ExamGrade} />
+                          <Route path="/exam-result" component={ExamResult} />
+                          <Route path="/all-transport" component={AllTransport} />
+                          <Route path="/all-vehicle" component={AllVehicles} />
+                          <Route path="/all-room" component={AllRoom} />
+                          <Route path="/all-hostel" component={AllHostel} />
+                          <Route path="/all-assign-room" component={AllAssignRoom} />
+                          {/* notice portion routes */}
+                          <Route path="/notice-board" component={Notice} />
+                        </>
+                      ):role === 5 ? (
+                        <>
+                        <Route path="/all-students" component={AllStudents} />
+                        <Route path="/all-teachers" component={AllTeachers} />
+                        <Route path="/add-driver" component={AddDriver} />
+                        <Route path="/all-driver" component={AllDriver} />
+                        <Route path="/all-parents" component={AllParents} />
+
+                          { /*Fees portion routes */}
+                        <Route path="/add-fees" component={AddFees} />
+                        <Route path="/all-fees" component={AllFees} />
+                        <Route path="/add-fees-collection" component={AddFeesCollection} />
+                        <Route path="/all-fees-collection" component={AllFeesCollection} />
+                        <Route path="/accept-fees" component={AcceptFees} />
+
+                          { /*Expense portion routes */}
+                        <Route path="/all-expense" component={AllExpense} />
+                        <Route path="/add-expense" component={AddExpense} />
+                        <Route path="/add-expense-type" component={AddExpenseType} />
+                        <Route path="/all-expense-type" component={AllExpenseType} />
+
+                        {/* transport portion routes */}
+                         <Route path="/add-transport" component={AddTransport} />
+                        <Route path="/all-transport" component={AllTransport} />
+                        <Route path="/add-vehicle" component={AddVehicle} />
+                        <Route path="/all-vehicle" component={AllVehicles} />
+
+                        {/* Hostel portion routes */}
+                        <Route path="/add-room" component={AddRoom} />
+                        <Route path="/add-hostel" component={AddHostel} />
+                        <Route path="/all-room" component={AllRoom} />
+                        <Route path="/all-hostel" component={AllHostel} />
+                        <Route path="/assign-room" component={AssignRoom} />
+                        <Route path="/all-assign-room" component={AllAssignRoom} />
+
+                        {/* notice portion routes */}
+                        <Route path="/notice-board" component={Notice} />
+
+                        </>
+                      ):role === 6 ? (
+                          <>
+                          <Route path="/all-students" component={AllStudents} />
+                          <Route path="/all-teachers" component={AllTeachers} />
+                          <Route path="/all-parents" component={AllParents} />
+                          <Route path="/all-driver" component={AllDriver} />
+                          { /*Book Portion Routes */}
+                          <Route path="/all-books" component={AllBooks} />
+                          <Route path="/add-book" component={AddBook} />
+                          <Route path="/assign-book" component={AssignBook} />
+                          <Route path="/all-assign-book" component={AllAssignBooks} />
+                          <Route path="/return-assign-book" component={ReturnAssignBook} />
+                          <Route path="/all-classes" component={AllClasses} />
+                          <Route path="/class-routine" component={ClassRoutine} />
+                          <Route path="/all-assign-class" component={AllAssignClasses} />
+                          <Route path="/all-medium" component={AllMediums} />
+                          {/*Section portion routes */}
+                          <Route path="/section" component={AllSections} />
+
+                          {/* subject portion routes */}
+                          <Route path="/subject" component={Subject} />
+
+                          <Route path="/all-transport" component={AllTransport} />
+                          <Route path="/all-vehicle" component={AllVehicles} />
+
+                          <Route path="/all-room" component={AllRoom} />
+                          <Route path="/all-hostel" component={AllHostel} />
+                          {/* notice portion routes */}
+                          <Route path="/notice-board" component={Notice} />
+                          </>
+                      ):role === 7 ? (
+                        <>
+                        <Route path="/all-driver" component={AllDriver} />
+                        <Route path="/all-students" component={AllStudents} />
+                        <Route path="/all-teachers" component={AllTeachers} />
+                        <Route path="/all-parents" component={AllParents} />
+
+                        {/* transport portion routes */}
+                        <Route path="/all-transport" component={AllTransport} />
+                        <Route path="/add-vehicle" component={AddVehicle} />
+                        <Route path="/all-vehicle" component={AllVehicles} />
+                        </>
+                      ):null}
+
+                      </>
+                    ) : null
+                  }
+
 
                    <Route path="/grid" component={Grid} />
                    <Route path="/tab" component={Tab} />

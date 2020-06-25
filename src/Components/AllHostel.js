@@ -23,10 +23,10 @@ function AllHostel() {
     },[dispatch])
 
     useMemo(()=>{
-      if(allHostel && allHostel.all_hostels && allHostel.all_hostels.result){
+      if(allHostel && allHostel.all_hostels && allHostel.all_hostels.success === true && allHostel.all_hostels.result){
         setHostelResult(allHostel.all_hostels.result)
       }
-    },[allHostel.all_hostels.result])
+    },[allHostel])
 
     useMemo(()=>{
       if(hostelResult && hostelResult.data){
@@ -78,13 +78,9 @@ function AllHostel() {
                      <form className="mg-b-20">
                        <div className="row gutters-8">
                          <div className="col-lg-4 col-12 form-group">
-                           <input type="text" placeholder="Search by Hostel ..." className="form-control" />
+                           <input type="text" placeholder="Search by Hostel Name ..." className="form-control" />
                          </div>
-                         <div className="col-lg-3 col-12 form-group">
-                           <input type="text" placeholder="Search by Room ..." className="form-control" />
-                         </div>
-                         <div className="col-lg-3 col-12 form-group">
-                           <input type="text" placeholder="Search by Bed ..." className="form-control" />
+                         <div className="col-lg-6 col-12 form-group">
                          </div>
                          <div className="col-lg-2 col-12 form-group">
                            <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>

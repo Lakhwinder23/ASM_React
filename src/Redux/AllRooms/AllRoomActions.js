@@ -38,8 +38,8 @@ export const fetchAllRooms = (all_rooms_info) =>{
               'Content-Type': 'application/json'
           },
           body:JSON.stringify({
-            HostelId: all_rooms_info != undefined ? all_rooms_info.hostelId != undefined ? all_rooms_info.hostelId : undefined : undefined,
-            RoomId: all_rooms_info != undefined ? all_rooms_info.roomId != undefined ? all_rooms_info.roomId :undefined: undefined
+            HostelId: all_rooms_info != undefined ? all_rooms_info.hostelId != "" ? all_rooms_info.hostelId : undefined : undefined,
+            RoomId: all_rooms_info != undefined ? all_rooms_info.roomId != "" ? all_rooms_info.roomId :undefined: undefined
           })
     }
     fetch(url, request_option)

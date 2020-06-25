@@ -27,7 +27,7 @@ const allDriverData = useSelector(state =>state.AllDriver)
   const [allDriverInfo,setDriverInfo] = useState([])
   const [activestate,setActivestate] = useState('')
   const [inputValues,setInputValues] = useState({
-                                          driverId:undefined,
+                                          driverId:"",
   })
   // component all states define End
 
@@ -131,12 +131,11 @@ const allDriverData = useSelector(state =>state.AllDriver)
                          <div className="col-lg-3 col-12 form-group">
                            <FormGroup>
                                <FormControl
-                                 required
                                  type="text"
                                  onChange={(e) =>setInputValues({...inputValues,driverId:e.target.value})}
                                  as="select"
                                >
-                               <option value="undefined">Search by Driver Name ...</option>
+                               <option value="">Search by Driver Name ...</option>
                                {allDriverInfo ? allDriverInfo.map((item,index) =>(
                                  <option value={item.id} key={index}>{item.ParentName}</option>
                                )):null}

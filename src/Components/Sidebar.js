@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Sidebar extends Component {
   constructor(props){
@@ -400,432 +401,808 @@ else if(selected_value == 'page-Progress-Bar'){
 }
 }
     render() {
-      console.log("display menu",this.state.displayDashboard);
+      console.log("display menu",this.props.detail_data);
         return (
+            <>
+            {this.props &&
+              this.props.detail_data &&
+              this.props.detail_data.specific_user_detail &&
+              this.props.detail_data.specific_user_detail.success &&
+              this.props.detail_data.specific_user_detail.result &&
+              this.props.detail_data.specific_user_detail.result.Role ?(
+                <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+                <div className="mobile-sidebar-header d-md-none">
+                  <div className="header-logo">
+                    <a href="/"><img src="img/logo1.png" alt="logo" /></a>
+                  </div>
+                </div>
+                <div className="sidebar-menu-content">
+                  <ul className="nav nav-sidebar-menu sidebar-toggle-view">
+                  {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                    this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                    this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                    this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                      <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"dashboard")}>
+                        <a href="/" className="nav-link"><i className="flaticon-dashboard" /><span>Dashboard</span></a>
+                        { this.state.displayDashboard == true ? (
+                        <ul className="nav sub-group-menu">
+                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-admin")}>
+                            <a href="/" className="nav-link"><i className="fas fa-angle-right" />Admin</a>
+                          </li>
+                          {this.props.detail_data.specific_user_detail.result.Role === 1 || this.props.detail_data.specific_user_detail.result.Role === 3 ? (
+                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-students")}>
+                              <a href="/students" className="nav-link"><i className="fas fa-angle-right" />Students</a>
+                            </li>
+                          ):null}
+                          {this.props.detail_data.specific_user_detail.result.Role === 1 || this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-parents")}>
+                              <a href="/parents" className="nav-link"><i className="fas fa-angle-right" />Parents</a>
+                            </li>
+                          ):null}
+                          {this.props.detail_data.specific_user_detail.result.Role === 1 || this.props.detail_data.specific_user_detail.result.Role === 2 ? (
+                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-teachers")}>
+                              <a href="/teachers" className="nav-link"><i className="fas fa-angle-right" />Teachers</a>
+                            </li>
+                          ):null}
 
-            <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-            <div className="mobile-sidebar-header d-md-none">
-              <div className="header-logo">
-                <a href="/"><img src="img/logo1.png" alt="logo" /></a>
+                        </ul>
+                         ): (
+                          null
+                        )
+                        }
+                      </li>
+                  ):null}
+                  {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                    this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                    this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                    this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                    this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                    this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                    this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                      <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"student")}>
+                        <a href="/all-students" className="nav-link"><i className="flaticon-classmates" /><span >Students</span></a>
+                        { this.state.displaystudent == true ? (
+                        <ul className="nav sub-group-menu">
+                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 7
+                           ? (
+                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-students")}>
+                            <a href="/all-students" className="nav-link"><i className="fas fa-angle-right" />All
+                              Students</a>
+                          </li>
+                        ):null}
+                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 3 ? (
+                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-student-detail")}>
+                            <a href="/student-detail" className="nav-link"><i className="fas fa-angle-right" />Student Details</a>
+                          </li>
+                        ):null}
+                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 2 ? (
+                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-admission-form")}>
+                              <a href="/admission-form" className="nav-link"><i className="fas fa-angle-right" />Admission Form</a>
+                            </li>
+                          ):null}
+                          {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 2 ? (
+                              <li className="nav-item" onClick={e => this.openPageHandler(e,"page-student-promotion")}>
+                                <a href="/student-promotion" className="nav-link"><i className="fas fa-angle-right" />Student Promotion</a>
+                              </li>
+                            ):null}
+
+                        </ul>
+                         ): (
+                          null
+                        )
+                        }
+                      </li>
+                    ):null}
+                    {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                        <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"teachers")}>
+                          <a href="/all-teachers" className="nav-link"><i className="flaticon-multiple-users-silhouette" /><span >Teachers</span></a>
+                          { this.state.displayteachers == true ? (
+                          <ul className="nav sub-group-menu">
+                          {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 7
+                            ? (
+                              <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-teachers")}>
+                                <a href="/all-teachers" className="nav-link"><i className="fas fa-angle-right" />All
+                                  Teachers</a>
+                              </li>
+                            ):null}
+                            {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 2 ? (
+                                <li className="nav-item" onClick={e => this.openPageHandler(e,"page-teacher-detail")}>
+                                  <a href="/teacher-detail" className="nav-link"><i className="fas fa-angle-right" />Teacher Details</a>
+                                </li>
+                              ):null}
+                              {this.props.detail_data.specific_user_detail.result.Role === 1  ? (
+                                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-teacher")}>
+                                    <a href="/add-teacher" className="nav-link"><i className="fas fa-angle-right" />Add
+                                      Teacher</a>
+                                  </li>
+                                ):null}
+                                {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 2 ? (
+                                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-incharge")}>
+                                      <a href="/assign-incharge" className="nav-link"><i className="fas fa-angle-right" />Assign
+                                        Incharge To Teacher</a>
+                                    </li>
+                                  ):null}
+                                  {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                      <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-incharge")}>
+                                        <a href="/all-assign-incharge" className="nav-link"><i className="fas fa-angle-right" />All Assign
+                                          Incharge To Teacher</a>
+                                      </li>
+                                    ):null}
+                                    {this.props.detail_data.specific_user_detail.result.Role === 1  ? (
+                                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-teacher-payment")}>
+                                          <a href="/teacher-payment" className="nav-link"><i className="fas fa-angle-right" />Payment</a>
+                                        </li>
+                                      ):null}
+
+                          </ul>
+                           ): (
+                            null
+                          )
+                          }
+                        </li>
+                      ):null}
+                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                          <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"parents")}>
+                            <a href="/all-parents" className="nav-link"><i className="flaticon-couple" /><span >Parents</span></a>
+                            { this.state.displayparents == true ? (
+                            <ul className="nav sub-group-menu">
+                            {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                                <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-parents")}>
+                                  <a href="/all-parents" className="nav-link"><i className="fas fa-angle-right" />All
+                                    Parents</a>
+                                </li>
+                              ):null}
+                              {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-parents-detail")}>
+                                    <a href="/parents-detail" className="nav-link"><i className="fas fa-angle-right" />Parents Details</a>
+                                  </li>
+                                ):null}
+                                {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 2 ? (
+                                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-parents")}>
+                                      <a href="/add-parents" className="nav-link"><i className="fas fa-angle-right" />Add
+                                        Parent</a>
+                                    </li>
+                                  ):null}
+
+                            </ul>
+                            ): (
+                              null
+                            )
+                            }
+                          </li>
+                        ):null}
+                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                            <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"driver")}>
+                              <a href="/all-parents" className="nav-link"><i className="flaticon-couple" /><span >Drivers</span></a>
+                              { this.state.displaydrivers == true ? (
+                              <ul className="nav sub-group-menu">
+                              {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-drivers")}>
+                                    <a href="/all-driver" className="nav-link"><i className="fas fa-angle-right" />All
+                                      Drivers</a>
+                                  </li>
+                                ):null}
+                                {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-driver")}>
+                                      <a href="/add-driver" className="nav-link"><i className="fas fa-angle-right" />Add
+                                        Driver</a>
+                                    </li>
+                                  ):null}
+
+                              </ul>
+                              ): (
+                                null
+                              )
+                              }
+                            </li>
+                          ):null}
+                          {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                              <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"library")}>
+                                <a href="/all-books" className="nav-link"><i className="flaticon-books" /><span >Library</span></a>
+                                { this.state.displaylibrary == true ? (
+                                <ul className="nav sub-group-menu">
+                                {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-books")}>
+                                      <a href="/all-books" className="nav-link"><i className="fas fa-angle-right" />All
+                                        Book</a>
+                                    </li>
+                                  ):null}
+                                  {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                      <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-book")}>
+                                        <a href="/add-book" className="nav-link"><i className="fas fa-angle-right" />Add New
+                                          Book</a>
+                                      </li>
+                                    ):null}
+                                    {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-book")}>
+                                          <a href="/assign-book" className="nav-link"><i className="fas fa-angle-right" />Assign
+                                            Book</a>
+                                        </li>
+                                      ):null}
+                                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-book")}>
+                                            <a href="/all-assign-book" className="nav-link"><i className="fas fa-angle-right" />All Assign
+                                              Book</a>
+                                          </li>
+                                        ):null}
+
+                                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-return-assign-book")}>
+                                              <a href="/return-assign-book" className="nav-link"><i className="fas fa-angle-right" />Return Assign
+                                                Book</a>
+                                            </li>
+                                          ):null}
+
+                                </ul>
+                                 ): (
+                                  null
+                                )
+                                }
+                              </li>
+                            ):null}
+                            {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"Account")}>
+                                  <a href="/all-fees" className="nav-link"><i className="flaticon-technological" /><span >Account</span></a>
+                                  { this.state.displayAccount == true ? (
+                                  <ul className="nav sub-group-menu">
+                                  {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                      <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-fees")}>
+                                        <a href="/add-fees" className="nav-link"><i className="fas fa-angle-right" />Add Fees
+                                          </a>
+                                      </li>
+                                    ):null}
+                                    {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-fees")}>
+                                          <a href="/all-fees" className="nav-link"><i className="fas fa-angle-right" />All Fees
+                                            </a>
+                                        </li>
+                                      ):null}
+                                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-fees-collection")}>
+                                            <a href="/add-fees-collection" className="nav-link"><i className="fas fa-angle-right" />Add Fees
+                                              Collection</a>
+                                          </li>
+                                        ):null}
+                                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-fees-collection")}>
+                                              <a href="/all-fees-collection" className="nav-link"><i className="fas fa-angle-right" />All Fees
+                                                Collection</a>
+                                            </li>
+                                          ):null}
+                                          {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                              <li className="nav-item" onClick={e => this.openPageHandler(e,"page-accept-fees")}>
+                                                <a href="/accept-fees" className="nav-link"><i className="fas fa-angle-right" />Accept
+                                                  Fees</a>
+                                              </li>
+                                            ):null}
+                                            {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                              this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                                <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-expense")}>
+                                                  <a href="/all-expense" className="nav-link"><i className="fas fa-angle-right" />All Expenses</a>
+                                                </li>
+                                              ):null}
+                                              {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                                this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-expense")}>
+                                                    <a href="/add-expense" className="nav-link"><i className="fas fa-angle-right" />Add
+                                                      Expenses</a>
+                                                  </li>
+                                                ):null}
+                                                {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                                  this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-expense-type")}>
+                                                      <a href="/add-expense-type" className="nav-link"><i className="fas fa-angle-right" />Add
+                                                        Expenses Type</a>
+                                                    </li>
+                                                  ):null}
+                                                  {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                                    this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                                      <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-expense-type")}>
+                                                        <a href="/all-expense-type" className="nav-link"><i className="fas fa-angle-right" />All
+                                                          Expenses Type</a>
+                                                      </li>
+                                                    ):null}
+
+                                  </ul>
+                                  ): (
+                                    null
+                                  )
+                                  }
+                                </li>
+                              ):null}
+                              {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                  <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"class")}>
+                                    <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Class</span></a>
+                                    { this.state.displayclass == true ? (
+                                    <ul className="nav sub-group-menu">
+                                    {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-classes")}>
+                                          <a href="/all-classes" className="nav-link"><i className="fas fa-angle-right" />All
+                                            Classes</a>
+                                        </li>
+                                      ):null}
+                                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 2 ? (
+                                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-class")}>
+                                            <a href="/add-class" className="nav-link"><i className="fas fa-angle-right" />Add New
+                                              Class</a>
+                                          </li>
+                                        ):null}
+                                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-classes")}>
+                                              <a href="/all-assign-class" className="nav-link"><i className="fas fa-angle-right" />All
+                                              Assign Classes</a>
+                                            </li>
+                                          ):null}
+                                          {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 2 ? (
+                                              <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-class")}>
+                                                <a href="/assign-class" className="nav-link"><i className="fas fa-angle-right" />Assign
+                                                  Class To Teacher</a>
+                                              </li>
+                                            ):null}
+
+                                    </ul>
+                                    ): (
+                                      null
+                                    )
+                                    }
+                                  </li>
+                                ):null}
+                                {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                    <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"medium")}>
+                                      <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Medium</span></a>
+                                      { this.state.displaymedium == true ? (
+                                      <ul className="nav sub-group-menu">
+                                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-mediums")}>
+                                            <a href="/all-medium" className="nav-link"><i className="fas fa-angle-right" />All
+                                              Mediums</a>
+                                          </li>
+                                        ):null}
+                                        {this.props.detail_data.specific_user_detail.result.Role === 1 ? (
+                                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-medium")}>
+                                              <a href="/add-medium" className="nav-link"><i className="fas fa-angle-right" />Add New
+                                                Medium</a>
+                                            </li>
+                                          ):null}
+
+                                      </ul>
+                                      ): (
+                                        null
+                                      )
+                                      }
+                                    </li>
+                                  ):null}
+                                  {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 3 ? (
+                                      <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"profession")}>
+                                        <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Profession</span></a>
+                                        { this.state.displayprofession == true ? (
+                                        <ul className="nav sub-group-menu">
+                                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 3 ? (
+                                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-professions")}>
+                                              <a href="/all-profession" className="nav-link"><i className="fas fa-angle-right" />All
+                                                Professions</a>
+                                            </li>
+                                          ):null}
+                                          {this.props.detail_data.specific_user_detail.result.Role === 1 ? (
+                                              <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-profession")}>
+                                                <a href="/add-profession" className="nav-link"><i className="fas fa-angle-right" />Add New
+                                                Profession</a>
+                                              </li>
+                                            ):null}
+
+                                        </ul>
+                                        ): (
+                                          null
+                                        )
+                                        }
+                                      </li>
+                                    ):null}
+
+                    {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                        <li className="nav-item">
+                          <a href="/section" className="nav-link"><i className="flaticon-open-book" /><span>Section</span></a>
+                        </li>
+                      ):null}
+                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                          <li className="nav-item">
+                            <a href="/subject" className="nav-link"><i className="flaticon-open-book" /><span>Subject</span></a>
+                          </li>
+                        ):null}
+                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                          this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                            <li className="nav-item">
+                              <a href="/class-routine" className="nav-link"><i className="flaticon-calendar" /><span>Class
+                                  Routine</span></a>
+                            </li>
+                          ):null}
+                          {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                            this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                              <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"attendence")}>
+                                <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Attendence</span></a>
+                                { this.state.displayattendence == true ? (
+                                <ul className="nav sub-group-menu">
+                                {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-attendence")}>
+                                      <a href="/all-attendence" className="nav-link"><i className="fas fa-angle-right" />All
+                                        Attendence</a>
+                                    </li>
+                                  ):null}
+                                  {this.props.detail_data.specific_user_detail.result.Role === 1 ? (
+                                      <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-attendence")}>
+                                        <a href="/add-attendence" className="nav-link"><i className="fas fa-angle-right" />Add
+                                          Attendence</a>
+                                      </li>
+                                    ):null}
+
+                                </ul>
+                                ): (
+                                  null
+                                )
+                                }
+                              </li>
+                            ):null}
+                            {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"exam")}>
+                                  <a href="/exam-schedule" className="nav-link"><i className="flaticon-shopping-list" /><span >Exam</span></a>
+                                  { this.state.displayexam == true ? (
+                                  <ul className="nav sub-group-menu">
+                                  {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                    this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                                      <li className="nav-item" onClick={e => this.openPageHandler(e,"page-exam-schedule")}>
+                                        <a href="/exam-schedule" className="nav-link"><i className="fas fa-angle-right" />Exam
+                                          Schedule</a>
+                                      </li>
+                                    ):null}
+                                    {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-exam-grade")}>
+                                          <a href="/exam-grade" className="nav-link"><i className="fas fa-angle-right" />Exam
+                                            Grades</a>
+                                        </li>
+                                      ):null}
+                                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 4 ? (
+                                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-exam-result")}>
+                                            <a href="/exam-result" className="nav-link"><i className="fas fa-angle-right" />Exam
+                                              Result</a>
+                                          </li>
+                                        ):null}
+
+                                  </ul>
+                                   ): (
+                                    null
+                                  )
+                                  }
+                                </li>
+                              ):null}
+                              {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                                  <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"transport")}>
+                                    <a href="/" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Transport</span></a>
+                                    { this.state.displaytransport == true ? (
+                                    <ul className="nav sub-group-menu">
+                                    {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                                      this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-vehicle")}>
+                                          <a href="/add-vehicle" className="nav-link"><i className="fas fa-angle-right" />Add
+                                            Vehicle</a>
+                                        </li>
+                                      ):null}
+                                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-vehicle")}>
+                                            <a href="/all-vehicle" className="nav-link"><i className="fas fa-angle-right" />All
+                                              Vehicle</a>
+                                          </li>
+                                        ):null}
+                                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-transport")}>
+                                              <a href="/add-transport" className="nav-link"><i className="fas fa-angle-right" />Add Transport
+                                              </a>
+                                            </li>
+                                          ):null}
+                                          {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 6 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 7 ? (
+                                              <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-transport")}>
+                                                <a href="/all-transport" className="nav-link"><i className="fas fa-angle-right" />All Transport
+                                                </a>
+                                              </li>
+                                            ):null}
+
+                                    </ul>
+                                    ): (
+                                      null
+                                    )
+                                    }
+                                  </li>
+                                ):null}
+                                {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                                  this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                    <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"hostel")}>
+                                      <a href="/all-hostels" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Hostel</span></a>
+                                      { this.state.displayhostel == true ? (
+                                      <ul className="nav sub-group-menu">
+                                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                                        this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                          <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-hostels")}>
+                                            <a href="/all-hostel" className="nav-link"><i className="fas fa-angle-right" />All
+                                              Hostels</a>
+                                          </li>
+                                        ):null}
+                                        {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                          this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                            <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-hostel")}>
+                                              <a href="/add-hostel" className="nav-link"><i className="fas fa-angle-right" />Add New
+                                                Hostel</a>
+                                            </li>
+                                          ):null}
+                                          {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                                            this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                                              <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-rooms")}>
+                                                <a href="/all-room" className="nav-link"><i className="fas fa-angle-right" />All
+                                                  Rooms</a>
+                                              </li>
+                                            ):null}
+                                            {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                              this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                                <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-room")}>
+                                                  <a href="/add-room" className="nav-link"><i className="fas fa-angle-right" />Add New
+                                                    Room</a>
+                                                </li>
+                                              ):null}
+                                              {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                                this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-room")}>
+                                                    <a href="/assign-room" className="nav-link"><i className="fas fa-angle-right" />Assign
+                                                      Room To Student</a>
+                                                  </li>
+                                                ):null}
+                                                {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                                  this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                                  this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                                                  this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                                                  this.props.detail_data.specific_user_detail.result.Role === 5 ? (
+                                                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-room")}>
+                                                      <a href="/all-assign-room" className="nav-link"><i className="fas fa-angle-right" />All Assign
+                                                        Room </a>
+                                                    </li>
+                                                  ):null}
+
+                                      </ul>
+                                      ): (
+                                        null
+                                      )
+                                      }
+                                    </li>
+                                  ):null}
+
+                    {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 3 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 4 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 5 ||
+                      this.props.detail_data.specific_user_detail.result.Role === 6 ? (
+                        <li className="nav-item">
+                          <a href="/notice-board" className="nav-link"><i className="flaticon-script" /><span>Notice</span></a>
+                        </li>
+                      ):null}
+                      {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                        this.props.detail_data.specific_user_detail.result.Role === 3 ? (
+                          <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"message")}>
+                            <a href="#" className="nav-link"><i className="flaticon-menu-1" /><span >Message</span></a>
+                            { this.state.displaymessage == true ? (
+                            <ul className="nav sub-group-menu">
+                            {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                              this.props.detail_data.specific_user_detail.result.Role === 3 ? (
+                                <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-message")}>
+                                  <a href="/add-message" className="nav-link"><i className="fas fa-angle-right" />Add Message</a>
+                                </li>
+                              ):null}
+                              {this.props.detail_data.specific_user_detail.result.Role === 1 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 2 ||
+                                this.props.detail_data.specific_user_detail.result.Role === 3 ? (
+                                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-message")}>
+                                    <a href="/all-message" className="nav-link"><i className="fas fa-angle-right" />All Message</a>
+                                  </li>
+                                ):null}
+
+
+                            </ul>
+                             ): (
+                              null
+                            )
+                            }
+                          </li>
+                        ):null}
+
+                    <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"ui-elements")}>
+                      <a href="#" className="nav-link"><i className="flaticon-menu-1" /><span >UI Elements</span></a>
+                      { this.state.displayuielements == true ? (
+                      <ul className="nav sub-group-menu">
+                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-button")}>
+                          <a href="/button" className="nav-link"><i className="fas fa-angle-right" />Button</a>
+                        </li>
+                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-grid")}>
+                          <a href="/grid" className="nav-link"><i className="fas fa-angle-right" />Grid</a>
+                        </li>
+                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-tab")}>
+                          <a href="/tab" className="nav-link"><i className="fas fa-angle-right" />Tab</a>
+                        </li>
+                        <li className="nav-item" onClick={e => this.openPageHandler(e,"page-Progress-Bar")}>
+                          <a href="/Progress-Bar" className="nav-link"><i className="fas fa-angle-right" />Progress Bar</a>
+                        </li>
+                      </ul>
+                       ): (
+                        null
+                      )
+                      }
+                    </li>
+                    <li className="nav-item">
+                      <a href="/map" className="nav-link"><i className="flaticon-planet-earth" /><span>Map</span></a>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
-            <div className="sidebar-menu-content">
-              <ul className="nav nav-sidebar-menu sidebar-toggle-view">
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"dashboard")}>
-                  <a href="/" className="nav-link"><i className="flaticon-dashboard" /><span>Dashboard</span></a>
-                  { this.state.displayDashboard == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-admin")}>
-                      <a href="/" className="nav-link"><i className="fas fa-angle-right" />Admin</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-students")}>
-                      <a href="/students" className="nav-link"><i className="fas fa-angle-right" />Students</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-parents")}>
-                      <a href="/parents" className="nav-link"><i className="fas fa-angle-right" />Parents</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-teachers")}>
-                      <a href="/teachers" className="nav-link"><i className="fas fa-angle-right" />Teachers</a>
-                    </li>
-                  </ul>
-                   ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"student")}>
-                  <a href="/all-students" className="nav-link"><i className="flaticon-classmates" /><span >Students</span></a>
-                  { this.state.displaystudent == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-students")}>
-                      <a href="/all-students" className="nav-link"><i className="fas fa-angle-right" />All
-                        Students</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-student-detail")}>
-                      <a href="/student-detail" className="nav-link"><i className="fas fa-angle-right" />Student Details</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-admission-form")}>
-                      <a href="/admission-form" className="nav-link"><i className="fas fa-angle-right" />Admission Form</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-student-promotion")}>
-                      <a href="/student-promotion" className="nav-link"><i className="fas fa-angle-right" />Student Promotion</a>
-                    </li>
-                  </ul>
-                   ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"teachers")}>
-                  <a href="/all-teachers" className="nav-link"><i className="flaticon-multiple-users-silhouette" /><span >Teachers</span></a>
-                  { this.state.displayteachers == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-teachers")}>
-                      <a href="/all-teachers" className="nav-link"><i className="fas fa-angle-right" />All
-                        Teachers</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-teacher-detail")}>
-                      <a href="/teacher-detail" className="nav-link"><i className="fas fa-angle-right" />Teacher Details</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-teacher")}>
-                      <a href="/add-teacher" className="nav-link"><i className="fas fa-angle-right" />Add
-                        Teacher</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-incharge")}>
-                      <a href="/assign-incharge" className="nav-link"><i className="fas fa-angle-right" />Assign
-                        Incharge To Teacher</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-incharge")}>
-                      <a href="/all-assign-incharge" className="nav-link"><i className="fas fa-angle-right" />All Assign
-                        Incharge To Teacher</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-teacher-payment")}>
-                      <a href="/teacher-payment" className="nav-link"><i className="fas fa-angle-right" />Payment</a>
-                    </li>
-                  </ul>
-                   ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"parents")}>
-                  <a href="/all-parents" className="nav-link"><i className="flaticon-couple" /><span >Parents</span></a>
-                  { this.state.displayparents == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-parents")}>
-                      <a href="/all-parents" className="nav-link"><i className="fas fa-angle-right" />All
-                        Parents</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-parents-detail")}>
-                      <a href="/parents-detail" className="nav-link"><i className="fas fa-angle-right" />Parents Details</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-parents")}>
-                      <a href="/add-parents" className="nav-link"><i className="fas fa-angle-right" />Add
-                        Parent</a>
-                    </li>
-                  </ul>
-                  ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"driver")}>
-                  <a href="/all-parents" className="nav-link"><i className="flaticon-couple" /><span >Drivers</span></a>
-                  { this.state.displaydrivers == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-drivers")}>
-                      <a href="/all-driver" className="nav-link"><i className="fas fa-angle-right" />All
-                        Drivers</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-driver")}>
-                      <a href="/add-driver" className="nav-link"><i className="fas fa-angle-right" />Add
-                        Driver</a>
-                    </li>
-                  </ul>
-                  ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"library")}>
-                  <a href="/all-books" className="nav-link"><i className="flaticon-books" /><span >Library</span></a>
-                  { this.state.displaylibrary == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-books")}>
-                      <a href="/all-books" className="nav-link"><i className="fas fa-angle-right" />All
-                        Book</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-book")}>
-                      <a href="/add-book" className="nav-link"><i className="fas fa-angle-right" />Add New
-                        Book</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-book")}>
-                      <a href="/assign-book" className="nav-link"><i className="fas fa-angle-right" />Assign
-                        Book</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-book")}>
-                      <a href="/all-assign-book" className="nav-link"><i className="fas fa-angle-right" />All Assign
-                        Book</a>
-                    </li>
-
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-return-assign-book")}>
-                      <a href="/return-assign-book" className="nav-link"><i className="fas fa-angle-right" />Return Assign
-                        Book</a>
-                    </li>
-                  </ul>
-                   ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"Account")}>
-                  <a href="/all-fees" className="nav-link"><i className="flaticon-technological" /><span >Account</span></a>
-                  { this.state.displayAccount == true ? (
-                  <ul className="nav sub-group-menu">
-                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-fees")}>
-                    <a href="/add-fees" className="nav-link"><i className="fas fa-angle-right" />Add Fees
-                      </a>
-                  </li>
-                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-fees")}>
-                    <a href="/all-fees" className="nav-link"><i className="fas fa-angle-right" />All Fees
-                      </a>
-                  </li>
-                  <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-fees-collection")}>
-                    <a href="/add-fees-collection" className="nav-link"><i className="fas fa-angle-right" />Add Fees
-                      Collection</a>
-                  </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-fees-collection")}>
-                      <a href="/all-fees-collection" className="nav-link"><i className="fas fa-angle-right" />All Fees
-                        Collection</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-accept-fees")}>
-                      <a href="/accept-fees" className="nav-link"><i className="fas fa-angle-right" />Accept
-                        Fees</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-expense")}>
-                      <a href="/all-expense" className="nav-link"><i className="fas fa-angle-right" />All Expenses</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-expense")}>
-                      <a href="/add-expense" className="nav-link"><i className="fas fa-angle-right" />Add
-                        Expenses</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-expense-type")}>
-                      <a href="/add-expense-type" className="nav-link"><i className="fas fa-angle-right" />Add
-                        Expenses Type</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-expense-type")}>
-                      <a href="/all-expense-type" className="nav-link"><i className="fas fa-angle-right" />All
-                        Expenses Type</a>
-                    </li>
-                  </ul>
-                  ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"class")}>
-                  <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Class</span></a>
-                  { this.state.displayclass == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-classes")}>
-                      <a href="/all-classes" className="nav-link"><i className="fas fa-angle-right" />All
-                        Classes</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-class")}>
-                      <a href="/add-class" className="nav-link"><i className="fas fa-angle-right" />Add New
-                        Class</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-classes")}>
-                      <a href="/all-assign-class" className="nav-link"><i className="fas fa-angle-right" />All
-                      Assign Classes</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-class")}>
-                      <a href="/assign-class" className="nav-link"><i className="fas fa-angle-right" />Assign
-                        Class To Teacher</a>
-                    </li>
-                  </ul>
-                  ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"medium")}>
-                  <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Medium</span></a>
-                  { this.state.displaymedium == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-mediums")}>
-                      <a href="/all-medium" className="nav-link"><i className="fas fa-angle-right" />All
-                        Mediums</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-medium")}>
-                      <a href="/add-medium" className="nav-link"><i className="fas fa-angle-right" />Add New
-                        Medium</a>
-                    </li>
-                  </ul>
-                  ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"profession")}>
-                  <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Profession</span></a>
-                  { this.state.displayprofession == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-professions")}>
-                      <a href="/all-profession" className="nav-link"><i className="fas fa-angle-right" />All
-                        Professions</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-profession")}>
-                      <a href="/add-profession" className="nav-link"><i className="fas fa-angle-right" />Add New
-                      Profession</a>
-                    </li>
-                  </ul>
-                  ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item">
-                  <a href="/section" className="nav-link"><i className="flaticon-open-book" /><span>Section</span></a>
-                </li>
-                <li className="nav-item">
-                  <a href="/subject" className="nav-link"><i className="flaticon-open-book" /><span>Subject</span></a>
-                </li>
-                <li className="nav-item">
-                  <a href="/class-routine" className="nav-link"><i className="flaticon-calendar" /><span>Class
-                      Routine</span></a>
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"attendence")}>
-                  <a href="/all-classes" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Attendence</span></a>
-                  { this.state.displayattendence == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-attendence")}>
-                      <a href="/all-medium" className="nav-link"><i className="fas fa-angle-right" />All
-                        Attendence</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-attendence")}>
-                      <a href="/add-medium" className="nav-link"><i className="fas fa-angle-right" />Add
-                        Attendence</a>
-                    </li>
-                  </ul>
-                  ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"exam")}>
-                  <a href="/exam-schedule" className="nav-link"><i className="flaticon-shopping-list" /><span >Exam</span></a>
-                  { this.state.displayexam == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-exam-schedule")}>
-                      <a href="/exam-schedule" className="nav-link"><i className="fas fa-angle-right" />Exam
-                        Schedule</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-exam-grade")}>
-                      <a href="/exam-grade" className="nav-link"><i className="fas fa-angle-right" />Exam
-                        Grades</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-exam-result")}>
-                      <a href="/exam-grade" className="nav-link"><i className="fas fa-angle-right" />Exam
-                        Result</a>
-                    </li>
-                  </ul>
-                   ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"transport")}>
-                  <a href="/" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Transport</span></a>
-                  { this.state.displaytransport == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-vehicle")}>
-                      <a href="/add-vehicle" className="nav-link"><i className="fas fa-angle-right" />Add
-                        Vehicle</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-vehicle")}>
-                      <a href="/all-vehicle" className="nav-link"><i className="fas fa-angle-right" />All
-                        Vehicle</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-transport")}>
-                      <a href="/add-transport" className="nav-link"><i className="fas fa-angle-right" />Add Transport
-                      </a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-transport")}>
-                      <a href="/all-transport" className="nav-link"><i className="fas fa-angle-right" />All Transport
-                      </a>
-                    </li>
-                  </ul>
-                  ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"hostel")}>
-                  <a href="/all-hostels" className="nav-link"><i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" /><span >Hostel</span></a>
-                  { this.state.displayhostel == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-hostels")}>
-                      <a href="/all-hostel" className="nav-link"><i className="fas fa-angle-right" />All
-                        Hostels</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-hostel")}>
-                      <a href="/add-hostel" className="nav-link"><i className="fas fa-angle-right" />Add New
-                        Hostel</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-rooms")}>
-                      <a href="/all-room" className="nav-link"><i className="fas fa-angle-right" />All
-                        Rooms</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-room")}>
-                      <a href="/add-room" className="nav-link"><i className="fas fa-angle-right" />Add New
-                        Room</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-assign-room")}>
-                      <a href="/assign-room" className="nav-link"><i className="fas fa-angle-right" />Assign
-                        Room To Student</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-assign-room")}>
-                      <a href="/all-assign-room" className="nav-link"><i className="fas fa-angle-right" />All Assign
-                        Room </a>
-                    </li>
-                  </ul>
-                  ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item">
-                  <a href="/notice-board" className="nav-link"><i className="flaticon-script" /><span>Notice</span></a>
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"message")}>
-                  <a href="#" className="nav-link"><i className="flaticon-menu-1" /><span >Message</span></a>
-                  { this.state.displaymessage == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-add-message")}>
-                      <a href="/add-message" className="nav-link"><i className="fas fa-angle-right" />Add Message</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-all-message")}>
-                      <a href="/all-message" className="nav-link"><i className="fas fa-angle-right" />All Message</a>
-                    </li>
-
-                  </ul>
-                   ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item sidebar-nav-item" onClick={e => this.showDropdownMenu(e,"ui-elements")}>
-                  <a href="#" className="nav-link"><i className="flaticon-menu-1" /><span >UI Elements</span></a>
-                  { this.state.displayuielements == true ? (
-                  <ul className="nav sub-group-menu">
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-button")}>
-                      <a href="/button" className="nav-link"><i className="fas fa-angle-right" />Button</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-grid")}>
-                      <a href="/grid" className="nav-link"><i className="fas fa-angle-right" />Grid</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-tab")}>
-                      <a href="/tab" className="nav-link"><i className="fas fa-angle-right" />Tab</a>
-                    </li>
-                    <li className="nav-item" onClick={e => this.openPageHandler(e,"page-Progress-Bar")}>
-                      <a href="/Progress-Bar" className="nav-link"><i className="fas fa-angle-right" />Progress Bar</a>
-                    </li>
-                  </ul>
-                   ): (
-                    null
-                  )
-                  }
-                </li>
-                <li className="nav-item">
-                  <a href="/map" className="nav-link"><i className="flaticon-planet-earth" /><span>Map</span></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
+              ):null
+            }
+          </>
         );
     }
 }
 
-export default Sidebar;
+const mapStateToProps = state => ({
+  detail_data: state.SpecificUserDetail
+});
+
+export default connect(mapStateToProps, null)(Sidebar);;

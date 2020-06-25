@@ -29,10 +29,10 @@ export const fetchAllExamsFaliure = (error) =>{
 export const fetchAllExams = (exams_info) =>{
     return(dispatch) => {
       dispatch(fetchAllExamsRequest(exams_info))
-      const examDate = exams_info !== undefined ? exams_info.examDate : undefined
-      const classid = exams_info !== undefined ? exams_info.classId : undefined
-      const sectionid = exams_info !== undefined ? exams_info.sectionId : undefined
-      const subjectid = exams_info !== undefined ? exams_info.subjectId : undefined
+      const examDate = exams_info !== undefined ? exams_info.examDate != "" ? exams_info.examDate :undefined : undefined
+      const classid = exams_info !== undefined ? exams_info.classId !="" ? exams_info.classId : undefined: undefined
+      const sectionid = exams_info !== undefined ? exams_info.sectionId !="" ? exams_info.sectionId : undefined : undefined
+      const subjectid = exams_info !== undefined ? exams_info.subjectId !="" ? exams_info.subjectId : undefined : undefined
       const url =`${config.api_root}/get_all_exam`;
       const request_option = {
       method: "POST",

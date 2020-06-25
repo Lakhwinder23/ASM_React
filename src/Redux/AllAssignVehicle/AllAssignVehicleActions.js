@@ -29,7 +29,7 @@ export const fetchAllAssignVehicleFaliure = (error) =>{
 export const fetchAllAssignVehicle = (all_assign_vehicle_info) =>{
     return(dispatch) => {
       dispatch(fetchAllAssignVehicleRequest(all_assign_vehicle_info))
-      const driverid = all_assign_vehicle_info != undefined ? all_assign_vehicle_info.driverId : undefined
+      const driverid = all_assign_vehicle_info != undefined ? all_assign_vehicle_info.driverId !="" ? all_assign_vehicle_info.driverId  : undefined : undefined
       const url =`${config.api_root}/get_assign_vehicle`;
       const request_option = {
       method: "POST",

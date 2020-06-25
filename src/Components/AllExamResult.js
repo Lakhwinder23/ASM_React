@@ -1,6 +1,11 @@
 import React, {useState,useEffect,useMemo} from 'react';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import {
+  FormControl,
+  FormGroup,
+  FormLabel
+} from "react-bootstrap";
 import { useSelector,useDispatch } from 'react-redux'
 import {fetchAllExamsResult} from '../Redux/AllExamsResult/AllExamsResultActions'
 import {fetchAllClasses} from '../Redux/AllClasses/AllClassesActions'
@@ -12,6 +17,7 @@ function AllExamResult() {
 const allExamResult = useSelector(state =>state.AllExamsResult)
 const classes = useSelector(state =>state.AllClasses)
 const exams = useSelector(state =>state.AllExams)
+const sections = useSelector(state =>state.AllSections)
 // store data access End
   const dispatch = useDispatch()  // for accessing the redux function
 
@@ -22,6 +28,13 @@ const exams = useSelector(state =>state.AllExams)
   const [allSectionsInfo,setSectionsInfo] = useState([])
   const [examsResult,setExamsResult] = useState([])
   const [allExamsInfo,setExamsInfo] = useState([])
+  const [inputValues,setInputValues] = useState({
+                                        classId:"",
+                                        sectionId:"",
+                                        examId:"",
+                                        year:""
+  })
+  const [mediumId,setMediumId] = useState('')
   // component all states define End
 
    //hooks start
@@ -29,7 +42,6 @@ const exams = useSelector(state =>state.AllExams)
    useEffect(() =>{
      dispatch(fetchAllExamsResult())
      dispatch(fetchAllClasses())
-     dispatch(fetchAllSections())
      dispatch(fetchAllExams())
    },[dispatch])
 // fetch allexams api hook End
@@ -74,6 +86,49 @@ const exams = useSelector(state =>state.AllExams)
    },[examsResult])
 // when examsResult change add data into classInfo,hook End
 
+// fetch allSections and allsubject api,hook start
+   useMemo(() =>{
+     if(mediumId !='' && inputValues.classId !=''){
+         dispatch(fetchAllSections(inputValues.classId,mediumId))
+     }
+   },[mediumId,inputValues.classId])
+// fetch allSections and allsubject api,hook End
+
+// add data of allSections api into constant,hook start
+   useMemo(()=>{
+     if(sections && sections.all_sections && sections.all_sections.result && sections.all_sections.success === true){
+       setSectionsInfo(sections.all_sections.result)
+     }
+   },[sections])
+// add data of allSections api into constant,hook End
+// classHandler function start
+   const classHandler = (event) =>{
+
+     const classInfo = event.target.value
+     console.log("classInfo",event.target.value)
+     if(classInfo !=""){
+       setInputValues({...inputValues,classId:classInfo})
+       allClassesInfo.filter(classid =>classid.id ==
+          classInfo).map((item,index) =>{
+         setMediumId(item.ClassMediumId)
+       })
+
+     }
+     else{
+       setInputValues({...inputValues,classId:classInfo,subjectId:classInfo,sectionId:classInfo})
+       setMediumId("")
+     }
+
+   }
+// classHandler function End
+
+// examHandler function start
+   const examResultFilterHandler = (event) =>{
+   event.preventDefault()
+   const exams_result_info = inputValues;
+     dispatch(fetchAllExamsResult(exams_result_info))
+ }
+// examHandler function End
 
    //hooks end
         return (
@@ -93,13 +148,54 @@ const exams = useSelector(state =>state.AllExams)
                             </div>
                           </div>
                         </div>
-                        <form className="mg-b-20">
+                        <form className="mg-b-20" onSubmit={(e) =>examResultFilterHandler(e)}>
                           <div className="row gutters-8">
-                            <div className="col-lg-5 col-sm-4 col-12 form-group">
-                              <input type="text" placeholder="Search by Grade ..." className="form-control" />
+                            <div className="col-lg-2 col-sm-4 col-12 form-group">
+                            <FormGroup>
+                                <FormControl
+                                  type="text"
+                                  onChange={(e) =>classHandler(e)}
+                                  as="select"
+                                >
+                                <option value="">Search by class ..."</option>
+                                {allClassesInfo ? allClassesInfo.map((item,index) =>(
+                                  <option value={item.id} key={index}>{item.ClassName}{item.MediumName}</option>
+                                )):null}
+                                </FormControl>
+                              </FormGroup>
                             </div>
-                            <div className="col-lg-5 col-sm-5 col-12 form-group">
-                              <input type="text" placeholder="Search by Point ..." className="form-control" />
+                            {mediumId !='' && inputValues.classId !='' ? (
+                            <div className="col-lg-3 col-sm-5 col-12 form-group">
+                            <FormGroup>
+                                <FormControl
+                                  type="text"
+                                  onChange={(e) =>setInputValues({...inputValues,sectionId:e.target.value})}
+                                  as="select"
+                                >
+                                <option value="">Search by section ..."</option>
+                                {allSectionsInfo && allSectionsInfo.length > 0 ? allSectionsInfo.map((item,index) =>(
+                                  <option value={item.id} key={index}>{item.SectionName}</option>
+                                )):null}
+                                </FormControl>
+                              </FormGroup>
+                            </div>
+                            ) : null}
+                            <div className="col-lg-3 col-sm-5 col-12 form-group">
+                            <FormGroup>
+                                <FormControl
+                                  type="text"
+                                  onChange={(e) =>setInputValues({...inputValues,examId:e.target.value})}
+                                  as="select"
+                                >
+                                <option value="">Search by Exam ..."</option>
+                                {allExamsInfo && allExamsInfo.length > 0 ? allExamsInfo.map((item,index) =>(
+                                  <option value={item.id} key={index}>{item.ExamName}</option>
+                                )):null}
+                                </FormControl>
+                              </FormGroup>
+                            </div>
+                            <div className="col-lg-2 col-sm-5 col-12 form-group">
+                                <input type="Text" placeholder ="search by Session ..." className="form-control" value={inputValues.year} onChange={(e) =>setInputValues({...inputValues,year:e.target.value})} />
                             </div>
                             <div className="col-lg-2 col-sm-3 col-12 form-group">
                               <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>

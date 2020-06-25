@@ -1,38 +1,73 @@
 import React, {useState,useEffect,useMemo} from 'react';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import {
+  FormControl,
+  FormGroup,
+  FormLabel
+} from "react-bootstrap";
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux'
+import { fetchAllRooms } from '../Redux/AllRooms/AllRoomActions'
 import {
-  fetchAllRooms
-} from '../Redux/AllRooms/AllRoomActions'
+  fetchAllHostels
+} from '../Redux/AllHostels/AllHostelActions'
 
 function AllRoom() {
   const rooms = useSelector(state =>state.AllRoom)
+  const allHostel = useSelector(state =>state.AllHostel)
   console.log("rooms",rooms);
   const dispatch = useDispatch()
     const [roomResult,setRoomResult] = useState([])
     const [allRoomsInfo,setAllRoomsInfo] = useState([])
+    const [hostelResult,setHostelResult] = useState([])
+    const [allHostelInfo,setAllHostelInfo] = useState([])
       const [activestate,setActivestate] = useState('')
     console.log("allRoomsInfo",allRoomsInfo);
 
+    const [inputValues,setInputValues] = useState({
+                                          driverId:"",
+                                          roomId:""
+    })
+
     useEffect(() =>{
       dispatch(fetchAllRooms())
+      dispatch(fetchAllHostels())
     },[dispatch])
 
     useMemo(()=>{
-      if(rooms && rooms.all_rooms && rooms.all_rooms.result){
+      if(rooms && rooms.all_rooms && rooms.all_rooms.success === true && rooms.all_rooms.result){
         setRoomResult(rooms.all_rooms.result)
       }
-    },[rooms.all_rooms.result])
+    },[rooms])
 
     useMemo(()=>{
       if(roomResult && roomResult.data){
             setAllRoomsInfo(roomResult.data)
       }
     },[roomResult])
+
+    useMemo(()=>{
+      if(allHostel && allHostel.all_hostels && allHostel.all_hostels.success === true && allHostel.all_hostels.result){
+        setHostelResult(allHostel.all_hostels.result)
+      }
+    },[allHostel])
+
+    useMemo(()=>{
+      if(hostelResult && hostelResult.data){
+            setAllHostelInfo(hostelResult.data)
+      }
+    },[hostelResult])
+
+    // examHandler function start
+       const allRoomFilterHandler = (event) =>{
+       event.preventDefault()
+       const all_rooms_info = inputValues;
+         dispatch(fetchAllRooms(all_rooms_info))
+     }
+    // examHandler function End
 
     const callbackFunction = (childData) => {
       setActivestate(childData)
@@ -75,13 +110,24 @@ function AllRoom() {
                          </div>
                        </div>
                      </div>
-                     <form className="mg-b-20">
+                     <form className="mg-b-20" onSubmit={(e) =>allRoomFilterHandler(e)}>
                        <div className="row gutters-8">
                          <div className="col-lg-4 col-12 form-group">
-                           <input type="text" placeholder="Search by Hostel ..." className="form-control" />
+                         <FormGroup>
+                             <FormControl
+                               type="text"
+                               onChange={(e) =>setInputValues({...inputValues,hostelId:e.target.value})}
+                               as="select"
+                             >
+                             <option value="">Search by Hostel ...</option>
+                             {allHostelInfo && allHostelInfo.length > 0 ? allHostelInfo.map((item,index) =>(
+                               <option value={item.id} key={index}>{item.HostelName}</option>
+                             )):null}
+                             </FormControl>
+                           </FormGroup>
                          </div>
                          <div className="col-lg-3 col-12 form-group">
-                           <input type="text" placeholder="Search by Room ..." className="form-control" />
+                           <input type="text" placeholder="Search by Room Number ..." className="form-control" />
                          </div>
                          <div className="col-lg-3 col-12 form-group">
                            <input type="text" placeholder="Search by Bed ..." className="form-control" />
