@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
@@ -11,40 +12,103 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux'
 import { fetchAllStudents } from '../Redux/AllStudents/AllStudentsActions'
-import { fetchAllClasses } from '../Redux/AllClasses/AllClassesActions';
-import { fetchAllSections } from '../Redux/AllSections/AllSectionsActions';
 
 function AllStudents(){
   // store data access start
-  const classes = useSelector(state =>state.AllClasses)
   const students = useSelector(state =>state.AllStudents)
-  const sections = useSelector(state =>state.AllSections)
   // store data access End
 
   const dispatch = useDispatch()  // for accessing the redux function
   const [activestate,setActivestate] = useState('')
   const [studentResult,setStudentResult] = useState([])
   const [allStudentsInfo,setAllStudentsInfo] = useState([])
-  const [classesResult,setClassesResult] = useState([])
-  const [allClassesInfo,setClassesInfo] = useState([])
-  const [allSectionsInfo,setSectionsInfo] = useState([])
   const [loader,setLoader] = useState(false)
-  const [inputValues,setInputValues] = useState({
-                                          classId:"",
-                                          sectionId:"",
-                                          studentId:""
-  })
-  const [mediumId,setMediumId] = useState('')
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'Roll',
+        field: 'roll',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Name',
+        field: 'name',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Gender',
+        field: 'gender',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Class',
+        field: 'class',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Section',
+        field: 'section',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Parents',
+        field: 'parents',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Father Occupation',
+        field: 'fatheroccupation',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Religion',
+        field: 'religion',
+        sort: 'asc',
+        width: 150
+      },
+      {
+        label: 'Address',
+        field: 'address',
+        sort: 'asc',
+        width: 250
+      },
+      {
+        label: 'Date of Birth',
+        field: 'dateofbirth',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Email',
+        field: 'email',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Admission Date',
+        field: 'admissiondate',
+        sort: 'asc',
+        width: 100
+      }
+    ],
+    rows: []
+  });
 
   useEffect(() =>{
     dispatch(fetchAllStudents())
-    dispatch(fetchAllClasses())
   },[dispatch])
 
   useMemo(()=>{
     if(students && students.all_students && students.all_students.success === true && students.all_students.result){
       setStudentResult(students.all_students.result)
-      setInputValues({...inputValues, studentId:""})
     }
     else(
       setStudentResult([])
@@ -64,54 +128,50 @@ function AllStudents(){
     }
   },[studentResult])
 
-  useMemo(()=>{
-    if(classes && classes.all_classes && classes.all_classes.success === true && classes.all_classes.result){
-      setClassesResult(classes.all_classes.result)
-    }
-  },[classes])
 
   useMemo(()=>{
-    if(classesResult && classesResult.data){
-          setClassesInfo(classesResult.data)
+    if(allStudentsInfo && allStudentsInfo.length > 0){
+      let arrray = []
+      allStudentsInfo.map((item,index)=>{
+        let new_object = {
+          roll:item.RollNumber,
+          name: item.StudentName,
+          gender:item.Gender,
+          class:item.ClassName,
+          section:item.SectionName,
+          fathername:item.FatherName,
+          mothername:item.MotherName,
+          fatheroccupation:item.FatherOccupation,
+          religion:item.Religion,
+          address:item.Address,
+          dateofbirth:item.DateofBirth,
+          email:item.email,
+          admissiondate:item.AdmissionDate
+        }
+        arrray.push(new_object)
+      })
+      setRow(arrray)
     }
-  },[classesResult])
+
+  },[allStudentsInfo])
 
   useMemo(() =>{
-    if(mediumId !='' && inputValues.classId !=''){
-        dispatch(fetchAllSections(inputValues.classId,mediumId))
+    if(row && row.length > 0){
+      setDatatable({...datatable,rows:row})
     }
-  },[mediumId,inputValues.classId])
+  },[row])
 
-  useMemo(()=>{
-    if(sections && sections.all_sections && sections.all_sections.result){
-      setSectionsInfo(sections.all_sections.result)
-    }
-  },[sections.all_sections.result])
+  const widerData = {
+    columns: [
+      ...datatable.columns.map((col) => {
+        col.width = 200;
+        return col;
+      }),
+    ],
+    rows: [...datatable.rows],
+  };
 
 
-  const classHandler = (event) =>{
-
-    const classInfo = event.target.value
-    console.log("classInfo",event.target.value)
-    if(classInfo !=""){
-      setInputValues({...inputValues,classId:classInfo})
-      allClassesInfo.filter(classid =>classid.id ==
-         classInfo).map((item,index) =>{
-        setMediumId(item.ClassMediumId)
-      })
-
-    }
-    else{
-      setInputValues({...inputValues,classId:classInfo,sectionId:classInfo})
-    }
-
-  }
-
-  const studentFilterHandler = (event) =>{
-    event.preventDefault();
-    const student_info = inputValues
-    dispatch(fetchAllStudents(student_info))
-  }
   const callbackFunction = (childData) => {
     setActivestate(childData)
   }
@@ -153,137 +213,17 @@ function AllStudents(){
                         </div>
                       </div>
                     </div>
-                    <form className="mg-b-20" onSubmit={(e) =>studentFilterHandler(e)}>
-                      <div className="row gutters-8">
-                        <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                        <FormGroup>
-                            <FormControl
-                              type="text"
-                              onChange={(e) =>setInputValues({...inputValues,studentId:e.target.value})}
-                              as="select"
-                            >
-                            <option value="">Search by Roll ..."</option>
-                            {allStudentsInfo ? allStudentsInfo.map((item,index) =>(
-                              <option value={item.id} key={index}>{item.RollNumber}</option>
-                            )):null}
-                            </FormControl>
-                          </FormGroup>
-                        </div>
-                        <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                        <FormGroup>
-                            <FormControl
-                              type="text"
-                              onChange={(e) =>classHandler(e)}
-                              as="select"
-                            >
-                            <option value="">Search by Class ...</option>
-                            {allClassesInfo ? allClassesInfo.map((item,index) =>(
-                              <option value={item.id} key={index}>{item.ClassName} {item.MediumName}Medium</option>
-                            )):null}
-                            </FormControl>
-                          </FormGroup>
-                        </div>
-                        <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                        {mediumId !='' && inputValues.classId !='' ? (
-                        <FormGroup>
-                            <FormControl
-                              type="text"
-                              onChange={(e) =>setInputValues({...inputValues,sectionId:e.target.value})}
-                              as="select"
-                            >
-                            <option value="">Search by Section ...</option>
-                            {allSectionsInfo ? allSectionsInfo.map((item,index) =>(
-                              <option value={item.id} key={index}>{item.SectionName}</option>
-                            ) ): null}
-                            </FormControl>
-                          </FormGroup>
-                          ) : null}
-                        </div>
-
-                        <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                          <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                        </div>
-                      </div>
-                    </form>
-                    <div className="table-responsive">
-                      <table className="table display data-table text-nowrap">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div className="form-check">
-                                <input type="checkbox" className="form-check-input checkAll" />
-                                <label className="form-check-label">Roll</label>
-                              </div>
-                            </th>
-                            <th>Photo</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Class</th>
-                            <th>Section</th>
-                            <th>Parents</th>
-                            <th>Father Occupation</th>
-                            <th>Religion</th>
-                            <th>Address</th>
-                            <th>Date Of Birth</th>
-                            <th>E-mail</th>
-                            <th>Admission Date</th>
-                            <th />
-                          </tr>
-                        </thead>
-                        {loader === false ? allStudentsInfo && allStudentsInfo.length > 0 ?(
-                        <tbody>
-                        {allStudentsInfo.map((item,index) =>(
-
-                          <tr>
-                            <td>
-                              <div className="form-check">
-                                <input type="checkbox" className="form-check-input" />
-                                <label className="form-check-label">#{item.RollNumber}</label>
-                              </div>
-                            </td>
-                            <td className="text-center"><img src="img/figure/student2.png" alt="student" /></td>
-                            <td>{item.StudentName}</td>
-                            <td>{item.Gender}</td>
-                            <td>{item.ClassName}</td>
-                            <td>{item.SectionName}</td>
-                            <td>{item.FatherName}</td>
-                            <td>{item.FatherOccupation}</td>
-                            <td>{item.Religion}</td>
-                            <td>{item.Address}</td>
-                            <td>{item.DateofBirth}</td>
-                            <td>{item.email}</td>
-                            <td>{item.AdmissionDate}</td>
-                            <td>
-                              <div className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                  <span className="flaticon-more-button-of-three-dots" />
-                                </a>
-                                <div className="dropdown-menu dropdown-menu-right">
-                                  <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                  <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                  <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                        </tbody>
-                      ):
-                      (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
-                    :(<tr>
-                      <td colspan="6">
-                    <Loader
-                    className = "student-detail-loader"
-                  type="MutatingDots"
-                  color="#fea801"
-                  height={100}
-                  width={100}
-
+                    <MDBDataTable
+                      responsive
+                      responsiveSm
+                      responsiveMd
+                      responsiveLg
+                      responsiveXl
+                      scrollX
+                      striped
+                      hover
+                      data={widerData}
                     />
-                    </td>
-                    </tr>)}
-                      </table>
-                    </div>
                   </div>
                 </div>
                 {/* Student Table Area End Here */}

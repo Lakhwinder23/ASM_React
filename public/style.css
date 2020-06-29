@@ -4501,3 +4501,28 @@ button.present-button.btn.btn-success {
 .Login button.btn.btn-primary.btn-block:hover{
   background-color: #fea41436;
 }
+.bs-select select {
+    display: block !important;
+}
+.custom-select-sm {
+    height: 30px !important;
+}
+.mdb-datatable-filter .form-control-sm {
+    font-size: 15px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+
+.mdb-datatable-filter.flex-row {
+    margin-top: 5px;
+}
+.dataTables_length.bs-select {
+    margin-bottom: 10px;
+}
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #ffa401;
+    border-color: #ffa401;
+}

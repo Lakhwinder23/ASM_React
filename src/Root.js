@@ -126,7 +126,7 @@ import Grid from './Components/Grid';
 import Tab from './Components/Tab';
 import ProgressBar from './Components/ProgressBar';
 import Map from './Components/Map';
-
+import Table from './Components/Table';
 
 
 function Root(){
@@ -304,6 +304,8 @@ store.subscribe(() => {
                        {/* message portion routes */}
                         <Route path="/add-message" component={Message} />
                         <Route path="/all-message" component={AllMessages} />
+                        <Route path="/table" component={Table} />
+
                         </>
                       ): role === 2 ? (
                         <>
