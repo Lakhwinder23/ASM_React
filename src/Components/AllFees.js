@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
@@ -25,9 +26,42 @@ const classes = useSelector(state =>state.AllClasses)
   const [classesResult,setClassesResult] = useState([])
   const [allClassesInfo,setClassesInfo] = useState([])
   const [activestate,setActivestate] = useState('')
-  const [inputValues,setInputValues] = useState({
-                                          classId:undefined,
-  })
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'ID',
+        field: 'id',
+        sort: 'asc',
+        width: 50
+      },
+      {
+        label: 'Class Name',
+        field: 'classname',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Monthly Fees',
+        field: 'monthlyfees',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Admission Fees',
+        field: 'admissionfees',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Session',
+        field: 'session',
+        sort: 'asc',
+        width: 200
+      }
+    ],
+    rows: []
+  });
   // component all states define End
 
    //hooks start
@@ -62,23 +96,59 @@ const classes = useSelector(state =>state.AllClasses)
  },[classesResult])
 // when classesResult change add data into classInfo,hook End
 
+//when allAssignBookInfo data change than data add into constant,hook start
+useMemo(()=>{
+  if(allFeesInfo && allFeesInfo.length > 0 && allClassesInfo && allClassesInfo.length > 0){
+    let arrray = []
+    allFeesInfo.map((item,index)=>{
+        allClassesInfo.filter(filteritem =>filteritem.id === item.ClassId).
+          map((classitem,index) =>{
+            let new_object = {
+              id:item.id,
+              classname: classitem.ClassName,
+              monthlyfees:item.MonthlyFees,
+              admissionfees:item.AdmissionFees,
+              session:item.Session
+            }
+            arrray.push(new_object)
+          })
+    })
+    setRow(arrray)
+  }
+
+},[allFeesInfo,allClassesInfo])
+//when allAssignBookInfo data change than data add into constant,hook end
+
+//when row data change than data add into constant,hook start
+useMemo(() =>{
+  if(row && row.length > 0){
+    setDatatable({...datatable,rows:row})
+  }
+},[row])
+//when row data change than data add into constant,hook end
 
    //hooks end
 
 // component function start
-// examHandler function start
-   const feesHandler = (event) =>{
-   event.preventDefault()
-   const fees_info = inputValues;
-     dispatch(fetchAllFees(fees_info))
- }
-// examHandler function End
+
 
   const callbackFunction = (childData) => {
     setActivestate(childData)
 }
 
 // component function end
+
+//constant of component Start
+const widerData = {
+  columns: [
+    ...datatable.columns.map((col) => {
+      col.width = 200;
+      return col;
+    }),
+  ],
+  rows: [...datatable.rows],
+};
+//constant of component end
         return (
           <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
       {/* Header Menu Area Start Here */}
@@ -117,94 +187,17 @@ const classes = useSelector(state =>state.AllClasses)
                          </div>
                        </div>
                      </div>
-                     <form className="mg-b-20" onSubmit={(e) =>feesHandler(e)}>
-                       <div className="row gutters-8">
-                         <div className="col-lg-4 col-12 form-group">
-                           <FormGroup>
-                               <FormControl
-                                 required
-                                 type="text"
-                                 onChange={(e) =>setInputValues({...inputValues,classId:e.target.value})}
-                                 as="select"
-                               >
-                               <option value="undefined">Search by class ...</option>
-                               {allClassesInfo ? allClassesInfo.map((item,index) =>(
-                                 <option value={item.id} key={index}>{item.ClassName} {item.MediumName}Medium</option>
-                               )):null}
-                               </FormControl>
-                             </FormGroup>
-                         </div>
-                         <div className="col-lg-6 col-12 form-group"></div>
-                         <div className="col-lg-2 col-12 form-group">
-                           <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                         </div>
-                       </div>
-                     </form>
-                     <div className="table-responsive">
-                       <table className="table display data-table text-nowrap">
-                         <thead>
-                           <tr>
-                             <th>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input checkAll" />
-                                 <label className="form-check-label">ID</label>
-                               </div>
-                             </th>
-                             <th>Class Name</th>
-                             <th>Monthly Fees</th>
-                             <th>Admission Fees</th>
-                             <th>Session</th>
-                             <th />
-                           </tr>
-                         </thead>
-                         {allFeesData.all_fees_loading === false ? allFeesInfo && allFeesInfo.length > 0 ? (
-                         <tbody>
-                         {allFeesInfo.map((item,index) =>(
-                           <tr key={index}>
-                             <td>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input" />
-                                 <label className="form-check-label">{item.id}</label>
-                               </div>
-                             </td>
-                             {allClassesInfo && allClassesInfo.length > 0 ? allClassesInfo.filter(filteritem =>filteritem.id === item.ClassId).
-                               map((classitem,index) =>(
-                                 <td>{classitem.ClassName}</td>
-                               )):null}
-                             <td>${item.MonthlyFees}</td>
-                             <td>${item.AdmissionFees}</td>
-                             <td>{item.Session}</td>
-                             <td>
-                               <div className="dropdown">
-                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                   <span className="flaticon-more-button-of-three-dots" />
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
-                                   <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                 </div>
-                               </div>
-                             </td>
-                           </tr>
-                         ))}
-                         </tbody>
-                       ):
-                       (<tr><td colspan="7"><h6 className="text-center">No data available in table</h6></td></tr>)
-                     :(<tr>
-                       <td colspan="7">
-                     <Loader
-                     className = "student-detail-loader"
-                   type="MutatingDots"
-                   color="#fea801"
-                   height={100}
-                   width={100}
-
+                     <MDBDataTable
+                       responsive
+                       responsiveSm
+                       responsiveMd
+                       responsiveLg
+                       responsiveXl
+                       scrollX
+                       striped
+                       hover
+                       data={widerData}
                      />
-                     </td>
-                     </tr>)}
-                       </table>
-                     </div>
                    </div>
                  </div>
           {/* Class Table Area End Here */}

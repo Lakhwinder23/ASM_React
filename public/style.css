@@ -4526,3 +4526,19 @@ button.present-button.btn.btn-success {
     background-color: #ffa401;
     border-color: #ffa401;
 }
+.p-7 {
+  padding: 7px !important;
+
+}
+.pl-10 {
+  padding-left: 10px !important;
+}
+.pr-10 {
+  padding-right: 10px !important;
+}
+.pl-17 {
+  padding-left: 17px !important;
+}
+.pr-17 {
+  padding-right: 17px !important;
+}

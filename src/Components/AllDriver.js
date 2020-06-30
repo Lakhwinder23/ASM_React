@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Footer from './Footer';
@@ -18,6 +19,66 @@ const allDriverData = useSelector(state =>state.AllDriver)
   const [allDriverResult,setDriverResult] = useState([])
   const [allDriverInfo,setDriverInfo] = useState([])
   const [activestate,setActivestate] = useState('')
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'ID',
+        field: 'id',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Name',
+        field: 'name',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Gender',
+        field: 'gender',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Date of Birth',
+        field: 'dateofbirth',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Phone',
+        field: 'phone',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Address',
+        field: 'address',
+        sort: 'asc',
+        width: 1000
+      },
+      {
+        label: 'Religion',
+        field: 'religion',
+        sort: 'asc',
+        width: 150
+      },
+      {
+        label: 'Email',
+        field: 'email',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'License Number',
+        field: 'licensenumber',
+        sort: 'asc',
+        width: 100
+      }
+    ],
+    rows: []
+  });
   // component all states define End
 
    //hooks start
@@ -42,6 +103,40 @@ const allDriverData = useSelector(state =>state.AllDriver)
      }
    },[allDriverResult])
 // when allAssignBookResult data change than data add into constant,hook End
+
+//when allDriverInfo data change than data add into constant,hook start
+useMemo(()=>{
+  if(allDriverInfo && allDriverInfo.length > 0){
+    let arrray = []
+    allDriverInfo.map((item,index)=>{
+      let new_object = {
+        id:item.id,
+        name: '',
+        gender:item.Gender,
+        dateofbirth:item.DateofBirth,
+        phone:item.Mobile,
+        address:item.Address,
+        religion:item.Religion,
+        email:item.email,
+        licensenumber:item.LicenseNumber
+      }
+      console.log("new_object",new_object)
+      arrray.push(new_object)
+    })
+    console.log("arrray",arrray)
+    setRow(arrray)
+  }
+
+},[allDriverInfo])
+//when allDriverInfo data change than data add into constant,hook end
+
+//when row data change than data add into constant,hook start
+useMemo(() =>{
+  if(row && row.length > 0){
+    setDatatable({...datatable,rows:row})
+  }
+},[row])
+//when row data change than data add into constant,hook end
    //hooks end
 
 // component function start
@@ -49,8 +144,19 @@ const allDriverData = useSelector(state =>state.AllDriver)
   const callbackFunction = (childData) => {
     setActivestate(childData)
 }
-
 // component function end
+
+//constant of component Start
+const widerData = {
+  columns: [
+    ...datatable.columns.map((col) => {
+      col.width = 200;
+      return col;
+    }),
+  ],
+  rows: [...datatable.rows],
+};
+//constant of component end
         return (
             <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
             {/* Header Menu Area Start Here */}
@@ -89,92 +195,17 @@ const allDriverData = useSelector(state =>state.AllDriver)
                         </div>
                       </div>
                     </div>
-                    <form className="mg-b-20">
-                      <div className="row gutters-8">
-                        <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by ID ..." className="form-control" />
-                        </div>
-                        <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by Name ..." className="form-control" />
-                        </div>
-                        <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                          <input type="text" placeholder="Search by Phone ..." className="form-control" />
-                        </div>
-                        <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                          <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                        </div>
-                      </div>
-                    </form>
-                    <div className="table-responsive">
-                      <table className="table display data-table text-nowrap">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div className="form-check">
-                                <input type="checkbox" className="form-check-input checkAll" />
-                                <label className="form-check-label">ID</label>
-                              </div>
-                            </th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Date of Birth</th>
-                            <th>Mobile Number</th>
-                            <th>Address</th>
-                            <th>Religion</th>
-                            <th>Email</th>
-                            <th>License Number</th>
-                            <th />
-                          </tr>
-                        </thead>
-                        {allDriverData.all_driver_loading === false ? allDriverInfo && allDriverInfo.length > 0 ? (
-                        <tbody>
-                        {allDriverInfo.map((item,index) =>(
-                          <tr>
-                            <td>
-                              <div className="form-check">
-                                <input type="checkbox" className="form-check-input" />
-                                <label className="form-check-label">{item.id}</label>
-                              </div>
-                            </td>
-                            <td></td>
-                            <td>{item.Gender}</td>
-                            <td>{item.DateofBirth}</td>
-                            <td>{item.Mobile}</td>
-                            <td>{item.Address}</td>
-                            <td>{item.Religion}</td>
-                            <td>{item.email}</td>
-                            <td>{item.LicenseNumber}</td>
-                            <td>
-                              <div className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                  <span className="flaticon-more-button-of-three-dots" />
-                                </a>
-                                <div className="dropdown-menu dropdown-menu-right">
-                                  <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                  <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                  <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                          ))}
-                        </tbody>
-                      ):
-                      (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
-                    :(<tr>
-                      <td colspan="6">
-                    <Loader
-                    className = "student-detail-loader"
-                  type="MutatingDots"
-                  color="#fea801"
-                  height={100}
-                  width={100}
-
+                    <MDBDataTable
+                      responsive
+                      responsiveSm
+                      responsiveMd
+                      responsiveLg
+                      responsiveXl
+                      scrollX
+                      striped
+                      hover
+                      data={widerData}
                     />
-                    </td>
-                    </tr>)}
-                      </table>
-                    </div>
                   </div>
                 </div>
                 {/* Teacher Table Area End Here */}

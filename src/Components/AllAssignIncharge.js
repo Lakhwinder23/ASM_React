@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Footer from './Footer';
@@ -18,6 +19,66 @@ function AllAssignIncharge() {
     const [allAssignClassInfo,setAllAssignClassInfo] = useState([])
     console.log("allAssignClassInfo",allAssignClassInfo);
     const [activestate,setActivestate] = useState('')
+      const [row,setRow] = useState([])
+      const [datatable, setDatatable] = useState({
+        columns: [
+          {
+            label: 'ID',
+            field: 'id',
+            sort: 'asc',
+            width: 100
+          },
+          {
+            label: 'Class Name',
+            field: 'classname',
+            sort: 'asc',
+            width: 200
+          },
+          {
+            label: 'Total Section',
+            field: 'totalsection',
+            sort: 'asc',
+            width: 200
+          },
+          {
+            label: 'Maximum Students',
+            field: 'maximumstudents',
+            sort: 'asc',
+            width: 200
+          },
+          {
+            label: 'Medium Name',
+            field: 'mediumname',
+            sort: 'asc',
+            width: 200
+          },
+          {
+            label: 'Section Name',
+            field: 'sectionname',
+            sort: 'asc',
+            width: 200
+          },
+          {
+            label: 'Teacher Name',
+            field: 'teachername',
+            sort: 'asc',
+            width: 200
+          },
+          {
+            label: 'Profession Name',
+            field: 'professionname',
+            sort: 'asc',
+            width: 200
+          },
+          {
+            label: 'IsIncharge',
+            field: 'isincharge',
+            sort: 'asc',
+            width: 150
+          }
+        ],
+        rows: []
+      });
     useEffect(() =>{
       const all_assign_class_info = {
         isIncharge:true
@@ -37,10 +98,48 @@ function AllAssignIncharge() {
       }
     },[assignClassResult])
 
+    useMemo(()=>{
+      if(allAssignClassInfo && allAssignClassInfo.length > 0){
+        let arrray = []
+        allAssignClassInfo.map((item,index)=>{
+          let new_object = {
+            id:item.id,
+            classname: item.ClassName,
+            totalsection:item.TotalSection,
+            maximumstudents:item.StudentLimitInClass,
+            mediumname:item.MediumName,
+            sectionname:item.SectionName,
+            teachername:item.TeacherName,
+            professionname:item.ProfessionName,
+            isincharge:item.IsIncharge
+          }
+          console.log("new_object",new_object)
+          arrray.push(new_object)
+        })
+        console.log("arrray",arrray)
+        setRow(arrray)
+      }
+
+    },[allAssignClassInfo])
+
+    useMemo(() =>{
+      if(row && row.length > 0){
+        setDatatable({...datatable,rows:row})
+      }
+    },[row])
 
   const callbackFunction = (childData) => {
     setActivestate(childData)
   }
+  const widerData = {
+    columns: [
+      ...datatable.columns.map((col) => {
+        col.width = 200;
+        return col;
+      }),
+    ],
+    rows: [...datatable.rows],
+  };
         return (
             <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
         {/* Header Menu Area Start Here */}
@@ -79,79 +178,17 @@ function AllAssignIncharge() {
                     </div>
                   </div>
                 </div>
-                <form className="mg-b-20">
-                  <div className="row gutters-8">
-                    <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Class Name..." className="form-control" />
-                    </div>
-                    <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Section Name ..." className="form-control" />
-                    </div>
-                    <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Teacher Name ..." className="form-control" />
-                    </div>
-                    <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                      <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                    </div>
-                  </div>
-                </form>
-                <div className="table-responsive">
-                  <table className="table display data-table text-nowrap">
-                    <thead>
-                      <tr>
-                        <th>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input checkAll" />
-                            <label className="form-check-label">ID</label>
-                          </div>
-                        </th>
-                        <th>ClassName</th>
-                        <th>Total Section</th>
-                        <th>Maximum Students</th>
-                        <th>Medium Name</th>
-                        <th>Section Name</th>
-                        <th>Teacher Name</th>
-                        <th>Profession Name</th>
-                        <th>IsIncharge</th>
-                        <th />
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {allAssignClassInfo ? allAssignClassInfo.map((item,index) =>(
-                      <tr key={index}>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#{item.id}</label>
-                          </div>
-                        </td>
-                        <td>{item.ClassName}</td>
-                        <td>{item.TotalSection}</td>
-                        <td>{item.StudentLimitInClass}</td>
-                        <td>{item.MediumName}</td>
-                        <td>{item.SectionName}</td>
-                        <td>{item.TeacherName}</td>
-                        <td>{item.ProfessionName}</td>
-                        <td>{item.IsIncharge}</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )):(
-                      <h6>No data available in table</h6>
-                    )}
-                    </tbody>
-                  </table>
-                </div>
+                <MDBDataTable
+                  responsive
+                  responsiveSm
+                  responsiveMd
+                  responsiveLg
+                  responsiveXl
+                  scrollX
+                  striped
+                  hover
+                  data={widerData}
+                />
               </div>
             </div>
             {/* Teacher Table Area End Here */}
