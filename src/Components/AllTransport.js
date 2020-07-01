@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
@@ -26,9 +27,42 @@ const allDriverData = useSelector(state =>state.AllDriver)
   const [driverResult,setDriverResult] = useState([])
   const [allDriverInfo,setDriverInfo] = useState([])
   const [activestate,setActivestate] = useState('')
-  const [inputValues,setInputValues] = useState({
-                                          driverId:"",
-  })
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'Route Name',
+        field: 'routename',
+        sort: 'asc',
+        width: 50
+      },
+      {
+        label: 'Vehicle Number',
+        field: 'vehiclenumber',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Driver Name',
+        field: 'drivername',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Driver License',
+        field: 'driverlicense',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Contact Number',
+        field: 'contactnumber',
+        sort: 'asc',
+        width: 200
+      }
+    ],
+    rows: []
+  });
   // component all states define End
 
    //hooks start
@@ -71,23 +105,57 @@ const allDriverData = useSelector(state =>state.AllDriver)
  },[driverResult])
 // when classesResult change add data into classInfo,hook End
 
+//when allAssignBookInfo data change than data add into constant,hook start
+useMemo(()=>{
+  if(allssignVehicleInfo && allssignVehicleInfo.length > 0 && allDriverInfo && allDriverInfo.length > 0){
+    let arrray = []
+    allssignVehicleInfo.map((item,index)=>{
+        allDriverInfo.filter(filteritem =>filteritem.id === item.DriverId).
+          map((classitem,index) =>{
+            let new_object = {
+              routename:item.RouteName,
+              vehiclenumber: item.VehicleNumber,
+              drivername:classitem.ParentName,
+              driverlicense:classitem.LicenseNumber,
+              contactnumber:classitem.Mobile
+            }
+            arrray.push(new_object)
+          })
+    })
+    setRow(arrray)
+  }
 
+},[allssignVehicleInfo,allDriverInfo])
+//when allAssignBookInfo data change than data add into constant,hook end
+
+//when row data change than data add into constant,hook start
+useMemo(() =>{
+  if(row && row.length > 0){
+    setDatatable({...datatable,rows:row})
+  }
+},[row])
+//when row data change than data add into constant,hook end
    //hooks end
 
 // component function start
-// examHandler function start
-   const driverHandler = (event) =>{
-   event.preventDefault()
-   const all_assign_vehicle_info = inputValues;
-     dispatch(fetchAllAssignVehicle(all_assign_vehicle_info))
- }
-// examHandler function End
 
   const callbackFunction = (childData) => {
     setActivestate(childData)
 }
 
 // component function end
+
+//constant of component Start
+const widerData = {
+  columns: [
+    ...datatable.columns.map((col) => {
+      col.width = 200;
+      return col;
+    }),
+  ],
+  rows: [...datatable.rows],
+};
+//constant of component end
         return (
           <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
       {/* Header Menu Area Start Here */}
@@ -126,104 +194,17 @@ const allDriverData = useSelector(state =>state.AllDriver)
                          </div>
                        </div>
                      </div>
-                     <form className="mg-b-20" onSubmit={(e) =>driverHandler(e)}>
-                       <div className="row gutters-8">
-                         <div className="col-lg-3 col-12 form-group">
-                           <FormGroup>
-                               <FormControl
-                                 type="text"
-                                 onChange={(e) =>setInputValues({...inputValues,driverId:e.target.value})}
-                                 as="select"
-                               >
-                               <option value="">Search by Driver Name ...</option>
-                               {allDriverInfo ? allDriverInfo.map((item,index) =>(
-                                 <option value={item.id} key={index}>{item.ParentName}</option>
-                               )):null}
-                               </FormControl>
-                             </FormGroup>
-                         </div>
-                         <div className="col-lg-2 col-12 form-group">
-                           <input type="text" placeholder="Search by Route ..." className="form-control" />
-                         </div>
-                         <div className="col-lg-3 col-12 form-group">
-                           <input type="text" placeholder="Search by Vehicle Number ..." className="form-control" />
-                         </div>
-                         <div className="col-lg-2 col-12 form-group">
-                           <input type="text" placeholder="Search by Phone ..." className="form-control" />
-                         </div>
-                         <div className="col-lg-2 col-12 form-group">
-                           <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                         </div>
-                       </div>
-                     </form>
-                     <div className="table-responsive">
-                       <table className="table display data-table text-nowrap">
-                         <thead>
-                           <tr>
-                             <th>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input checkAll" />
-                                 <label className="form-check-label">Route Name</label>
-                               </div>
-                             </th>
-                             <th>Vehicle No</th>
-                             <th>Driver Name</th>
-                             <th>Driver License</th>
-                             <th>Contact Number</th>
-                             <th />
-                           </tr>
-                         </thead>
-                         {allAssignVehicleData.all_assign_vehicle_loading === false ? allssignVehicleInfo && allssignVehicleInfo.length > 0 ? (
-                         <tbody>
-                         {allssignVehicleInfo.map((item,index) =>(
-                           <tr key={index}>
-                             <td>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input" />
-                                 <label className="form-check-label">{item.RouteName}</label>
-                               </div>
-                             </td>
-                             <td>{item.VehicleNumber}</td>
-                             {allDriverInfo && allDriverInfo.length > 0 ? allDriverInfo.filter(filteritem =>filteritem.id === item.DriverId).
-                               map((driverItem,index) =>(
-                                 <>
-                                 <td>{driverItem.ParentName}</td>
-                                 <td>{driverItem.LicenseNumber}</td>
-                                 <td>{driverItem.Mobile}</td>
-                                 </>
-                               )):null}
-
-                             <td>
-                               <div className="dropdown">
-                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                   <span className="flaticon-more-button-of-three-dots" />
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
-                                   <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                 </div>
-                               </div>
-                             </td>
-                           </tr>
-                         ))}
-                         </tbody>
-                       ):
-                       (<tr><td colspan="7"><h6 className="text-center">No data available in table</h6></td></tr>)
-                     :(<tr>
-                       <td colspan="7">
-                     <Loader
-                     className = "student-detail-loader"
-                   type="MutatingDots"
-                   color="#fea801"
-                   height={100}
-                   width={100}
-
+                     <MDBDataTable
+                       responsive
+                       responsiveSm
+                       responsiveMd
+                       responsiveLg
+                       responsiveXl
+                       scrollX
+                       striped
+                       hover
+                       data={widerData}
                      />
-                     </td>
-                     </tr>)}
-                       </table>
-                     </div>
                    </div>
                  </div>
           {/* Class Table Area End Here */}

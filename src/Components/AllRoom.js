@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
@@ -11,9 +12,7 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useSelector,useDispatch } from 'react-redux'
 import { fetchAllRooms } from '../Redux/AllRooms/AllRoomActions'
-import {
-  fetchAllHostels
-} from '../Redux/AllHostels/AllHostelActions'
+
 
 function AllRoom() {
   const rooms = useSelector(state =>state.AllRoom)
@@ -22,19 +21,54 @@ function AllRoom() {
   const dispatch = useDispatch()
     const [roomResult,setRoomResult] = useState([])
     const [allRoomsInfo,setAllRoomsInfo] = useState([])
-    const [hostelResult,setHostelResult] = useState([])
-    const [allHostelInfo,setAllHostelInfo] = useState([])
       const [activestate,setActivestate] = useState('')
     console.log("allRoomsInfo",allRoomsInfo);
 
-    const [inputValues,setInputValues] = useState({
-                                          driverId:"",
-                                          roomId:""
-    })
+    const [row,setRow] = useState([])
+    const [datatable, setDatatable] = useState({
+      columns: [
+        {
+          label: 'Hostel Name',
+          field: 'hostelname',
+          sort: 'asc',
+          width: 100
+        },
+        {
+          label: 'Room No',
+          field: 'roomnumber',
+          sort: 'asc',
+          width: 200
+        },
+        {
+          label: 'Room Type',
+          field: 'roomtype',
+          sort: 'asc',
+          width: 200
+        },
+        {
+          label: 'No of Beds',
+          field: 'noofbeds',
+          sort: 'asc',
+          width: 100
+        },
+        {
+          label: 'Cost Per Bed',
+          field: 'costperbed',
+          sort: 'asc',
+          width: 100
+        },
+        {
+          label: 'Maximum Student',
+          field: 'maximumstudent',
+          sort: 'asc',
+          width: 1000
+        }
+      ],
+      rows: []
+    });
 
     useEffect(() =>{
       dispatch(fetchAllRooms())
-      dispatch(fetchAllHostels())
     },[dispatch])
 
     useMemo(()=>{
@@ -49,29 +83,54 @@ function AllRoom() {
       }
     },[roomResult])
 
+    //when allRoomsInfo data change than data add into constant,hook start
     useMemo(()=>{
-      if(allHostel && allHostel.all_hostels && allHostel.all_hostels.success === true && allHostel.all_hostels.result){
-        setHostelResult(allHostel.all_hostels.result)
+      if(allRoomsInfo && allRoomsInfo.length > 0){
+        let arrray = []
+        allRoomsInfo.map((item,index)=>{
+          let new_object = {
+            hostelname:item.HostelName,
+            roomnumber:item.RoomNumber,
+            roomtype:item.RoomType,
+            noofbeds:item.TotalBeds,
+            costperbed:item.CostPerBeds,
+            maximumstudent:item.StudentLimit
+          }
+          console.log("new_object",new_object)
+          arrray.push(new_object)
+        })
+        console.log("arrray",arrray)
+        setRow(arrray)
       }
-    },[allHostel])
 
-    useMemo(()=>{
-      if(hostelResult && hostelResult.data){
-            setAllHostelInfo(hostelResult.data)
+    },[allRoomsInfo])
+    //when allRoomsInfo data change than data add into constant,hook end
+
+    //when row data change than data add into constant,hook start
+    useMemo(() =>{
+      if(row && row.length > 0){
+        setDatatable({...datatable,rows:row})
       }
-    },[hostelResult])
+    },[row])
+    //when row data change than data add into constant,hook end
 
-    // examHandler function start
-       const allRoomFilterHandler = (event) =>{
-       event.preventDefault()
-       const all_rooms_info = inputValues;
-         dispatch(fetchAllRooms(all_rooms_info))
-     }
-    // examHandler function End
+    
 
     const callbackFunction = (childData) => {
       setActivestate(childData)
     }
+
+    //constant of component Start
+    const widerData = {
+      columns: [
+        ...datatable.columns.map((col) => {
+          col.width = 200;
+          return col;
+        }),
+      ],
+      rows: [...datatable.rows],
+    };
+    //constant of component end
         return (
           <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
       {/* Header Menu Area Start Here */}
@@ -110,97 +169,17 @@ function AllRoom() {
                          </div>
                        </div>
                      </div>
-                     <form className="mg-b-20" onSubmit={(e) =>allRoomFilterHandler(e)}>
-                       <div className="row gutters-8">
-                         <div className="col-lg-4 col-12 form-group">
-                         <FormGroup>
-                             <FormControl
-                               type="text"
-                               onChange={(e) =>setInputValues({...inputValues,hostelId:e.target.value})}
-                               as="select"
-                             >
-                             <option value="">Search by Hostel ...</option>
-                             {allHostelInfo && allHostelInfo.length > 0 ? allHostelInfo.map((item,index) =>(
-                               <option value={item.id} key={index}>{item.HostelName}</option>
-                             )):null}
-                             </FormControl>
-                           </FormGroup>
-                         </div>
-                         <div className="col-lg-3 col-12 form-group">
-                           <input type="text" placeholder="Search by Room Number ..." className="form-control" />
-                         </div>
-                         <div className="col-lg-3 col-12 form-group">
-                           <input type="text" placeholder="Search by Bed ..." className="form-control" />
-                         </div>
-                         <div className="col-lg-2 col-12 form-group">
-                           <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                         </div>
-                       </div>
-                     </form>
-                     <div className="table-responsive">
-                       <table className="table display data-table text-nowrap">
-                         <thead>
-                           <tr>
-                             <th>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input checkAll" />
-                                 <label className="form-check-label">Hostel Name</label>
-                               </div>
-                             </th>
-                             <th>Room No</th>
-                             <th>Room Type</th>
-                             <th>No Of Bed</th>
-                             <th>Cost Per Bed</th>
-                             <th>Maximum Student</th>
-                             <th />
-                           </tr>
-                         </thead>
-                         {rooms.all_rooms_loading === false ? allRoomsInfo && allRoomsInfo.length > 0 ? (
-                         <tbody>
-                         {allRoomsInfo.map((item,index) =>(
-                           <tr key={index}>
-                             <td>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input" />
-                                 <label className="form-check-label">{item.HostelName}</label>
-                               </div>
-                             </td>
-                             <td>{item.RoomNumber}</td>
-                             <td>{item.RoomType}</td>
-                             <td>{item.TotalBeds}</td>
-                             <td>{item.CostPerBeds}</td>
-                             <td>{item.StudentLimit}</td>
-                             <td>
-                               <div className="dropdown">
-                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                   <span className="flaticon-more-button-of-three-dots" />
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
-                                   <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                 </div>
-                               </div>
-                             </td>
-                           </tr>
-                         ))}
-                         </tbody>
-                       ):
-                       (<tr><td colspan="7"><h6 className="text-center">No data available in table</h6></td></tr>)
-                     :(<tr>
-                       <td colspan="7">
-                     <Loader
-                     className = "student-detail-loader"
-                   type="MutatingDots"
-                   color="#fea801"
-                   height={100}
-                   width={100}
-
+                     <MDBDataTable
+                       responsive
+                       responsiveSm
+                       responsiveMd
+                       responsiveLg
+                       responsiveXl
+                       scrollX
+                       striped
+                       hover
+                       data={widerData}
                      />
-                     </td>
-                     </tr>)}
-                       </table>
-                     </div>
                    </div>
                  </div>
           {/* Class Table Area End Here */}

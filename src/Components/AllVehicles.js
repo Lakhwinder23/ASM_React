@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
@@ -21,11 +22,42 @@ const allVehicleData = useSelector(state =>state.AllVehicle)
   // component all states define start
   const [allVehicleInfo,setVehicleInfo] = useState([])
   const [activestate,setActivestate] = useState('')
-  const [inputValues,setInputValues] = useState({vehicleNumber:'',
-                                                  vehicleCode:'',
-                                                  totalSeats:'',
-                                                  busSize:''
-                                                    })
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'ID',
+        field: 'id',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Vehicle Name',
+        field: 'vehiclename',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Vehicle Code',
+        field: 'vehiclecode',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Total Seats',
+        field: 'totalseats',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Bus Size',
+        field: 'bussize',
+        sort: 'asc',
+        width: 200
+      }
+    ],
+    rows: []
+  });
   // component all states define End
 
    //hooks start
@@ -43,17 +75,40 @@ const allVehicleData = useSelector(state =>state.AllVehicle)
    },[allVehicleData])
 // add data of allVehicle api into constant,hook End
 
+//when allClassesInfo data change than data add into constant,hook start
+useMemo(()=>{
+  if(allVehicleInfo && allVehicleInfo.length > 0){
+    let arrray = []
+    allVehicleInfo.map((item,index)=>{
+      let new_object = {
+        id:item.id,
+        vehiclename: item.VehicleNumber,
+        vehiclecode:item.VehicleCode,
+        totalseats:item.TotalSeats,
+        bussize:item.BusSize
+      }
+      console.log("new_object",new_object)
+      arrray.push(new_object)
+    })
+    console.log("arrray",arrray)
+    setRow(arrray)
+  }
+
+},[allVehicleInfo])
+//when allClassesInfo data change than data add into constant,hook end
+
+//when row data change than data add into constant,hook start
+useMemo(() =>{
+  if(row && row.length > 0){
+    setDatatable({...datatable,rows:row})
+  }
+},[row])
+//when row data change than data add into constant,hook end
 
    //hooks end
 
 // component function start
-//vehicleSearchHandler function start
-const vehicleSearchHandler = (event) =>{
-event.preventDefault()
-const vehicle_info = inputValues;
-  dispatch(fetchAllVehicle(vehicle_info))
-}
-//vehicleSearchHandler function End
+
 
 //callbackFunction function start
   const callbackFunction = (childData) => {
@@ -61,6 +116,18 @@ const vehicle_info = inputValues;
 }
 //callbackFunction function End
 // component function end
+
+//constant of component Start
+const widerData = {
+  columns: [
+    ...datatable.columns.map((col) => {
+      col.width = 200;
+      return col;
+    }),
+  ],
+  rows: [...datatable.rows],
+};
+//constant of component end
         return (
           <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
       {/* Header Menu Area Start Here */}
@@ -99,87 +166,17 @@ const vehicle_info = inputValues;
                          </div>
                        </div>
                      </div>
-                     <form className="mg-b-20" onSubmit = {(e) =>vehicleSearchHandler(e)}>
-                       <div className="row gutters-8">
-                         <div className="col-lg-3 col-12 form-group">
-                          <input type="text" value={inputValues.vehicleNumber} onChange={(e) =>setInputValues({...inputValues,vehicleNumber:e.target.value})} placeholder="Search by vehicle Number ..." className="form-control" />
-                         </div>
-                         <div className="col-lg-3 col-12 form-group">
-                          <input type="text" value={inputValues.vehicleCode} onChange={(e) =>setInputValues({...inputValues,vehicleCode:e.target.value})} placeholder="Search by vehicle Code..." className="form-control" />
-                         </div>
-                         <div className="col-lg-3 col-12 form-group">
-                          <input type="text" value={inputValues.totalSeats} onChange={(e) =>setInputValues({...inputValues,totalSeats:e.target.value})} placeholder="Search by Total Seats..." className="form-control" />
-                         </div>
-                         <div className="col-lg-2 col-12 form-group">
-                          <input type="text" value={inputValues.busSize} onChange={(e) =>setInputValues({...inputValues,busSize:e.target.value})} placeholder="Search by Bus Size..." className="form-control" />
-                         </div>
-                         <div className="col-lg-1 col-12 form-group all-vehicle-search">
-                           <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                         </div>
-                       </div>
-                     </form>
-                     <div className="table-responsive">
-                       <table className="table display data-table text-nowrap">
-                         <thead>
-                           <tr>
-                             <th>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input checkAll" />
-                                 <label className="form-check-label">ID</label>
-                               </div>
-                             </th>
-                             <th>Vehicle Number</th>
-                             <th>Vehicle Code</th>
-                             <th>Total Seats</th>
-                             <th>Bus Size</th>
-                             <th />
-                           </tr>
-                         </thead>
-                         {allVehicleData.all_vehicle_loading === false ? allVehicleInfo && allVehicleInfo.length > 0 ? (
-                         <tbody>
-                         {allVehicleInfo.map((item,index) =>(
-                           <tr key={index}>
-                             <td>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input" />
-                                 <label className="form-check-label">{item.id}</label>
-                               </div>
-                             </td>
-                              <td>{item.VehicleNumber}</td>
-                             <td>{item.VehicleCode}</td>
-                             <td>{item.TotalSeats}</td>
-                             <td>{item.BusSize}</td>
-                             <td>
-                               <div className="dropdown">
-                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                   <span className="flaticon-more-button-of-three-dots" />
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
-                                   <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                 </div>
-                               </div>
-                             </td>
-                           </tr>
-                         ))}
-                         </tbody>
-                       ):
-                       (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
-                     :(<tr>
-                       <td colspan="6">
-                     <Loader
-                     className = "student-detail-loader"
-                   type="MutatingDots"
-                   color="#fea801"
-                   height={100}
-                   width={100}
-
+                     <MDBDataTable
+                       responsive
+                       responsiveSm
+                       responsiveMd
+                       responsiveLg
+                       responsiveXl
+                       scrollX
+                       striped
+                       hover
+                       data={widerData}
                      />
-                     </td>
-                     </tr>)}
-                       </table>
-                     </div>
                    </div>
                  </div>
           {/* Class Table Area End Here */}

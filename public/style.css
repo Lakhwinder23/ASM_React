@@ -4542,3 +4542,10 @@ button.present-button.btn.btn-success {
 .pr-17 {
   padding-right: 17px !important;
 }
+.dataTables_wrapper.dt-bootstrap4.all-classes-table col:last-child {
+    width: 300px !important;
+    min-width: 300px !important;
+}
+.dataTables_wrapper.dt-bootstrap4.all-classes-table col:nth-child(1) {
+    width: 100px!important;
+}

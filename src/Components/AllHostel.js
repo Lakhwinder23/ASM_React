@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Header from './Header';
@@ -17,6 +18,24 @@ function AllHostel() {
   const [allHostelInfo,setAllHostelInfo] = useState([])
       const [activestate,setActivestate] = useState('')
     console.log("allHostelInfo",allHostelInfo);
+    const [row,setRow] = useState([])
+    const [datatable, setDatatable] = useState({
+      columns: [
+        {
+          label: 'ID',
+          field: 'id',
+          sort: 'asc',
+          width: 200
+        },
+        {
+          label: 'Hostel Name',
+          field: 'hostelname',
+          sort: 'asc',
+          width: 100
+        }
+      ],
+      rows: []
+    });
 
     useEffect(() =>{
       dispatch(fetchAllHostels())
@@ -33,10 +52,47 @@ function AllHostel() {
             setAllHostelInfo(hostelResult.data)
       }
     },[hostelResult])
+    //when allHostelInfo data change than data add into constant,hook start
+    useMemo(()=>{
+      if(allHostelInfo && allHostelInfo.length > 0){
+        let arrray = []
+        allHostelInfo.map((item,index)=>{
+          let new_object = {
+            id:item.id,
+            hostelname:item.HostelName
+          }
+          console.log("new_object",new_object)
+          arrray.push(new_object)
+        })
+        console.log("arrray",arrray)
+        setRow(arrray)
+      }
+
+    },[allHostelInfo])
+    //when allHostelInfo data change than data add into constant,hook end
+
+    //when row data change than data add into constant,hook start
+    useMemo(() =>{
+      if(row && row.length > 0){
+        setDatatable({...datatable,rows:row})
+      }
+    },[row])
+    //when row data change than data add into constant,hook end
 
     const callbackFunction = (childData) => {
       setActivestate(childData)
     }
+    //constant of component Start
+    const widerData = {
+      columns: [
+        ...datatable.columns.map((col) => {
+          col.width = 200;
+          return col;
+        }),
+      ],
+      rows: [...datatable.rows],
+    };
+    //constant of component end
         return (
           <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
       {/* Header Menu Area Start Here */}
@@ -75,74 +131,17 @@ function AllHostel() {
                          </div>
                        </div>
                      </div>
-                     <form className="mg-b-20">
-                       <div className="row gutters-8">
-                         <div className="col-lg-4 col-12 form-group">
-                           <input type="text" placeholder="Search by Hostel Name ..." className="form-control" />
-                         </div>
-                         <div className="col-lg-6 col-12 form-group">
-                         </div>
-                         <div className="col-lg-2 col-12 form-group">
-                           <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                         </div>
-                       </div>
-                     </form>
-                     <div className="table-responsive">
-                       <table className="table display data-table text-nowrap">
-                         <thead>
-                           <tr>
-                             <th>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input checkAll" />
-                                 <label className="form-check-label">ID</label>
-                               </div>
-                             </th>
-                             <th>Hostal Name</th>
-                             <th />
-                           </tr>
-                         </thead>
-                         {allHostel.all_hostels_loading === false ? allHostelInfo && allHostelInfo.length > 0 ? (
-                         <tbody>
-                         {allHostelInfo.map((item,index) =>(
-                           <tr key={index}>
-                             <td>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input" />
-                                 <label className="form-check-label">{item.id}</label>
-                               </div>
-                             </td>
-                             <td>{item.HostelName}</td>
-                             <td>
-                               <div className="dropdown">
-                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                   <span className="flaticon-more-button-of-three-dots" />
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
-                                   <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                 </div>
-                               </div>
-                             </td>
-                           </tr>
-                         ))}
-                         </tbody>
-                       ):
-                       (<tr><td colspan="3"><h6 className="text-center">No data available in table</h6></td></tr>)
-                     :(<tr>
-                       <td colspan="3">
-                     <Loader
-                     className = "student-detail-loader"
-                   type="MutatingDots"
-                   color="#fea801"
-                   height={100}
-                   width={100}
-
+                     <MDBDataTable
+                       responsive
+                       responsiveSm
+                       responsiveMd
+                       responsiveLg
+                       responsiveXl
+                       scrollX
+                       striped
+                       hover
+                       data={widerData}
                      />
-                     </td>
-                     </tr>)}
-                       </table>
-                     </div>
                    </div>
                  </div>
           {/* Class Table Area End Here */}

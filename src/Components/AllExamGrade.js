@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { useSelector,useDispatch } from 'react-redux'
@@ -13,6 +14,42 @@ const allGrade = useSelector(state =>state.AllGrade)
 
   // component all states define start
   const [allGradeInfo,setGradeInfo] = useState([])
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'Grade Name',
+        field: 'gradename',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Grade Point',
+        field: 'gradepoint',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Percent From',
+        field: 'percentfrom',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Percent Upto',
+        field: 'percentupto',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Comment',
+        field: 'comment',
+        sort: 'asc',
+        width: 100
+      }
+    ],
+    rows: []
+  });
   // component all states define End
 
    //hooks start
@@ -30,8 +67,49 @@ const allGrade = useSelector(state =>state.AllGrade)
    },[allGrade])
 // add data of classes api into constant,hook End
 
+//when allGradeInfo data change than data add into constant,hook start
+useMemo(()=>{
+  if(allGradeInfo && allGradeInfo.length > 0){
+    let arrray = []
+    allGradeInfo.map((item,index)=>{
+      let new_object = {
+        gradename: item.GradeName,
+        gradepoint:item.GradePoint,
+        percentfrom:item.GradeFrom,
+        percentupto:item.GradeUpto,
+        comment:item.Comment
+      }
+      console.log("new_object",new_object)
+      arrray.push(new_object)
+    })
+    console.log("arrray",arrray)
+    setRow(arrray)
+  }
+
+},[allGradeInfo])
+//when allGradeInfo data change than data add into constant,hook end
+
+//when row data change than data add into constant,hook start
+useMemo(() =>{
+  if(row && row.length > 0){
+    setDatatable({...datatable,rows:row})
+  }
+},[row])
+//when row data change than data add into constant,hook end
 
    //hooks end
+
+   //constant of component Start
+   const widerData = {
+     columns: [
+       ...datatable.columns.map((col) => {
+         col.width = 200;
+         return col;
+       }),
+     ],
+     rows: [...datatable.rows],
+   };
+   //constant of component end
         return (
             <div className="col-8-xxxl col-12">
                     <div className="card height-auto">
@@ -49,81 +127,17 @@ const allGrade = useSelector(state =>state.AllGrade)
                             </div>
                           </div>
                         </div>
-                        <form className="mg-b-20">
-                          <div className="row gutters-8">
-                            <div className="col-lg-5 col-sm-4 col-12 form-group">
-                              <input type="text" placeholder="Search by Grade ..." className="form-control" />
-                            </div>
-                            <div className="col-lg-5 col-sm-5 col-12 form-group">
-                              <input type="text" placeholder="Search by Point ..." className="form-control" />
-                            </div>
-                            <div className="col-lg-2 col-sm-3 col-12 form-group">
-                              <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                            </div>
-                          </div>
-                        </form>
-                        <div className="table-responsive">
-                          <table className="table display data-table text-nowrap">
-                            <thead>
-                              <tr>
-                                <th>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input checkAll" />
-                                    <label className="form-check-label">Grade Name</label>
-                                  </div>
-                                </th>
-                                <th>Grade Point</th>
-                                <th>Percent From</th>
-                                <th>Percent Upto</th>
-                                <th>Comment</th>
-                                <th />
-                              </tr>
-                            </thead>
-                            {allGrade.all_grade_loading === false ? allGradeInfo && allGradeInfo.length > 0 ? (
-                            <tbody>
-                            {allGradeInfo.map((item,index) =>(
-                              <tr>
-                                <td>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" />
-                                    <label className="form-check-label">{item.GradeName}</label>
-                                  </div>
-                                </td>
-                                <td>{item.GradePoint}</td>
-                                <td>{item.GradeFrom}</td>
-                                <td>{item.GradeUpto}</td>
-                                <td>{item.Comment}</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                      <span className="flaticon-more-button-of-three-dots" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                            </tbody>
-                          ):
-                          (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
-                        :(<tr>
-                          <td colspan="6">
-                        <Loader
-                        className = "student-detail-loader"
-                      type="MutatingDots"
-                      color="#fea801"
-                      height={100}
-                      width={100}
-
+                        <MDBDataTable
+                          responsive
+                          responsiveSm
+                          responsiveMd
+                          responsiveLg
+                          responsiveXl
+                          scrollX
+                          striped
+                          hover
+                          data={widerData}
                         />
-                        </td>
-                        </tr>)}
-                          </table>
-                        </div>
                       </div>
                     </div>
                   </div>

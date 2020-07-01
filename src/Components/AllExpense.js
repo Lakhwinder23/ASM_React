@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable,MDBBadge  } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Header from './Header';
@@ -17,6 +18,60 @@ const allExpenseData = useSelector(state =>state.AllExpense)
   const [allExpenseResult,setAllExpenseResult] = useState([])
   const [allExpenseInfo,setAllExpenseInfo] = useState([])
   const [activestate,setActivestate] = useState('')
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'ID',
+        field: 'id',
+        sort: 'asc',
+        width: 20,
+      },
+      {
+        label: 'Name',
+        field: 'name',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Expense Type',
+        field: 'expensetype',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Amount',
+        field: 'amount',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Status',
+        field: 'status',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Phone',
+        field: 'phone',
+        sort: 'asc',
+        width: 1000
+      },
+      {
+        label: 'Email',
+        field: 'email',
+        sort: 'asc',
+        width: 150
+      },
+      {
+        label: 'Date',
+        field: 'date',
+        sort: 'asc',
+        width: 100
+      }
+    ],
+    rows: []
+  });
   // component all states define End
 
    //hooks start
@@ -41,6 +96,43 @@ const allExpenseData = useSelector(state =>state.AllExpense)
      }
    },[allExpenseResult])
 // when allExpenseResult data change than data add into constant,hook End
+
+//when allExpenseInfo data change than data add into constant,hook start
+useMemo(()=>{
+  if(allExpenseInfo && allExpenseInfo.length > 0){
+    let arrray = []
+    allExpenseInfo.map((item,index)=>{
+      let new_object = {
+        id:item.Expenseid,
+        name: item.Name,
+        expensetype:item.ExpenseType,
+        amount:item.Amount,
+        status:(
+        <MDBBadge pill color={item.Status == "Paid" ? 'success' : 'danger'} className={`p-7 ${item.Status == "Paid" ? 'pl-17 pr-17' : 'pl-10 pr-10'}`} key={index} searchvalue={item}>
+          {item.Status}
+        </MDBBadge>
+      ),
+        phone:item.Phone,
+        email:item.Email,
+        date:item.Date
+      }
+      console.log("new_object",new_object)
+      arrray.push(new_object)
+    })
+    console.log("arrray",arrray)
+    setRow(arrray)
+  }
+
+},[allExpenseInfo])
+//when allExpenseInfo data change than data add into constant,hook end
+
+//when row data change than data add into constant,hook start
+useMemo(() =>{
+  if(row && row.length > 0){
+    setDatatable({...datatable,rows:row})
+  }
+},[row])
+//when row data change than data add into constant,hook end
    //hooks end
 
 // component function start
@@ -48,6 +140,19 @@ const allExpenseData = useSelector(state =>state.AllExpense)
   const callbackFunction = (childData) => {
     setActivestate(childData)
 }
+// component function End
+
+//constant of component Start
+const widerData = {
+  columns: [
+    ...datatable.columns.map((col) => {
+      col.width = 200;
+      return col;
+    }),
+  ],
+  rows: [...datatable.rows],
+};
+//constant of component end
 
         return (
             <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
@@ -87,90 +192,18 @@ const allExpenseData = useSelector(state =>state.AllExpense)
                     </div>
                   </div>
                 </div>
-                <form className="mg-b-20">
-                  <div className="row gutters-8">
-                    <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by ID ..." className="form-control" />
-                    </div>
-                    <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Name ..." className="form-control" />
-                    </div>
-                    <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Phone" className="form-control" />
-                    </div>
-                    <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                      <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                    </div>
-                  </div>
-                </form>
-                <div className="table-responsive">
-                  <table className="table data-table text-nowrap">
-                    <thead>
-                      <tr>
-                        <th>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input checkAll" />
-                            <label className="form-check-label">ID</label>
-                          </div>
-                        </th>
-                        <th>Name</th>
-                        <th>Expense Type</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Phone</th>
-                        <th>E-mail</th>
-                        <th>Date</th>
-                        <th />
-                      </tr>
-                    </thead>
-                    {allExpenseData.all_expense_loading === false ? allExpenseInfo && allExpenseInfo.length > 0 ? (
-                    <tbody>
-                    {allExpenseInfo.map((item,index) =>(
-                      <tr>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">{item.Expenseid}</label>
-                          </div>
-                        </td>
-                        <td>{item.Name}</td>
-                        <td>{item.ExpenseType}</td>
-                        <td>${item.Amount}</td>
-                        <td className={`badge badge-pill badge-success ${item.Status === "Paid" ? ("badge-success") : ("badge-danger") } d-block mg-t-8`}>{item.Status}</td>
-                        <td>{item.Phone}</td>
-                        <td>{item.Email}</td>
-                        <td>{item.Date}</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      ))}
-                    </tbody>
-                  ):
-                  (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
-                :(<tr>
-                  <td colspan="6">
-                <Loader
-                className = "student-detail-loader"
-              type="MutatingDots"
-              color="#fea801"
-              height={100}
-              width={100}
-
+                <MDBDataTable
+                  responsive
+                  responsiveSm
+                  responsiveMd
+                  responsiveLg
+                  responsiveXl
+                  scrollX
+                  striped
+                  hover
+                  autoWidth
+                  data={widerData}
                 />
-                </td>
-                </tr>)}
-                  </table>
-                </div>
               </div>
             </div>
             {/* Expanse Table Area End Here */}

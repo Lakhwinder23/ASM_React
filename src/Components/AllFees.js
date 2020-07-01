@@ -14,6 +14,7 @@ import { useSelector,useDispatch } from 'react-redux'
 import { fetchAllFees } from '../Redux/AllFees/AllFeesActions'
 import {fetchAllClasses} from '../Redux/AllClasses/AllClassesActions'
 
+
 function AllFees() {
   // store data access start
 const allFeesData = useSelector(state =>state.AllFees)

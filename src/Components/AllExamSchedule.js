@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
@@ -8,33 +9,59 @@ import {
 } from "react-bootstrap";
 import { useSelector,useDispatch } from 'react-redux'
 import {fetchAllExams} from '../Redux/AllExams/AllExamsActions'
-import {fetchAllClasses} from '../Redux/AllClasses/AllClassesActions'
-import { fetchAllSections } from '../Redux/AllSections/AllSectionsActions';
-import { fetchAllSubjects } from '../Redux/AllSubjects/AllSubjectsActions'
 
 function AllExamSchedule() {
   // store data access start
 const exams = useSelector(state =>state.AllExams)
-const classes = useSelector(state =>state.AllClasses)
-const sections = useSelector(state =>state.AllSections)
-const subjects = useSelector(state =>state.AllSubjects)
 // store data access End
   const dispatch = useDispatch()  // for accessing the redux function
 
   // component all states define start
   const [examsResult,setExamsResult] = useState([])
   const [allExamsInfo,setExamsInfo] = useState([])
-  const [classesResult,setClassesResult] = useState([])
-  const [allClassesInfo,setClassesInfo] = useState([])
-  const [allSectionsInfo,setSectionsInfo] = useState([])
-  const [allSubjectsInfo,setSubjectsInfo] = useState([])
-  const [inputValues,setInputValues] = useState({
-                                          classId:"",
-                                          sectionId:"",
-                                          subjectId:"",
-                                          examDate:"",
-  })
-  const [mediumId,setMediumId] = useState('')
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'Exam Name',
+        field: 'examname',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Subject',
+        field: 'subject',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Class',
+        field: 'class',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Section',
+        field: 'section',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Time',
+        field: 'time',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Date',
+        field: 'date',
+        sort: 'asc',
+        width: 400
+      }
+    ],
+    rows: []
+  });
+
   console.log("allExamsInfo",allExamsInfo)
   // component all states define End
 
@@ -42,7 +69,6 @@ const subjects = useSelector(state =>state.AllSubjects)
    // fetch allexams api hook start
    useEffect(() =>{
      dispatch(fetchAllExams())
-     dispatch(fetchAllClasses())
    },[dispatch])
 // fetch allexams api hook End
 
@@ -62,78 +88,50 @@ const subjects = useSelector(state =>state.AllSubjects)
    },[examsResult])
 // when examsResult change add data into classInfo,hook End
 
-// add data of classes api into constant,hook start
-   useMemo(() =>{
-     if(classes && classes.all_classes && classes.all_classes.result && classes.all_classes.success === true){
-       setClassesResult(classes.all_classes.result)
-     }
-   },[classes])
-// add data of classes api into constant,hook End
+//when allExamsInfo data change than data add into constant,hook start
+useMemo(()=>{
+  if(allExamsInfo && allExamsInfo.length > 0){
+    let arrray = []
+    allExamsInfo.map((item,index)=>{
+      let new_object = {
+        examname: item.ExamName,
+        subject:item.SubjectName,
+        class:item.ClassName,
+        section:item.SectionName,
+        time:item.ExamTime,
+        date:item.ExamDate,
+      }
+      console.log("new_object",new_object)
+      arrray.push(new_object)
+    })
+    console.log("arrray",arrray)
+    setRow(arrray)
+  }
 
-// when classesResult change add data into classInfo,hook start
-   useMemo(()=>{
-     if(classesResult && classesResult.data){
-           setClassesInfo(classesResult.data)
-     }
-   },[classesResult])
-// when classesResult change add data into classInfo,hook End
+},[allExamsInfo])
+//when allExamsInfo data change than data add into constant,hook end
 
-// fetch allSections and allsubject api,hook start
-   useMemo(() =>{
-     if(mediumId !='' && inputValues.classId !=''){
-         dispatch(fetchAllSections(inputValues.classId,mediumId))
-         dispatch(fetchAllSubjects(inputValues.classId,mediumId))
-     }
-   },[mediumId,inputValues.classId])
-// fetch allSections and allsubject api,hook End
-
-// add data of allSections api into constant,hook start
-   useMemo(()=>{
-     if(sections && sections.all_sections && sections.all_sections.result && sections.all_sections.success === true){
-       setSectionsInfo(sections.all_sections.result)
-     }
-   },[sections])
-// add data of allSections api into constant,hook End
-
-// add data of allsubject api into constant,hook start
-   useMemo(()=>{
-     if(subjects && subjects.all_subjects && subjects.all_subjects.result && subjects.all_subjects.success === true ){
-       setSubjectsInfo(subjects.all_subjects.result)
-     }
-   },[subjects])
-// add data of allsubject api into constant,hook End
-
-
-// classHandler function start
-   const classHandler = (event) =>{
-
-     const classInfo = event.target.value
-     console.log("classInfo",event.target.value)
-     if(classInfo !=""){
-       setInputValues({...inputValues,classId:classInfo})
-       allClassesInfo.filter(classid =>classid.id ==
-          classInfo).map((item,index) =>{
-         setMediumId(item.ClassMediumId)
-       })
-
-     }
-     else{
-       setInputValues({...inputValues,classId:classInfo,subjectId:classInfo,sectionId:classInfo})
-       setMediumId("")
-     }
-
-   }
-// classHandler function End
-
-// examHandler function start
-   const examFilterHandler = (event) =>{
-   event.preventDefault()
-   const exam_info = inputValues;
-     dispatch(fetchAllExams(exam_info))
- }
-// examHandler function End
+//when row data change than data add into constant,hook start
+useMemo(() =>{
+  if(row && row.length > 0){
+    setDatatable({...datatable,rows:row})
+  }
+},[row])
+//when row data change than data add into constant,hook end
 
    //hooks end
+
+   //constant of component Start
+   const widerData = {
+     columns: [
+       ...datatable.columns.map((col) => {
+         col.width = 200;
+         return col;
+       }),
+     ],
+     rows: [...datatable.rows],
+   };
+   //constant of component end
         return (
             <div className="col-8-xxxl col-12">
                 <div className="card height-auto">
@@ -151,126 +149,17 @@ const subjects = useSelector(state =>state.AllSubjects)
                         </div>
                       </div>
                     </div>
-                    <form className="mg-b-20" onSubmit={(e) =>examFilterHandler(e)}>
-                      <div className="row gutters-8">
-                        <div className="col-lg-2 col-12 form-group">
-                        <FormGroup>
-                            <FormControl
-                              type="text"
-                              onChange={(e) =>classHandler(e)}
-                              as="select"
-                            >
-                            <option value="">Search by class ..."</option>
-                            {allClassesInfo ? allClassesInfo.map((item,index) =>(
-                              <option value={item.id} key={index}>{item.ClassName}{item.MediumName}</option>
-                            )):null}
-                            </FormControl>
-                          </FormGroup>
-                        </div>
-                        {mediumId !='' && inputValues.classId !='' ? (
-                        <div className="col-lg-3 col-12 form-group">
-                        <FormGroup>
-                            <FormControl
-                              type="text"
-                              onChange={(e) =>setInputValues({...inputValues,sectionId:e.target.value})}
-                              as="select"
-                            >
-                            <option value="">Search by section ..."</option>
-                            {allSectionsInfo && allSectionsInfo.length > 0 ? allSectionsInfo.map((item,index) =>(
-                              <option value={item.id} key={index}>{item.SectionName}</option>
-                            )):null}
-                            </FormControl>
-                          </FormGroup>
-                        </div>
-                        ) : null}
-                        {mediumId !='' && inputValues.classId !='' ? (
-                        <div className="col-lg-3 col-12 form-group">
-                        <FormGroup>
-                            <FormControl
-                              type="text"
-                              onChange={(e) =>setInputValues({...inputValues,subjectId:e.target.value})}
-                              as="select"
-                            >
-                            <option value="">Search by subject ..."</option>
-                            {allSubjectsInfo && allSubjectsInfo.length > 0 ? allSubjectsInfo.map((item,index) =>(
-                              <option value={item.id} key={index}>{item.SubjectName}</option>
-                            )):null}
-                            </FormControl>
-                          </FormGroup>
-                        </div>
-                        ) : null}
-                        <div className="col-lg-2 col-12 form-group">
-                          <input type="Date" placeholder="Search by Date ..." className="form-control" value={inputValues.examDate} onChange={(e) =>setInputValues({...inputValues,examDate:e.target.value})} />
-                        </div>
-                        <div className="col-lg-2 col-12 form-group">
-                          <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                        </div>
-                      </div>
-                    </form>
-                    <div className="table-responsive">
-                      <table className="table display data-table text-nowrap">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div className="form-check">
-                                <input type="checkbox" className="form-check-input checkAll" />
-                                <label className="form-check-label">Exam Name</label>
-                              </div>
-                            </th>
-                            <th>Subject</th>
-                            <th>Class</th>
-                            <th>Section</th>
-                            <th>Time</th>
-                            <th>Date</th>
-                            <th />
-                          </tr>
-                        </thead>
-                        {exams.all_exams_loading === false ? allExamsInfo && allExamsInfo.length > 0 ? (
-                        <tbody>
-                         {allExamsInfo.map((item,index) =>(
-                          <tr key={index}>
-                            <td>
-                              <div className="form-check">
-                                <input type="checkbox" className="form-check-input" />
-                                <label className="form-check-label">{item.ExamName}</label>
-                              </div>
-                            </td>
-                            <td>{item.SubjectName}</td>
-                            <td>{item.ClassName}</td>
-                            <td>{item.SectionName}</td>
-                            <td>{item.ExamTime}</td>
-                            <td>{item.ExamDate}</td>
-                            <td>
-                              <div className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                  <span className="flaticon-more-button-of-three-dots" />
-                                </a>
-                                <div className="dropdown-menu dropdown-menu-right">
-                                  <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                  <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                  <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                        </tbody>
-                      ):
-                      (<tr><td colspan="7"><h6 className="text-center">No Data Avaiable</h6></td></tr>)
-                    :(<tr>
-                      <td colspan="7">
-                    <Loader
-                    className = "student-detail-loader"
-                  type="MutatingDots"
-                  color="#fea801"
-                  height={100}
-                  width={100}
-
+                    <MDBDataTable
+                      responsive
+                      responsiveSm
+                      responsiveMd
+                      responsiveLg
+                      responsiveXl
+                      scrollX
+                      striped
+                      hover
+                      data={widerData}
                     />
-                    </td>
-                    </tr>)}
-                      </table>
-                    </div>
                   </div>
                 </div>
               </div>

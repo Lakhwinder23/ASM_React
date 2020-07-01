@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
@@ -22,6 +23,24 @@ const allExpenseTypeData = useSelector(state =>state.AllExpenseType)
   // component all states define start
   const [allExpenseTypeInfo,setExpenseTypeInfo] = useState([])
   const [activestate,setActivestate] = useState('')
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'ID',
+        field: 'id',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Expense Type',
+        field: 'expensetype',
+        sort: 'asc',
+        width: 200
+      }
+    ],
+    rows: []
+  });
   // component all states define End
 
    //hooks start
@@ -39,6 +58,32 @@ const allExpenseTypeData = useSelector(state =>state.AllExpenseType)
    },[allExpenseTypeData])
 // add data of allExpenseType api into constant,hook End
 
+//when allExpenseTypeInfo data change than data add into constant,hook start
+useMemo(()=>{
+  if(allExpenseTypeInfo && allExpenseTypeInfo.length > 0){
+    let arrray = []
+    allExpenseTypeInfo.map((item,index)=>{
+      let new_object = {
+        id:item.id,
+        expensetype:item.ExpenseType
+      }
+      console.log("new_object",new_object)
+      arrray.push(new_object)
+    })
+    console.log("arrray",arrray)
+    setRow(arrray)
+  }
+
+},[allExpenseTypeInfo])
+//when allExpenseTypeInfo data change than data add into constant,hook end
+
+//when row data change than data add into constant,hook start
+useMemo(() =>{
+  if(row && row.length > 0){
+    setDatatable({...datatable,rows:row})
+  }
+},[row])
+//when row data change than data add into constant,hook end
 
 
    //hooks end
@@ -51,6 +96,18 @@ const allExpenseTypeData = useSelector(state =>state.AllExpenseType)
 }
 
 // component function end
+
+//constant of component Start
+const widerData = {
+  columns: [
+    ...datatable.columns.map((col) => {
+      col.width = 200;
+      return col;
+    }),
+  ],
+  rows: [...datatable.rows],
+};
+//constant of component end
         return (
           <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
       {/* Header Menu Area Start Here */}
@@ -89,62 +146,17 @@ const allExpenseTypeData = useSelector(state =>state.AllExpenseType)
                          </div>
                        </div>
                      </div>
-                     <div className="table-responsive">
-                       <table className="table display data-table text-nowrap">
-                         <thead>
-                           <tr>
-                             <th>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input checkAll" />
-                                 <label className="form-check-label">ID</label>
-                               </div>
-                             </th>
-                             <th>Expense Type</th>
-                             <th />
-                           </tr>
-                         </thead>
-                         {allExpenseTypeData.all_expense_type_loading === false ? allExpenseTypeInfo && allExpenseTypeInfo.length > 0 ? (
-                         <tbody>
-                         {allExpenseTypeInfo.map((item,index) =>(
-                           <tr key={index}>
-                             <td>
-                               <div className="form-check">
-                                 <input type="checkbox" className="form-check-input" />
-                                 <label className="form-check-label">{item.id}</label>
-                               </div>
-                             </td>
-                             <td>{item.ExpenseType}</td>
-                             <td>
-                               <div className="dropdown">
-                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                   <span className="flaticon-more-button-of-three-dots" />
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
-                                   <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                   <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                 </div>
-                               </div>
-                             </td>
-                           </tr>
-                         ))}
-                         </tbody>
-                       ):
-                       (<tr><td colspan="7"><h6 className="text-center">No data available in table</h6></td></tr>)
-                     :(<tr>
-                       <td colspan="7">
-                     <Loader
-                     className = "student-detail-loader"
-                   type="MutatingDots"
-                   color="#fea801"
-                   height={100}
-                   width={100}
-
+                     <MDBDataTable
+                       responsive
+                       responsiveSm
+                       responsiveMd
+                       responsiveLg
+                       responsiveXl
+                       scrollX
+                       striped
+                       hover
+                       data={widerData}
                      />
-                     </td>
-                     </tr>)}
-                       </table>
-                     </div>
                    </div>
                  </div>
           {/* Class Table Area End Here */}

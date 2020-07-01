@@ -110,7 +110,7 @@ function AllFeesCollection() {
    },[allFeesCollectionResult])
   // add data of allFeesCollection api into constant,hook End
 
-  //when allDriverInfo data change than data add into constant,hook start
+  //when allFeesCollectionInfo data change than data add into constant,hook start
   useMemo(()=>{
     if(allFeesCollectionInfo && allFeesCollectionInfo.length > 0){
       let arrray = []
@@ -139,7 +139,7 @@ function AllFeesCollection() {
     }
 
   },[allFeesCollectionInfo])
-  //when allDriverInfo data change than data add into constant,hook end
+  //when allFeesCollectionInfo data change than data add into constant,hook end
 
   //when row data change than data add into constant,hook start
   useMemo(() =>{

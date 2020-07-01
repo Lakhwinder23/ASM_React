@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Header from './Header';
@@ -10,32 +11,131 @@ import {
 } from '../Redux/AllClasses/AllClassesActions'
 
 function AllClasses() {
+  // store data access start
   const classes = useSelector(state =>state.AllClasses)
+  // store data access End
+
   console.log("classes",classes);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch()     // for accessing the redux function
+
+  // component all states define start
     const [classesResult,setClassesResult] = useState([])
     const [allClassesInfo,setClassesInfo] = useState([])
     console.log("allClassesInfo",allClassesInfo);
   const [activestate,setActivestate] = useState('')
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'ID',
+        field: 'id',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Class Name',
+        field: 'classname',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Medium Name',
+        field: 'mediumname',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Total Section',
+        field: 'totalsection',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Maximum Student In Class',
+        field: 'maximumstudentinclass',
+        sort: 'asc',
+        width: 400
+      }
+    ],
+    rows: []
+  });
 
+  // component all states define End
+
+
+//hooks start
+// fetch allClasses api hook start
   useEffect(() =>{
     dispatch(fetchAllClasses())
   },[dispatch])
+// fetch allClasses api hook end
 
+// add data of allClasses api into constant,hook start
   useMemo(()=>{
     if(classes && classes.all_classes && classes.all_classes.result){
       setClassesResult(classes.all_classes.result)
     }
   },[classes.all_classes.result])
 
+  // add data of allClasses api into constant,hook end
+
+// when allClassesResult data change than data add into constant,hook start
   useMemo(()=>{
     if(classesResult && classesResult.data){
           setClassesInfo(classesResult.data)
     }
   },[classesResult])
+// when allClassesResult data change than data add into constant,hook End
+
+  //when allClassesInfo data change than data add into constant,hook start
+  useMemo(()=>{
+    if(allClassesInfo && allClassesInfo.length > 0){
+      let arrray = []
+      allClassesInfo.map((item,index)=>{
+        let new_object = {
+          id:item.id,
+          classname: item.ClassName,
+          mediumname:item.MediumName,
+          totalsection:item.TotalSection,
+          maximumstudentinclass:item.StudentLimitInClass
+        }
+        console.log("new_object",new_object)
+        arrray.push(new_object)
+      })
+      console.log("arrray",arrray)
+      setRow(arrray)
+    }
+
+  },[allClassesInfo])
+  //when allClassesInfo data change than data add into constant,hook end
+
+  //when row data change than data add into constant,hook start
+  useMemo(() =>{
+    if(row && row.length > 0){
+      setDatatable({...datatable,rows:row})
+    }
+  },[row])
+  //when row data change than data add into constant,hook end
+
+//hooks end
+
+  // component function start
   const callbackFunction = (childData) => {
     setActivestate(childData)
   }
+// component function End
+
+  //constant of component Start
+  const widerData = {
+    columns: [
+      ...datatable.columns.map((col) => {
+        col.width = 200;
+        return col;
+      }),
+    ],
+    rows: [...datatable.rows],
+  };
+  //constant of component end
         return (
             <div id="wrapper" className={activestate ? 'wrapper bg-ash sidebar-collapsed': 'wrapper bg-ash'}>
         {/* Header Menu Area Start Here */}
@@ -74,71 +174,18 @@ function AllClasses() {
                     </div>
                   </div>
                 </div>
-                <form className="mg-b-20">
-                  <div className="row gutters-8">
-                    <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by ID ..." className="form-control" />
-                    </div>
-                    <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Name ..." className="form-control" />
-                    </div>
-                    <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                      <input type="text" placeholder="Search by Class ..." className="form-control" />
-                    </div>
-                    <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                      <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                    </div>
-                  </div>
-                </form>
-                <div className="table-responsive">
-                  <table className="table display data-table text-nowrap">
-                    <thead>
-                      <tr>
-                        <th>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input checkAll" />
-                            <label className="form-check-label">ID</label>
-                          </div>
-                        </th>
-                        <th>Class Name</th>
-                        <th>Medium Name</th>
-                        <th>Total Section</th>
-                        <th>Maximum Student In Class</th>
-                        <th />
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {allClassesInfo ? allClassesInfo.map((item,index) =>(
-                      <tr key={index}>
-                        <td>
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" />
-                            <label className="form-check-label">#{item.id}</label>
-                          </div>
-                        </td>
-                        <td>{item.ClassName}</td>
-                        <td>{item.MediumName}</td>
-                        <td>{item.TotalSection}</td>
-                        <td>{item.StudentLimitInClass}</td>
-                        <td>
-                          <div className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots" />
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                              <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )) : (
-                      <h6>No data available in table</h6>
-                    ) }
-                    </tbody>
-                  </table>
-                </div>
+                <MDBDataTable
+                  className="all-classes-table"
+                  responsive
+                  responsiveSm
+                  responsiveMd
+                  responsiveLg
+                  responsiveXl
+                  scrollX
+                  striped
+                  hover
+                  data={widerData}
+                />
               </div>
             </div>
             {/* Class Table Area End Here */}
