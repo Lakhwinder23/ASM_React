@@ -18,8 +18,11 @@ function AllSections() {
     const [allSectionsInfo,setSectionsInfo] = useState([])
     console.log("allSectionsInfo",allSectionsInfo);
   const [activestate,setActivestate] = useState('')
-  const class_id = "1"
-  const medium_id = "1"
+  const [specificUserDetailInfo,setSpecificUserDetailInfo] = useState([])
+  console.log("specificUserDetailInfo",specificUserDetailInfo);
+  const [classId,setClassId] = useState("")
+  console.log("classId",classId)
+  const [mediumId,setMediumId] = useState("1")
 
   const [row,setRow] = useState([])
   const [datatable, setDatatable] = useState({
@@ -52,9 +55,24 @@ function AllSections() {
     rows: []
   });
 
-  useEffect(() =>{
-    dispatch(fetchAllSections(class_id,medium_id))
-  },[dispatch])
+  useMemo(()=>{
+    if(specificUserDetailData && specificUserDetailData.specific_user_detail && specificUserDetailData.specific_user_detail.result && specificUserDetailData.specific_user_detail.success === true){
+      setSpecificUserDetailInfo(specificUserDetailData.specific_user_detail.result)
+    }
+  },[specificUserDetailData])
+
+  useMemo(() =>{
+    if(specificUserDetailInfo && Object.keys(specificUserDetailInfo).length > 0){
+      setClassId(specificUserDetailInfo.ClassId)
+    }
+  },[specificUserDetailInfo])
+
+  useMemo(() =>{
+    if(classId != ""){
+      dispatch(fetchAllSections(classId,mediumId))
+    }
+  },[classId])
+
 
   useMemo(()=>{
     if(sections && sections.all_sections && sections.all_sections.result){
@@ -70,8 +88,8 @@ function AllSections() {
         let new_object = {
           id:item.id,
           sectionname: item.SectionName,
-          classname: '',
-          mediumname:''
+          classname:classId,
+          mediumname:mediumId
         }
         console.log("new_object",new_object)
         arrray.push(new_object)

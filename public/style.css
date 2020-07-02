@@ -4549,3 +4549,10 @@ button.present-button.btn.btn-success {
 .dataTables_wrapper.dt-bootstrap4.all-classes-table col:nth-child(1) {
     width: 100px!important;
 }
+.dataTables_wrapper.dt-bootstrap4.all-exam-result-table col:nth-child(4) {
+    width: 500px!important;
+}
+
+.dataTables_wrapper.dt-bootstrap4.all-exam-result-table col:nth-child(5) {
+    width: 100px !important;
+}

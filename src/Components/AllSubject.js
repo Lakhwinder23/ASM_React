@@ -9,12 +9,15 @@ import {
 
 function AllSubject(){
   const subjects = useSelector(state =>state.AllSubjects)
+  const specificUserDetailData = useSelector(state =>state.SpecificUserDetail)
   console.log("subjects",subjects);
   const dispatch = useDispatch()
     const [allSubjectsInfo,setSubjectsInfo] = useState([])
-    console.log("allSubjectsInfo",allSubjectsInfo);
-    const class_id = "1"
-    const medium_id = "1"
+    const [specificUserDetailInfo,setSpecificUserDetailInfo] = useState([])
+    console.log("specificUserDetailInfo",specificUserDetailInfo);
+    const [classId,setClassId] = useState("")
+    console.log("classId",classId)
+    const [mediumId,setMediumId] = useState("1")
     const [row,setRow] = useState([])
     const [datatable, setDatatable] = useState({
       columns: [
@@ -46,9 +49,24 @@ function AllSubject(){
       rows: []
     });
 
-    useEffect(() =>{
-      dispatch(fetchAllSubjects(class_id,medium_id))
-    },[dispatch])
+
+    useMemo(()=>{
+      if(specificUserDetailData && specificUserDetailData.specific_user_detail && specificUserDetailData.specific_user_detail.result && specificUserDetailData.specific_user_detail.success === true){
+        setSpecificUserDetailInfo(specificUserDetailData.specific_user_detail.result)
+      }
+    },[specificUserDetailData])
+
+    useMemo(() =>{
+      if(specificUserDetailInfo && Object.keys(specificUserDetailInfo).length > 0){
+        setClassId(specificUserDetailInfo.ClassId)
+      }
+    },[specificUserDetailInfo])
+
+    useMemo(() =>{
+      if(classId != ""){
+        dispatch(fetchAllSubjects(classId,mediumId))
+      }
+    },[classId])
 
     useMemo(()=>{
       if(subjects && subjects.all_subjects && subjects.all_subjects.result){
@@ -63,8 +81,8 @@ function AllSubject(){
           let new_object = {
             id:item.id,
             subjectname: item.SubjectName,
-            class:'',
-            medium:''
+            class:classId,
+            medium:mediumId
           }
           console.log("new_object",new_object)
           arrray.push(new_object)

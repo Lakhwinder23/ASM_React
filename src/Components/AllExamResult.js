@@ -1,4 +1,5 @@
 import React, {useState,useEffect,useMemo} from 'react';
+import { MDBDataTable } from 'mdbreact';
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
@@ -11,6 +12,7 @@ import {fetchAllExamsResult} from '../Redux/AllExamsResult/AllExamsResultActions
 import {fetchAllClasses} from '../Redux/AllClasses/AllClassesActions'
 import { fetchAllSections } from '../Redux/AllSections/AllSectionsActions';
 import {fetchAllExams} from '../Redux/AllExams/AllExamsActions'
+
 
 function AllExamResult() {
   // store data access start
@@ -35,6 +37,42 @@ const sections = useSelector(state =>state.AllSections)
                                         year:""
   })
   const [mediumId,setMediumId] = useState('')
+  const [row,setRow] = useState([])
+  const [datatable, setDatatable] = useState({
+    columns: [
+      {
+        label: 'Class Name',
+        field: 'classname',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Section Name',
+        field: 'sectionname',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Exam Name',
+        field: 'examname',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Student Result',
+        field: 'studentresult',
+        sort: 'asc',
+        width: 1000
+      },
+      {
+        label: 'Session',
+        field: 'session',
+        sort: 'asc',
+        width: 200
+      }
+    ],
+    rows: []
+  });
   // component all states define End
 
    //hooks start
@@ -101,6 +139,40 @@ const sections = useSelector(state =>state.AllSections)
      }
    },[sections])
 // add data of allSections api into constant,hook End
+
+//when allAssignBookInfo data change than data add into constant,hook start
+useMemo(()=>{
+  if(allExamResultInfo && allExamResultInfo.length > 0 && allClassesInfo && allClassesInfo.length > 0 && allExamsInfo && allExamsInfo.length > 0){
+    let arrray = []
+    allExamResultInfo.map((item,index)=>{
+        allClassesInfo.filter(filteritem =>filteritem.id === item.ClassId).
+          map((classitem,index) =>{
+            allExamsInfo.filter(examitemfilter =>examitemfilter.id === item.ExamId).
+            map((examitem,index)=>{
+              let new_object = {
+                classname: classitem.ClassName,
+                sectionname:'',
+                examname:examitem.ExamName,
+                studentresult:item.StudentResult,
+                session:item.Season
+              }
+            arrray.push(new_object)
+              })
+          })
+    })
+    setRow(arrray)
+  }
+
+},[allExamResultInfo,allClassesInfo,allExamsInfo])
+//when allAssignBookInfo data change than data add into constant,hook end
+
+//when row data change than data add into constant,hook start
+useMemo(() =>{
+  if(row && row.length > 0){
+    setDatatable({...datatable,rows:row})
+  }
+},[row])
+//when row data change than data add into constant,hook end
 // classHandler function start
    const classHandler = (event) =>{
 
@@ -131,6 +203,18 @@ const sections = useSelector(state =>state.AllSections)
 // examHandler function End
 
    //hooks end
+
+   //constant of component Start
+   const widerData = {
+     columns: [
+       ...datatable.columns.map((col) => {
+         col.width = 200;
+         return col;
+       }),
+     ],
+     rows: [...datatable.rows],
+   };
+   //constant of component end
         return (
             <div className="col-8-xxxl col-12">
                     <div className="card height-auto">
@@ -148,128 +232,18 @@ const sections = useSelector(state =>state.AllSections)
                             </div>
                           </div>
                         </div>
-                        <form className="mg-b-20" onSubmit={(e) =>examResultFilterHandler(e)}>
-                          <div className="row gutters-8">
-                            <div className="col-lg-2 col-sm-4 col-12 form-group">
-                            <FormGroup>
-                                <FormControl
-                                  type="text"
-                                  onChange={(e) =>classHandler(e)}
-                                  as="select"
-                                >
-                                <option value="">Search by class ..."</option>
-                                {allClassesInfo ? allClassesInfo.map((item,index) =>(
-                                  <option value={item.id} key={index}>{item.ClassName}{item.MediumName}</option>
-                                )):null}
-                                </FormControl>
-                              </FormGroup>
-                            </div>
-                            {mediumId !='' && inputValues.classId !='' ? (
-                            <div className="col-lg-3 col-sm-5 col-12 form-group">
-                            <FormGroup>
-                                <FormControl
-                                  type="text"
-                                  onChange={(e) =>setInputValues({...inputValues,sectionId:e.target.value})}
-                                  as="select"
-                                >
-                                <option value="">Search by section ..."</option>
-                                {allSectionsInfo && allSectionsInfo.length > 0 ? allSectionsInfo.map((item,index) =>(
-                                  <option value={item.id} key={index}>{item.SectionName}</option>
-                                )):null}
-                                </FormControl>
-                              </FormGroup>
-                            </div>
-                            ) : null}
-                            <div className="col-lg-3 col-sm-5 col-12 form-group">
-                            <FormGroup>
-                                <FormControl
-                                  type="text"
-                                  onChange={(e) =>setInputValues({...inputValues,examId:e.target.value})}
-                                  as="select"
-                                >
-                                <option value="">Search by Exam ..."</option>
-                                {allExamsInfo && allExamsInfo.length > 0 ? allExamsInfo.map((item,index) =>(
-                                  <option value={item.id} key={index}>{item.ExamName}</option>
-                                )):null}
-                                </FormControl>
-                              </FormGroup>
-                            </div>
-                            <div className="col-lg-2 col-sm-5 col-12 form-group">
-                                <input type="Text" placeholder ="search by Session ..." className="form-control" value={inputValues.year} onChange={(e) =>setInputValues({...inputValues,year:e.target.value})} />
-                            </div>
-                            <div className="col-lg-2 col-sm-3 col-12 form-group">
-                              <button type="submit" className="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                            </div>
-                          </div>
-                        </form>
-                        <div className="table-responsive">
-                          <table className="table display data-table text-nowrap">
-                            <thead>
-                              <tr>
-                                <th>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input checkAll" />
-                                    <label className="form-check-label">Class Name</label>
-                                  </div>
-                                </th>
-                                <th>Section Name</th>
-                                <th>Exam Name</th>
-                                <th>Students Result</th>
-                                <th>Session</th>
-                                <th />
-                              </tr>
-                            </thead>
-                            {allExamResult.all_exams_result_loading === false ? allExamResultInfo && allExamResultInfo.length > 0 ?  (
-                            <tbody>
-                            {allExamResultInfo.map((item,index) =>(
-                              <tr>
-                                <td>
-                                  <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" />
-                                    {allClassesInfo && allClassesInfo.length > 0 ? allClassesInfo.filter(filteritem =>filteritem.id === item.ClassId).
-                                      map((classitem,index) =>(
-                                        <label className="form-check-label">{classitem.ClassName}</label>
-                                      )):null}
-                                  </div>
-                                </td>
-                                <td>{item.GradePoint}</td>
-                                {allExamsInfo && allExamsInfo.length > 0 ? allExamsInfo.filter(filteritem =>filteritem.id === item.ExamId).
-                                  map((examitem,index) =>(
-                                <td>{examitem.ExamName}</td>
-                                )):null}
-                                <td>{item.StudentResult}</td>
-                                <td>{item.Season}</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                      <span className="flaticon-more-button-of-three-dots" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                      <a className="dropdown-item" href="#"><i className="fas fa-times text-orange-red" />Close</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-cogs text-dark-pastel-green" />Edit</a>
-                                      <a className="dropdown-item" href="#"><i className="fas fa-redo-alt text-orange-peel" />Refresh</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                            </tbody>
-                          ):
-                          (<tr><td colspan="6"><h6 className="text-center">No data available in table</h6></td></tr>)
-                        :(<tr>
-                          <td colspan="6">
-                        <Loader
-                        className = "student-detail-loader"
-                      type="MutatingDots"
-                      color="#fea801"
-                      height={100}
-                      width={100}
-
+                        <MDBDataTable
+                        className="all-exam-result-table"
+                          responsive
+                          responsiveSm
+                          responsiveMd
+                          responsiveLg
+                          responsiveXl
+                          scrollX
+                          striped
+                          hover
+                          data={datatable}
                         />
-                        </td>
-                        </tr>)}
-                          </table>
-                        </div>
                       </div>
                     </div>
                   </div>
