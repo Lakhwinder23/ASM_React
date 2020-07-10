@@ -44,7 +44,7 @@ function AddAttendence(){
   if(error != null){
     console.log("error",typeof error)
   }
-
+  console.log("inputValues.date",inputValues.date)
 
   const [successStatus,setSuccessStatus] = useState(null)
   const [classesResult,setClassesResult] = useState([])
@@ -74,14 +74,25 @@ function AddAttendence(){
      dispatch(fetchAllClasses())
      dispatch(fetchAllTeachers())
      const today =new Date()
+     console.log("today",today)
      const month = today.getMonth()+1
-     console.log("month",month.toString().length)
-     if(month.toString().length == 1){
-       const date = today.getFullYear()+ '-' + '0'+(month) + '-' + today.getDate();
+     const onlydate = today.getDate()
+     console.log("month",onlydate.toString().length)
+     if(month.toString().length == 1 && onlydate.toString().length == 1){
+       const date = today.getFullYear()+ '-' + '0'+(month) + '-' + '0'+(onlydate);
         setInputValues({...inputValues,date:date})
      }
-     else{
-       const date = today.getFullYear()+ '-' + (month) + '-' + today.getDate();
+     else if(month.toString().length > 1 && onlydate.toString().length == 1){
+       const date = today.getFullYear()+ '-' +(month) + '-' + '0'+(onlydate);
+        setInputValues({...inputValues,date:date})
+     }
+     else if(month.toString().length > 1 && onlydate.toString().length > 1){
+       const date = today.getFullYear()+ '-' +(month) + '-' +(onlydate);
+        setInputValues({...inputValues,date:date})
+     }
+
+     else if(month.toString().length == 1 && onlydate.toString().length > 1){
+       const date = today.getFullYear()+ '-' + '0' +(month) + '-' +(onlydate);
         setInputValues({...inputValues,date:date})
      }
 

@@ -14,12 +14,14 @@ import { fetchAllSections } from '../Redux/AllSections/AllSectionsActions';
 import {fetchAllExams} from '../Redux/AllExams/AllExamsActions'
 
 
+
 function AllExamResult() {
   // store data access start
 const allExamResult = useSelector(state =>state.AllExamsResult)
 const classes = useSelector(state =>state.AllClasses)
 const exams = useSelector(state =>state.AllExams)
 const sections = useSelector(state =>state.AllSections)
+const students = useSelector(state =>state.AllStudents)
 // store data access End
   const dispatch = useDispatch()  // for accessing the redux function
 
@@ -30,6 +32,7 @@ const sections = useSelector(state =>state.AllSections)
   const [allSectionsInfo,setSectionsInfo] = useState([])
   const [examsResult,setExamsResult] = useState([])
   const [allExamsInfo,setExamsInfo] = useState([])
+
   const [inputValues,setInputValues] = useState({
                                         classId:"",
                                         sectionId:"",
@@ -131,6 +134,8 @@ const sections = useSelector(state =>state.AllSections)
      }
    },[mediumId,inputValues.classId])
 // fetch allSections and allsubject api,hook End
+
+
 
 // add data of allSections api into constant,hook start
    useMemo(()=>{

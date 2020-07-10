@@ -4556,3 +4556,6 @@ button.present-button.btn.btn-success {
 .dataTables_wrapper.dt-bootstrap4.all-exam-result-table col:nth-child(5) {
     width: 100px !important;
 }
+input.student-result-table-input {
+    width: 100%;
+}
