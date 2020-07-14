@@ -4559,3 +4559,13 @@ button.present-button.btn.btn-success {
 input.student-result-table-input {
     width: 100%;
 }
+
+.login-password.form-group {
+    position: relative;
+}
+
+.login-password.form-group i {
+    position: absolute;
+    bottom: 15px;
+    left: 350px;
+}

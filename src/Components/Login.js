@@ -22,6 +22,7 @@ const loginData = useSelector(state =>state.Login)
   const [activestate,setActivestate] = useState('')
     const [error,setError] = useState(null)
     const [successStatus,setSuccessStatus] = useState(null)
+    const [passwordHide,setPasswordHide] = useState(true)
   // component all states define End
 
    //hooks start
@@ -97,13 +98,18 @@ if(loginData.login.success === true){
                               />
                               {error != null && error.email ? (<h6 className="addStudent-error">*{JSON.stringify(error.email).replace(/[\[\]"]+/g,"")}</h6>):null}
                           </Form.Group>
-                          <Form.Group controlId="password" >
+                          <Form.Group controlId="password" className="login-password">
                           <Form.Label> Password </Form.Label>
                               <Form.Control
                                   value={inputValue.password}
                                   onChange={(e) =>setInputValue({...inputValue,password:e.target.value})}
-                                  type="password"
+                                  type={passwordHide ? "password" : "text"}
                               />
+                              {passwordHide ? (
+                              <i className="far fa-eye eye-password-icon"  onClick={() =>setPasswordHide(!passwordHide)}></i>
+                            ) : (
+                              <i className="fa fa-eye-slash eye-password-icon" aria-hidden="true" onClick={() =>setPasswordHide(!passwordHide)}></i>
+                            )}
                             {error != null && error.password ? (<h6 className="addStudent-error">*{JSON.stringify(error.password).replace(/[\[\]"]+/g,"")}</h6>):null}
                           </Form.Group>
                           <Button
